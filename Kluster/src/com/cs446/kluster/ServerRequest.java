@@ -1,4 +1,4 @@
-package com.mcgilln.newsfeed;
+package com.cs446.kluster;
 
 import java.io.IOException;
 import java.io.InputStream;
