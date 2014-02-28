@@ -39,7 +39,7 @@ public class XmlReader {
     		ContentValues values = new ContentValues();
     		DateFormat df = new SimpleDateFormat("MMM dd h:mmaa", Locale.US);
     		
-    		values.put("title", item.getID());
+    		values.put("title", item.getPhotoId());
     		values.put("location", item.getLocation().toString());
 
     		
