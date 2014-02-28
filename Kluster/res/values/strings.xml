@@ -3,7 +3,9 @@
 
     <string name="app_name">Kluster</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="thumbnail_description">Null</string>
+    
+    <string name="take_picture">Take a Picture</string>
+	<string name="view_pictures">View Pictures</string>
 
 </resources>
