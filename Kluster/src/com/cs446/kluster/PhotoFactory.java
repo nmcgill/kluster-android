@@ -8,12 +8,15 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.GetChars;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,6 +33,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static Uri fileUri;
     private static LocationClient mLocationClient = null;
+    private static ContentResolver mContentResolver;
     
     // Define a DialogFragment that displays the error dialog
     public static class ErrorDialogFragment extends DialogFragment {
@@ -59,7 +63,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
        /* Create a new location client, using the enclosing class to
         * handle callbacks. */
         mLocationClient = new LocationClient(this, this, this);
-        
+    
 		TakePhoto();
 	}
 	
@@ -70,16 +74,35 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
             if (resultCode == RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
-            } else if (resultCode == RESULT_CANCELED) {
+            
+                Photo photo = new Photo(CreateID(), mLocationClient.getLastLocation());
+                AddtoContentProvider(photo);
+                
+                // Disconnecting the client invalidates it.
+                Log.w("gps", mLocationClient.getLastLocation().toString());
+                mLocationClient.disconnect();
+            } 
+            else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
-            } else {
+            }
+            else {
                 // Image capture failed, advise user
             }
         }
-        
-        // Disconnecting the client invalidates it.
-        Log.w("gps", mLocationClient.getLastLocation().toString());
-        mLocationClient.disconnect();
+    }
+    
+    /** TODO */
+    private static int CreateID() {
+    	return 0;
+    }
+    
+    private void AddtoContentProvider(Photo item) {
+		ContentValues values = new ContentValues();
+		
+		values.put("photoid", item.getPhotoId());
+		values.put("location", item.getLocation().toString());
+
+		getContentResolver().insert(PhotoProvider.CONTENT_URI, values);
     }
 	
 	public void TakePhoto() {
