@@ -32,7 +32,7 @@
         
         <meta-data
 	    android:name="com.google.android.maps.v2.API_KEY"
-	    android:value="AIzaSyBdr25RgU0owKcc7NuZBT_SmkYErPz8d0s"/>
+	    android:value="AIzaSyD1ds5m66xAScEdQVLFfTOf0rAI_WVLmVQ"/>
         
         <meta-data
 	    android:name="com.google.android.gms.version"
@@ -47,6 +47,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+    <activity
+        android:name="com.cs446.kluster.PhotoFactory"
+        android:label="@string/app_name"
+        android:parentActivityName="com.cs446.kluster.MainActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.cs446.kluster.MainActivity" />
+    </activity>
     </application>
 
 </manifest>
