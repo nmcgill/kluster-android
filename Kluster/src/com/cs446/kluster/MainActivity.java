@@ -3,8 +3,10 @@ package com.cs446.kluster;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,28 +14,17 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
-	
-	@Override
-	public void onClick(View v) {
-	    // create Intent to take a picture and return control to the calling application
-	    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-	    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-	    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
-
-	    // start the image capture Intent
-	    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +32,30 @@ public class MainActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);   
         
         Button mTakePictureButton = (Button)findViewById(R.id.takePicture);
-        mTakePictureButton.setOnClickListener(this);
+        mTakePictureButton.setOnClickListener( new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+			    // create Intent to take a picture and return control to the calling application
+			    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+			    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+			    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+			    // start the image capture Intent
+			    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			}
+		});
+        
+        Button mViewMapButton = (Button)findViewById(R.id.viewPictures);
+        mViewMapButton.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				PhotoMapFragment firstFragment = new PhotoMapFragment();
+	            
+	            // Add the fragment to the 'main_activity'
+				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+			}
+		});
     }
 
     @Override
@@ -49,6 +63,29 @@ public class MainActivity extends Activity implements OnClickListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+	@Override
+	public void onBackPressed() {
+		FragmentManager fm = getFragmentManager();
+
+		if(fm.getBackStackEntryCount() > 0) {
+			fm.popBackStack();
+		}
+		else {
+			super.onBackPressed();
+		}
+	}
+	
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+    	switch (item.getItemId()) {
+    	case android.R.id.home:
+    		onBackPressed();
+    		return true;
+    	}
+    	
+    	return false;
     }
     
     @Override
@@ -104,7 +141,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
