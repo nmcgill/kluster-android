@@ -5,14 +5,15 @@ Group project for CS 446. Kluster is a photo collaboration platform that creates
 
 Instructions
 =======
-Authenticating with Google Play Services
+## H2 Authenticating with Google Play Services
 
 1) Using Eclipse navigate to Window > Preferences > Android > Build
 
 2) Under "Custom debug keystore" Browse to the ./debug.keystore file in this repo
 
 
-Add google-play-services_lib to your Eclipse workspace
+
+## H2 Add google-play-services_lib to your Eclipse workspace
 
 1) Import > Existing Android Project
 
