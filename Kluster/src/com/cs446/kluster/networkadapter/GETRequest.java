@@ -1,4 +1,4 @@
-package com.cs446.kluster;
+package com.cs446.kluster.networkadapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.xmlpull.v1.XmlPullParserException;
+
+import com.cs446.kluster.XmlReader;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -15,7 +17,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ServerRequest extends AsyncTask<String, String, Boolean> {
+public class GETRequest extends AsyncTask<String, String, Boolean> {
 	private ContentResolver mContentResolver;
 	private int mUserID;
 	
@@ -31,7 +33,7 @@ public class ServerRequest extends AsyncTask<String, String, Boolean> {
         }
 	}	
 	
-	public ServerRequest(ContentResolver resolver, int userid) {
+	public GETRequest(ContentResolver resolver, int userid) {
 		mContentResolver = resolver;
 		mUserID = userid;
 	}
