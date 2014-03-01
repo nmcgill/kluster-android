@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 
 public class TableObserver extends ContentObserver {
@@ -42,6 +43,9 @@ public class TableObserver extends ContentObserver {
          * To maintain backward compatibility, assume that
          * changeUri is null. */
     	
-        ContentResolver.requestSync(mAccount, PhotoProvider.PROVIDER_NAME, null);
+    	Bundle bundle = new Bundle();
+    	bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+    	
+        ContentResolver.requestSync(mAccount, PhotoProvider.PROVIDER_NAME, bundle);
     }
 }

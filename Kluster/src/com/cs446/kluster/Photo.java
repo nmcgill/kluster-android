@@ -1,29 +1,41 @@
 package com.cs446.kluster;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.location.Location;
+import android.net.Uri;
 
 public class Photo {
 	private long mPhotoId;
 	private Location mLocation;
-	private DateFormat mDate;
+	private Date mDate;
 	private long mUserId;
 	private String mUrl;
 	private ArrayList<String> mTags;
+	private Boolean mUploaded;
+	private Uri mLocalUrl;
+	private String mThumbnailUrl;
 	
-	public Photo(int pid, Location loc, DateFormat date, long uid, String url, ArrayList<String> tags) {
+	public Photo(int pid,
+				Location loc,
+				Date date,
+				long uid,
+				String url,
+				ArrayList<String> tags,
+				Boolean uploaded,
+				Uri localurl,
+				String thumburl) {
+		
 		mPhotoId = pid;
 		mLocation = loc;
 		mDate = date;
 		mUserId = uid;
 		mUrl = url;
 		mTags = tags;
-	}
-	
-	public Photo(int pid, Location loc) {
-		this(pid, loc, null, -1, "", new ArrayList<String>());
+		mUploaded = uploaded;
+		mLocalUrl = localurl;
+		mThumbnailUrl = thumburl;
 	}
 
 	public long getPhotoId() {
@@ -34,7 +46,7 @@ public class Photo {
 		return mLocation;
 	}
 
-	public DateFormat getDate() {
+	public Date getDate() {
 		return mDate;
 	}
 
@@ -48,6 +60,18 @@ public class Photo {
 
 	public ArrayList<String> getTags() {
 		return mTags;
+	}
+	
+	public Boolean getUploaded() {
+		return mUploaded;
+	}
+	
+	public Uri getLocalUrl() {
+		return mLocalUrl;
+	}
+	
+	public String getThumbnailUrl() {
+		return mThumbnailUrl;
 	}
 	
 	public String getTag(String val) {

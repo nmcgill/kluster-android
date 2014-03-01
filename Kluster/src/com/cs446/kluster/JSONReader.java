@@ -3,16 +3,17 @@ package com.cs446.kluster;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.location.Location;
+import android.net.Uri;
 import android.util.JsonReader;
 
 // Sample JSON from request to Kluster API
@@ -31,61 +32,55 @@ import android.util.JsonReader;
 //}
 
 public class JSONReader {
-	private static final String ns = null;
-	private int mUserID;
 	private ContentResolver mContentResolver;
 
-	public JSONReader(ContentResolver c, int user) {
+	public JSONReader(ContentResolver c) {
 		mContentResolver = c;
-		mUserID = user;
 	}
 
-//	private void AddtoPhotoProvider(Photo item) {
-//
-//		// **TODO: DO WE EVEN WANT TO USE A PROVIDER? */
-//
-//		ContentValues values = new ContentValues();
-//		DateFormat df = new SimpleDateFormat("MMM dd h:mmaa", Locale.US);
-//
-//		values.put("title", item.getID());
-//		values.put("location", item.getLocation().toString());
-//
-//		// UNCOMMENT THIS LINE IF WE ARE USING A PROVIDER
-//		// mContentResolver.insert(PhotoProvider.CONTENT_URI, values);
-//	}
-
-	public List readJsonStream(InputStream in) throws IOException {
+	public Boolean readJsonStream(InputStream in) throws IOException, ParseException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
-          return readPhotoArray(reader);
+    		reader.beginArray();
+    		while (reader.hasNext()) {
+    			String name = reader.nextName();
+
+    			if (name.equals("photo")) {
+    				AddtoPhotoProvider(readPhoto(reader));
+    			} else {
+    				reader.skipValue();
+    			}
+    		}
+    		reader.endArray();
         }
          finally {
           reader.close();
         }
-      }
+        
+        return true;
+    }
+	
+	private void AddtoPhotoProvider(Photo item) {
+		ContentValues values = new ContentValues();
+		
+		values.put("photoid", item.getPhotoId());
+		values.put("location", item.getLocation().toString());
+		values.put("date", item.getDate().toString());
+		values.put("userid", item.getUserId());
+		values.put("url", item.getUrl());
+		values.put("tags", item.getTags().toString());
+		values.put("localurl", item.getLocalUrl().toString());
+		values.put("thumburl", item.getThumbnailUrl());
+		values.put("uploaded", item.getUploaded());
 
-	public List readPhotoArray(JsonReader reader) throws IOException {
-		List photos = new ArrayList<Photo>();
-
-		reader.beginArray();
-		while (reader.hasNext()) {
-			String name = reader.nextName();
-
-			if (name.equals("photo")) {
-				photos.add(readPhoto(reader));
-			} else {
-				reader.skipValue();
-			}
-		}
-		reader.endArray();
-		return photos;
+		mContentResolver.insert(PhotoProvider.CONTENT_URI, values);
 	}
 
-	public Photo readPhoto(JsonReader reader) throws IOException {
+	public Photo readPhoto(JsonReader reader) throws IOException, ParseException {
 	    //Photo photo = new Photo();
 		int photoId=-1;
 		Location location = null;
-		DateFormat dateFormat = new SimpleDateFormat("MMM dd h:mmaa", Locale.US);
+		Date date = null;
 		long userId = -1;
 		String url="";
 		String[] tags = null;
@@ -98,7 +93,8 @@ public class JSONReader {
 			} else if (name.equals("location")) {
 				location=readLocation(reader);
 			} else if (name.equals("time")) {
-				//dateFormat; //TODO: Set Date according to what Marlin gives back
+		        SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+		        date = df.parse(reader.nextString());
 			} else if (name.equals("userId")) {
 				userId=reader.nextLong();
 			} else if (name.equals("url")) {
@@ -110,7 +106,7 @@ public class JSONReader {
 			}
 		}
 		reader.endObject();
-		return new Photo(photoId, location, dateFormat, userId, url, new ArrayList<String>(Arrays.asList(tags)));
+		return new Photo(photoId, location, date, userId, url, new ArrayList<String>(Arrays.asList(tags)), true, Uri.parse(""), "");
 	}
 
 	private Location readLocation(JsonReader reader) throws IOException {

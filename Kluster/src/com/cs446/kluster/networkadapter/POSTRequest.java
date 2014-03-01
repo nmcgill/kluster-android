@@ -51,6 +51,7 @@ public class POSTRequest extends AsyncTask<String, String, Boolean> {
 			params.add(new BasicNameValuePair("param1", "value1"));
 			params.add(new BasicNameValuePair("param2", "value2"));
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
+			
 			httppost.setEntity(entity);
 			
 			HttpResponse response = httpclient.execute(httppost);

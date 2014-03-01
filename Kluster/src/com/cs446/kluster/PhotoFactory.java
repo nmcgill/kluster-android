@@ -2,6 +2,7 @@ package com.cs446.kluster;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -16,10 +17,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.GetChars;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cs446.kluster.accountadapter.AccountAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -72,10 +73,21 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
     	super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+            	Date timeStamp = new Date();
+            	
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
-            
-                Photo photo = new Photo(CreateID(), mLocationClient.getLastLocation());
+                
+                Photo photo = new Photo(0,
+                						mLocationClient.getLastLocation(),
+                						timeStamp,
+                						AccountAdapter.getCurrentUser().getID(),
+                						"",
+                						new ArrayList<String>(),
+                						false,
+                						fileUri,
+                						"");
+
                 AddtoContentProvider(photo);
                 
                 // Disconnecting the client invalidates it.
@@ -91,16 +103,38 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
         }
     }
     
-    /** TODO */
-    private static int CreateID() {
-    	return 0;
-    }
-    
     private void AddtoContentProvider(Photo item) {
 		ContentValues values = new ContentValues();
+		/*			"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
+					"_id integer primary key autoincrement, " +
+					"photoid integer not null, " +
+					"location text not null, " +
+					"date text not null, " + 
+					"userid integer not null, " +
+					"url text, " +
+					"tags text, " +
+					"localurl text, " +
+					"thumburl text, " +
+					"uploaded integer not null);";
+		 */
+		String tags =  "";
+		for (String str : item.getTags()) {
+			tags += str + ",";
+		}
+		//trim last ','
+		if (tags.length() > 0) {
+			tags.substring(0, tags.length()-1);
+		}
 		
 		values.put("photoid", item.getPhotoId());
 		values.put("location", item.getLocation().toString());
+		values.put("date", item.getDate().toString());
+		values.put("userid", item.getUserId());
+		values.put("url", item.getUrl());
+		values.put("tags", tags);
+		values.put("localurl", item.getLocalUrl().toString());
+		values.put("thumburl", item.getThumbnailUrl());
+		values.put("uploaded", item.getUploaded());
 
 		getContentResolver().insert(PhotoProvider.CONTENT_URI, values);
     }

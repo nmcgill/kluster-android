@@ -4,6 +4,22 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+//Sample JSON from request to Kluster API
+//{
+// "photo": {
+//     "photoId": 13249871032,
+//     "location": {
+//         "lat": 32.423,
+//         "long": -127.234
+//     },
+//     "time": 204239108478,
+//     "userId": 2,
+//     "url": "http: //photos.kluster.com?id=13249871032",
+//     “tags”: “foo,bar”
+// }
+//}
+
+
 public class PhotoOpenHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_TABLE_NAME = "photoitems";
@@ -11,7 +27,14 @@ public class PhotoOpenHelper extends SQLiteOpenHelper {
 			"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
 					"_id integer primary key autoincrement, " +
 					"photoid integer not null, " +
-					"location text not null);";
+					"location text not null, " +
+					"date text not null, " + 
+					"userid integer not null, " +
+					"url text, " +
+					"tags text, " +
+					"localurl text, " +
+					"thumburl text, " +
+					"uploaded integer not null);";
 	
 	public PhotoOpenHelper(Context context) {
 		super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);

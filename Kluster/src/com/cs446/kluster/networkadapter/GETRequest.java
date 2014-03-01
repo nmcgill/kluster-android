@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import org.xmlpull.v1.XmlPullParserException;
+import java.text.ParseException;
 
 import android.content.ContentResolver;
 import android.os.AsyncTask;
@@ -31,8 +30,8 @@ public class GETRequest extends AsyncTask<String, String, Boolean> {
          	Log.e("URL", "Unable to retrieve web page. URL may be invalid.");
              return null;
          }
-         catch (XmlPullParserException e) {
-         	Log.e("XML", "Unable to parse XML.");
+         catch (ParseException e) {
+         	Log.e("XML", "Unable to parse date.");
              return null;
 			}
      }
@@ -41,7 +40,7 @@ public class GETRequest extends AsyncTask<String, String, Boolean> {
      protected void onPostExecute(Boolean completed) {   
     }
 
- 	private Boolean downloadUrl(String myurl) throws IOException, XmlPullParserException {
+ 	private Boolean downloadUrl(String myurl) throws IOException, ParseException {
  	    InputStream is = null;
 
  	    try {
@@ -56,10 +55,10 @@ public class GETRequest extends AsyncTask<String, String, Boolean> {
  	        Log.w("Download URL", "The response is: " + response);
  	        is = conn.getInputStream();
 
- 	        JSONReader reader = new JSONReader(mContentResolver, mUserID);
+ 	        JSONReader reader = new JSONReader(mContentResolver);
  
  	        /* Read XML file (specific to this particular XML file) */
- 	        return reader.readJsonStream(is).isEmpty();
+ 	        return reader.readJsonStream(is);
 			}
  	    finally {
  	        if (is != null) {
