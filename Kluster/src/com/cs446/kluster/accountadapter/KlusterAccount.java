@@ -46,13 +46,14 @@ public class KlusterAccount {
              * here.
              */
         	ContentResolver.setIsSyncable(newAccount, PhotoProvider.PROVIDER_NAME, 1);
+
         	return newAccount;
         } else {
             /*
              * The account exists or some other error occurred. Log this, report it,
              * or handle it internally.
              */
-        	ArrayList<Account> accounts = new ArrayList<Account>(Arrays.asList(accountManager.getAccounts()));
+        	ArrayList<Account> accounts = new ArrayList<Account>(Arrays.asList(accountManager.getAccountsByType(ACCOUNT_TYPE)));
         	
         	return accounts.get(accounts.indexOf(newAccount));
         }

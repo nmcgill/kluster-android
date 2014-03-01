@@ -1,6 +1,5 @@
 package com.cs446.kluster;
 
-import android.accounts.Account;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -11,9 +10,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.cs446.kluster.accountadapter.AccountAdapter;
+
 public class MainActivity extends Activity {    
-    // Instance fields
-    Account mAccount;
 	PhotoFactory mFactory;
 	
     @Override
@@ -21,18 +20,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); 
         
-        
-        //** TODO: Move account creation to main? */
-        // Create account for this device
-        // /**TODO*/
-        //mAccount = CreateSyncAccount(this);
+        //** TODO: Move user creation to main? */
+        AccountAdapter.setCurrentUser(new User(0, AccountAdapter.CreateAccount(this)));
         
         /*
          * Create a content observer object.
          * Its code does not mutate the provider, so set
          * selfChange to "false"
          */
-        TableObserver observer = new TableObserver(mAccount, this);
+        TableObserver observer = new TableObserver(AccountAdapter.getCurrentUser().getAccount(), this);
         /*
          * Register the observer for the data table. The table's path
          * and any of its subpaths trigger the observer.

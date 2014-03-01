@@ -1,15 +1,23 @@
 package com.cs446.kluster.accountadapter;
 
+import android.accounts.Account;
 import android.content.Context;
 
-public class AccountAdapter {
+import com.cs446.kluster.User;
 
-	public AccountAdapter() {
-		// TODO Auto-generated constructor stub
+public class AccountAdapter {
+	public static User mCurrentUser;
+
+	public static User getCurrentUser() {
+		return mCurrentUser;
 	}
 	
-	public static void CreateAccount(Context c) { 
+	public static void setCurrentUser(User user) {
+		mCurrentUser = user;
+	}
+	
+	public static Account CreateAccount(Context c) { 
 		/**TODO: Add google account? Twitter? FB? */
-		KlusterAccount.CreateSyncAccount(c);
+		return KlusterAccount.CreateSyncAccount(c);
 	}
 }

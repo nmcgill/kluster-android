@@ -1,5 +1,6 @@
 package com.cs446.kluster.syncadapter;
 
+import com.cs446.kluster.accountadapter.AccountAdapter;
 import com.cs446.kluster.networkadapter.GETRequest;
 
 import android.accounts.Account;
@@ -55,6 +56,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             SyncResult syncResult) {
     	
     	/** TODO: Put ALL data transfer code here. */
-    	new GETRequest(mContentResolver, Integer.parseInt(account.name));
+    	new GETRequest(mContentResolver, AccountAdapter.getCurrentUser().getID());
     }
 }
