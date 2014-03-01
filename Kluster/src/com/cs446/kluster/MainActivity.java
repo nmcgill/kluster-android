@@ -35,6 +35,18 @@ public class MainActivity extends Activity {
         
         // Create account for this device
         mAccount = CreateSyncAccount(this);
+        
+        /*
+         * Create a content observer object.
+         * Its code does not mutate the provider, so set
+         * selfChange to "false"
+         */
+        TableObserver observer = new TableObserver(mAccount, this);
+        /*
+         * Register the observer for the data table. The table's path
+         * and any of its subpaths trigger the observer.
+         */
+        getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);
 
         Button mTakePictureButton = (Button)findViewById(R.id.takePicture);
         mTakePictureButton.setOnClickListener( new OnClickListener() {	
