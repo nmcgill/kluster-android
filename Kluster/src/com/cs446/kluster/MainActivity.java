@@ -33,7 +33,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main); 
         
         // Create account for this device
-        mAccount = CreateSyncAccount(this);
+        // /**TODO*/
+        //mAccount = CreateSyncAccount(this);
         
         /*
          * Create a content observer object.
