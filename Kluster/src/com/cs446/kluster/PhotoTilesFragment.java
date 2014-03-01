@@ -1,6 +1,7 @@
 package com.cs446.kluster;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PhotoTilesFragment extends Fragment{
@@ -21,6 +23,7 @@ public class PhotoTilesFragment extends Fragment{
 	
 	ThumbnailClickListener activityCallback;
 	TextView clickableThumbnailText;
+	List<ImageView> thumbnailPictures;
 	
 	@Override
 	  public void onAttach(Activity activity) {
@@ -47,6 +50,12 @@ public class PhotoTilesFragment extends Fragment{
 	        });
           
           clickableThumbnailText=(TextView)view.findViewById(R.id.Thumbnail_Text);
+          thumbnailPictures=new ArrayList<ImageView>();
+          thumbnailPictures.add((ImageView)view.findViewById(R.id.Thumbnail_0_0));
+          thumbnailPictures.add((ImageView)view.findViewById(R.id.Thumbnail_0_1));
+          thumbnailPictures.add((ImageView)view.findViewById(R.id.Thumbnail_1_0));
+          thumbnailPictures.add((ImageView)view.findViewById(R.id.Thumbnail_1_1));
+          thumbnailPictures.add((ImageView)view.findViewById(R.id.Thumbnail_1_2));   
         return view;
     }
     
@@ -58,8 +67,15 @@ public class PhotoTilesFragment extends Fragment{
 		   clickableThumbnailText.setText(text);
 	   }
 	   
-	   public void setClickableThumbnailImages(ArrayList<Bitmap> bitmaps){
+	   public void setClickableThumbnailImages(List<Bitmap> bitmaps){
 		   
+		   for(int i=0; i < 5; i++)
+		   {
+			   if(bitmaps.size() <= i)
+			   {
+				   thumbnailPictures.get(i).setImageBitmap(bitmaps.get(i));
+			   }
+		   }
 	   }
 	   
 	   
