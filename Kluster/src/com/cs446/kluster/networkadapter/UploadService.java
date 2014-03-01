@@ -12,55 +12,52 @@ import android.util.Log;
 
 public class UploadService extends IntentService {
 
-/**
- * A constructor is required, and must call the super IntentService(String)
- * constructor with a name for the worker thread.
- */
-  public UploadService() {
-      super("UploadService");
-  }
-
-  /**
-   * The IntentService calls this method from the default worker thread with
-   * the intent that started the service. When this method returns, IntentService
-   * stops the service, as appropriate.
-   */
-  @Override
-  protected void onHandleIntent(Intent intent) {
-	  try {
-		UploadFile();
-	} catch (IOException e) {
+	/**
+	 * A constructor is required, and must call the super IntentService(String)
+	 * constructor with a name for the worker thread.
+	 */
+	public UploadService() {
+		super("UploadService");
 	}
-  }
-  
-  private boolean UploadFile() throws IOException {
-	    OutputStream os = null;
 
-	    try {
-	        URL url = new URL("kluster.com/upload");
-	        
-	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	        conn.setReadTimeout(10000 /* milliseconds */);
-	        conn.setConnectTimeout(15000 /* milliseconds */);
-	        conn.setDoInput(true);
-	        int response = conn.getResponseCode();
-	        Log.w("Download URL", "The response is: " + response);
-	        os = conn.getOutputStream();
-	        
-	        
-	        //os.write(File);
-	        
-	        return true;
+	/**
+	 * The IntentService calls this method from the default worker thread with
+	 * the intent that started the service. When this method returns,
+	 * IntentService stops the service, as appropriate.
+	 */
+	@Override
+	protected void onHandleIntent(Intent intent) {
+		try {
+			UploadFile();
+		} catch (IOException e) {
 		}
-	    catch (MalformedURLException ex) {
-	    	
-	    }
-	    finally {
-	        if (os != null) {
-	            os.close();
-	        } 
-	    }
-	    
-	    return false;
-  	}
+	}
+
+	private boolean UploadFile() throws IOException {
+		OutputStream os = null;
+
+		try {
+			URL url = new URL("kluster.com/upload");
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setReadTimeout(10000 /* milliseconds */);
+			conn.setConnectTimeout(15000 /* milliseconds */);
+			conn.setDoInput(true);
+			int response = conn.getResponseCode();
+			Log.w("Download URL", "The response is: " + response);
+			os = conn.getOutputStream();
+
+			// os.write(File);
+
+			return true;
+		} catch (MalformedURLException ex) {
+
+		} finally {
+			if (os != null) {
+				os.close();
+			}
+		}
+
+		return false;
+	}
 }
