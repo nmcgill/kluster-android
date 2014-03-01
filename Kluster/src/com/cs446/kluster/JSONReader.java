@@ -35,7 +35,7 @@ public class JSONReader {
 	private int mUserID;
 	private ContentResolver mContentResolver;
 
-	public void XmlReader(ContentResolver c, int user) {
+	public JSONReader(ContentResolver c, int user) {
 		mContentResolver = c;
 		mUserID = user;
 	}

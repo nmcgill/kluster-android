@@ -7,15 +7,11 @@ import java.net.URL;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.cs446.kluster.XmlReader;
-
 import android.content.ContentResolver;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.cs446.kluster.JSONReader;
 
 public class GETRequest extends AsyncTask<String, String, Boolean> {
 	private ContentResolver mContentResolver;
@@ -60,10 +56,10 @@ public class GETRequest extends AsyncTask<String, String, Boolean> {
  	        Log.w("Download URL", "The response is: " + response);
  	        is = conn.getInputStream();
 
- 	        XmlReader reader = new XmlReader(mContentResolver, mUserID);
+ 	        JSONReader reader = new JSONReader(mContentResolver, mUserID);
  
  	        /* Read XML file (specific to this particular XML file) */
- 	        return reader.parse(is);
+ 	        return reader.readJsonStream(is).isEmpty();
 			}
  	    finally {
  	        if (is != null) {

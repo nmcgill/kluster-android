@@ -1,6 +1,7 @@
 package com.cs446.kluster.networkadapter;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,8 @@ public class POSTRequest extends AsyncTask<String, String, Boolean> {
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
 			httppost.setEntity(entity);
 			
-			HttpResponse response = httpclient.execute(httppost);		
+			HttpResponse response = httpclient.execute(httppost);
+
 		}
 	    catch (ClientProtocolException e) {
 	        // TODO Auto-generated catch block

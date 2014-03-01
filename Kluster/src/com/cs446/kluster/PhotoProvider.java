@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 public class PhotoProvider extends ContentProvider {
-	static final String PROVIDER_NAME = "com.cs446.kluster.Photos";
+	public static final String PROVIDER_NAME = "com.cs446.kluster.Photos";
 	static final Uri CONTENT_URI = Uri.parse("content://"+PROVIDER_NAME+"/photoitems");
 	
 	static final int PHOTOITEMS = 1;
