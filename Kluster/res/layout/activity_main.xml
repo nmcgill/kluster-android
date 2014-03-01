@@ -1,22 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/takePicture"
-        android:layout_width="wrap_content"
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/pictureTilesFragmentOrganize"
+        android:name="com.cs446.kluster.PhotoTilesFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="@string/take_picture" />
+        tools:layout="@layout/phototiles_fragment" />
 
-    <Button
-        android:id="@+id/viewPictures"
-        android:layout_width="wrap_content"
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/pictureTilesFragmentShare"
+        android:name="com.cs446.kluster.PhotoTilesFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:text="@string/view_pictures" />    
+        tools:layout="@layout/phototiles_fragment" />
 
-</FrameLayout>
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/pictureTilesFragmentDiscover"
+        android:name="com.cs446.kluster.PhotoTilesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/phototiles_fragment" />
+
+</LinearLayout>
