@@ -19,19 +19,7 @@ import android.widget.Toast;
 
 public class GETRequest extends AsyncTask<String, String, Boolean> {
 	private ContentResolver mContentResolver;
-	private int mUserID;
-	
-	public static Boolean CheckConnection(Context context) {
-	    ConnectivityManager connMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-        	Toast.makeText(context, "No Connection", Toast.LENGTH_SHORT).show();
-        	return false;
-        }
-	}	
+	private int mUserID;	
 	
 	public GETRequest(ContentResolver resolver, int userid) {
 		mContentResolver = resolver;
