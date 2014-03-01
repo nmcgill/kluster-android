@@ -1,9 +1,11 @@
 package com.cs446.kluster;
 
 import android.app.Activity;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts.PhotosColumns;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +14,7 @@ import android.widget.Button;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
 
-public class MainActivity extends Activity {    
+public class MainActivity extends FragmentActivity implements PhotoTilesFragment.ThumbnailClickListener {    
 	PhotoFactory mFactory;
 	
     @Override
@@ -35,25 +37,31 @@ public class MainActivity extends Activity {
          */
         getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);
 
-        Button mTakePictureButton = (Button)findViewById(R.id.takePicture);
-        mTakePictureButton.setOnClickListener( new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
-				startActivity(intent);
-		    }
-		});
+        PhotoTilesFragment photoTilesFragmentOrganize=
+        		(PhotoTilesFragment)
+        		getSupportFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
+        photoTilesFragmentOrganize.setClickableThumbnailText("Yayy");
         
-        Button mViewMapButton = (Button)findViewById(R.id.viewPictures);
-        mViewMapButton.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				PhotoMapFragment firstFragment = new PhotoMapFragment();
-	            
-	            // Add the fragment to the 'main_activity'
-				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
-			}
-		});
+        
+//        Button mTakePictureButton = (Button)findViewById(R.id.takePicture);
+//        mTakePictureButton.setOnClickListener( new OnClickListener() {	
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
+//				startActivity(intent);
+//		    }
+//		});
+        
+//        Button mViewMapButton = (Button)findViewById(R.id.viewPictures);
+//        mViewMapButton.setOnClickListener(new OnClickListener() {	
+//			@Override
+//			public void onClick(View v) {
+//				PhotoMapFragment firstFragment = new PhotoMapFragment();
+//	            
+//	            // Add the fragment to the 'main_activity'
+//				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+//			}
+//		});
     }
     
     
@@ -64,17 +72,17 @@ public class MainActivity extends Activity {
         return true;
     }
     
-	@Override
-	public void onBackPressed() {
-		FragmentManager fm = getFragmentManager();
-
-		if(fm.getBackStackEntryCount() > 0) {
-			fm.popBackStack();
-		}
-		else {
-			super.onBackPressed();
-		}
-	}
+//	@Override
+//	public void onBackPressed() {
+//		FragmentManager fm = getFragmentManager();
+//
+//		if(fm.getBackStackEntryCount() > 0) {
+//			fm.popBackStack();
+//		}
+//		else {
+//			super.onBackPressed();
+//		}
+//	}
 	
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
@@ -86,4 +94,11 @@ public class MainActivity extends Activity {
     	
     	return false;
     }
+
+
+	@Override
+	public void onThumbnailClick() {
+		// TODO Auto-generated method stub
+		
+	}
 }

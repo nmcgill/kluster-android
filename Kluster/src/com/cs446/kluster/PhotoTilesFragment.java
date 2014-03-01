@@ -1,12 +1,17 @@
 package com.cs446.kluster;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
-import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 public class PhotoTilesFragment extends Fragment{
 	
@@ -15,6 +20,7 @@ public class PhotoTilesFragment extends Fragment{
 	}
 	
 	ThumbnailClickListener activityCallback;
+	TextView clickableThumbnailText;
 	
 	@Override
 	  public void onAttach(Activity activity) {
@@ -39,10 +45,22 @@ public class PhotoTilesFragment extends Fragment{
 	                thumbnailClicked(v);
 	            }
 	        });
+          
+          clickableThumbnailText=(TextView)view.findViewById(R.id.Thumbnail_Text);
         return view;
     }
     
 	   public void thumbnailClicked (View view) {
 		   activityCallback.onThumbnailClick();
 	   }
+	   
+	   public void setClickableThumbnailText(String text){
+		   clickableThumbnailText.setText(text);
+	   }
+	   
+	   public void setClickableThumbnailImages(ArrayList<Bitmap> bitmaps){
+		   
+	   }
+	   
+	   
 }

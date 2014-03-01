@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text=""
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textSize="30sp"
+                android:textStyle="bold" />
         </FrameLayout>
     </LinearLayout>
 
