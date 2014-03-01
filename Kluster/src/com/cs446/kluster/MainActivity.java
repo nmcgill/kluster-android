@@ -1,11 +1,8 @@
 package com.cs446.kluster;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Contacts.PhotosColumns;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +11,7 @@ import android.widget.Button;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
 
-public class MainActivity extends FragmentActivity implements PhotoTilesFragment.ThumbnailClickListener {    
+public class MainActivity extends Activity implements PhotoTilesFragment.ThumbnailClickListener {    
 	PhotoFactory mFactory;
 	
     @Override
@@ -39,29 +36,29 @@ public class MainActivity extends FragmentActivity implements PhotoTilesFragment
 
         PhotoTilesFragment photoTilesFragmentOrganize=
         		(PhotoTilesFragment)
-        		getSupportFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
+        		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
         photoTilesFragmentOrganize.setClickableThumbnailText("Yayy");
         
         
-//        Button mTakePictureButton = (Button)findViewById(R.id.takePicture);
-//        mTakePictureButton.setOnClickListener( new OnClickListener() {	
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
-//				startActivity(intent);
-//		    }
-//		});
+        Button mTakePictureButton = (Button)findViewById(R.id.CameraButton);
+        mTakePictureButton.setOnClickListener( new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
+				startActivity(intent);
+		    }
+		});
         
-//        Button mViewMapButton = (Button)findViewById(R.id.viewPictures);
-//        mViewMapButton.setOnClickListener(new OnClickListener() {	
-//			@Override
-//			public void onClick(View v) {
-//				PhotoMapFragment firstFragment = new PhotoMapFragment();
-//	            
-//	            // Add the fragment to the 'main_activity'
-//				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
-//			}
-//		});
+        Button mViewMapButton = (Button)findViewById(R.id.MapViewButton);
+        mViewMapButton.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				PhotoMapFragment firstFragment = new PhotoMapFragment();
+	            
+	            // Add the fragment to the 'main_activity'
+				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+			}
+		});
     }
     
     
