@@ -7,6 +7,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,16 +18,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
-    // The authority for the sync adapter's content provider
-    public static final String AUTHORITY = "com.cs446.kluster.Photos";
     // An account type, in the form of a domain name
     public static final String ACCOUNT_TYPE = "kluster.com";
     // The account name
     public static final String ACCOUNT = "dummyaccount";
+    
     // Instance fields
     Account mAccount;
-    
-	PhotoFactory mFactory = null;
+	PhotoFactory mFactory;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +92,7 @@ public class MainActivity extends Activity {
              * then call context.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
+        	ContentResolver.setIsSyncable(newAccount, PhotoProvider.PROVIDER_NAME, 1);
         	return newAccount;
         } else {
             /*
