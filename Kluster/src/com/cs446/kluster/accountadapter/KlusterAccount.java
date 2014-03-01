@@ -1,12 +1,15 @@
-package com.cs446.kluster;
+package com.cs446.kluster.accountadapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+
+import com.cs446.kluster.PhotoProvider;
 
 public class KlusterAccount {
     // An account type, in the form of a domain name
@@ -30,7 +33,7 @@ public class KlusterAccount {
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(
-                        context.ACCOUNT_SERVICE);
+                		Activity.ACCOUNT_SERVICE);
         /*
          * Add the account and account type, no password or user data
          * If successful, return the Account object, otherwise report an error.
