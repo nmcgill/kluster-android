@@ -79,6 +79,8 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
             if (resultCode == RESULT_OK) {
             	Date timeStamp = new Date();
             	
+            	sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, fileUri));
+            	
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
                 Location lastloc = mLocationClient.getLastLocation();
@@ -116,17 +118,17 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
     
     private void AddtoContentProvider(Photo item) {
 		ContentValues values = new ContentValues();
-		/*			"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
-					"_id integer primary key autoincrement, " +
-					"photoid integer not null, " +
+		/*			"_id integer primary key autoincrement, " +
+					"photoid text not null, " +
+					"userid text not null, " +
+					"eventid text not null, " +
 					"location text not null, " +
 					"date text not null, " + 
-					"userid integer not null, " +
-					"url text, " +
+					"remoteurl text, " +
 					"tags text, " +
+					"uploaded integer not null," +
 					"localurl text, " +
-					"thumburl text, " +
-					"uploaded integer not null);";
+					"thumburl text);";
 		 */
 		String tags =  "";
 		for (String str : item.getTags()) {
@@ -138,14 +140,15 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
 		}
 
 		values.put("photoid", item.getPhotoId().toString(16));
+		values.put("userid", item.getUserId().toString(16));
+		values.put("eventid", item.getEventId().toString(16));
 		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
-		values.put("userid", item.getUserId().toString(16));
-		values.put("url", item.getUrl());
+		values.put("remoteurl", item.getUrl());
 		values.put("tags", tags);
+		values.put("uploaded", item.getUploaded());
 		values.put("localurl", item.getLocalUrl().toString());
 		values.put("thumburl", item.getThumbnailUrl());
-		values.put("uploaded", item.getUploaded());
 
 		getContentResolver().insert(PhotoProvider.CONTENT_URI, values);
     }

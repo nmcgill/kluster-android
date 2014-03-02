@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class PhotoMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // Identifies a particular Loader being used in this component
-    private static final int URL_LOADER = 0;
+    private static final int URL_LOADER = 1;
     
     Map<Marker, Uri> mMarkerList = new HashMap<Marker, Uri>();
 
@@ -79,7 +79,7 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 		int locIndex;
 		int imgPathIndex;
 		
-		while (cursor.moveToNext()) {
+		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
 			imgPathIndex = cursor.getColumnIndex("localurl");
 			

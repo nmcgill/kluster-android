@@ -1,24 +1,26 @@
 package com.cs446.kluster;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
-//Sample JSON from request to Kluster API
-//{
-// "photo": {
-//     "photoId": 13249871032,
-//     "location": {
-//         "lat": 32.423,
-//         "long": -127.234
-//     },
-//     "time": 204239108478,
-//     "userId": 2,
-//     "url": "http: //photos.kluster.com?id=13249871032",
-//     “tags”: “foo,bar”
-// }
-//}
-
+/*	private BigInteger mPhotoId;
+	private BigInteger mUserId;
+	private BigInteger mEventId;
+	private LatLng mLocation;
+	private Date mDate;
+	private String mUrl;
+	private ArrayList<String> mTags;
+	private Boolean mUploaded;
+	private Uri mLocalUrl;
+	private String mThumbnailUrl;*/
 
 public class PhotoOpenHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
@@ -26,15 +28,16 @@ public class PhotoOpenHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_TABLE_CREATE =
 			"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
 					"_id integer primary key autoincrement, " +
-					"photoid integer not null, " +
+					"photoid text not null, " +
+					"userid text not null, " +
+					"eventid text not null, " +
 					"location text not null, " +
 					"date text not null, " + 
-					"userid integer not null, " +
-					"url text, " +
+					"remoteurl text, " +
 					"tags text, " +
+					"uploaded integer not null," +
 					"localurl text, " +
-					"thumburl text, " +
-					"uploaded integer not null);";
+					"thumburl text);";
 	
 	public PhotoOpenHelper(Context context) {
 		super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);
