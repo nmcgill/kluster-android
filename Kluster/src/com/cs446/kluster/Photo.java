@@ -9,9 +9,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Photo {
 	private long mPhotoId;
+	private long mUserId;
+	private long mEventId;
 	private LatLng mLocation;
 	private Date mDate;
-	private long mUserId;
 	private String mUrl;
 	private ArrayList<String> mTags;
 	private Boolean mUploaded;
@@ -19,9 +20,10 @@ public class Photo {
 	private String mThumbnailUrl;
 	
 	public Photo(int pid,
+				long uid,
+				long eid,
 				LatLng loc,
 				Date date,
-				long uid,
 				String url,
 				ArrayList<String> tags,
 				Boolean uploaded,
@@ -32,6 +34,7 @@ public class Photo {
 		mLocation = loc;
 		mDate = date;
 		mUserId = uid;
+		mEventId = eid;
 		mUrl = url;
 		mTags = tags;
 		mUploaded = uploaded;
@@ -45,6 +48,10 @@ public class Photo {
 
 	public LatLng getLocation() {
 		return mLocation;
+	}
+	
+	public long getEventId() {
+		return mEventId;
 	}
 
 	public Date getDate() {

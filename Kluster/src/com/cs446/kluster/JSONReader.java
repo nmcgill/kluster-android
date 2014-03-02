@@ -81,12 +81,13 @@ public class JSONReader {
 	public Photo readPhoto(JsonReader reader) throws IOException, ParseException {
 	    //Photo photo = new Photo();
 		int photoId=-1;
+		long eventId=0;
 		LatLng location = null;
 		Date date = null;
 		long userId = -1;
 		String url="";
 		String[] tags = null;
-		
+
 		reader.beginObject();
 		while (reader.hasNext()) {
 			String name = reader.nextName();
@@ -103,12 +104,15 @@ public class JSONReader {
 				url=reader.nextString();
 			} else if (name.equals("tags")) {
 				tags=(reader.nextString()).split(",");
-			} else {
+			} else if (name.equals("eventId")) {
+				eventId=reader.nextInt();
+			}
+				else {
 				reader.skipValue();
 			}
 		}
 		reader.endObject();
-		return new Photo(photoId, location, date, userId, url, new ArrayList<String>(Arrays.asList(tags)), true, Uri.parse(""), "");
+		return new Photo(photoId, userId, eventId, location, date, url, new ArrayList<String>(Arrays.asList(tags)), true, Uri.parse(""), "");
 	}
 
 	private LatLng readLocation(JsonReader reader) throws IOException {

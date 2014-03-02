@@ -81,9 +81,10 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 Location lastloc = mLocationClient.getLastLocation();
                 
                 Photo photo = new Photo(0,
+                						AccountAdapter.getCurrentUser().getID(),
+                						0,/**TODO: Event id*/
                 						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,
-                						AccountAdapter.getCurrentUser().getID(),
                 						"",
                 						new ArrayList<String>(),
                 						false,
