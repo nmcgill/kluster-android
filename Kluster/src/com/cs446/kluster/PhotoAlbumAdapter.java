@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.cs446.kluster.cache.StorageAdapter;
+
 public class PhotoAlbumAdapter extends SimpleCursorAdapter {
 	
 	private final LayoutInflater mInflator;
@@ -29,10 +31,9 @@ public class PhotoAlbumAdapter extends SimpleCursorAdapter {
         
         txtThumbnailText.setText(cursor.getInt(cursor.getColumnIndex("eventid")));
 		
-        //** WILL BE ADDING THIS SOON. LOAD IMAGE FROM CACHE */
-        //String location = cursor.getString(cursor.getColumnIndex("thumburl"));
-        //mActivity.loadBitmap(location, imgThumbnail, mActivity);
-		
+        String location = cursor.getString(cursor.getColumnIndex("thumburl"));
+        StorageAdapter.getCache().loadBitmap(location, imgThumbnail, mActivity);
+
 		imgThumbnail.invalidate();
 	}
 	

@@ -57,6 +57,10 @@
             	android:name="android.accounts.AccountAuthenticator"
             	android:resource="@xml/authenticator" />
     	</service>
+    	
+        <service
+            android:name="com.cs446.kluster.networkadapter.UploadService"
+            android:exported="false" />
         
         <activity
             android:name="com.cs446.kluster.MainActivity"
@@ -68,14 +72,14 @@
             </intent-filter>
         </activity>
         
-    <activity
-        android:name="com.cs446.kluster.PhotoFactory"
-        android:label="@string/app_name"
-        android:parentActivityName="com.cs446.kluster.MainActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.cs446.kluster.MainActivity" />
-    </activity>
+	    <activity
+	        android:name="com.cs446.kluster.PhotoFactory"
+	        android:label="@string/app_name"
+	        android:parentActivityName="com.cs446.kluster.MainActivity" >
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.cs446.kluster.MainActivity" />
+	    </activity>
     
     	<provider android:name="PhotoProvider"
             android:readPermission="com.cs446.kluster.READ_PERMISSION"

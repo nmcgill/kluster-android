@@ -95,13 +95,11 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 						"");
 
                 AddtoContentProvider(photo);
-                
+            	
                 //Start upload service
                 Intent intent = new Intent(this, UploadService.class);
                 intent.putExtra("com.cs446.kluster.Photo", photo);
                 startService(intent);
-                
-                new POSTRequest().execute(photo);
                 
                 // Disconnecting the client invalidates it.
                 Log.w("gps", mLocationClient.getLastLocation().toString());
