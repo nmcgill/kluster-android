@@ -114,6 +114,9 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 // Image capture failed, advise user
             }
         }
+        
+        //Go back / destroy PhotoFactory
+        onBackPressed();
     }
     
     private void AddtoContentProvider(Photo item) {
