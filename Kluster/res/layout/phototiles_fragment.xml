@@ -16,6 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:contentDescription="@string/thumbnail_description"
@@ -26,13 +27,15 @@
             android:layout_height="match_parent"
             android:layout_weight="2" 
             android:clickable="true"
+            
             android:id="@+id/clickable_thumbnail">
 
             <ImageView
                 android:id="@+id/Thumbnail_01"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/thumbnail_description"
                 android:src="@drawable/sample_a" />
@@ -60,6 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+                        android:scaleType="centerCrop"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:contentDescription="@string/thumbnail_description"
@@ -72,6 +76,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
             android:contentDescription="@string/thumbnail_description"
             android:src="@drawable/sample_f" />
 
@@ -80,6 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+                        android:scaleType="centerCrop"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:contentDescription="@string/thumbnail_description"

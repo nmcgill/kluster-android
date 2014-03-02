@@ -28,27 +28,6 @@
         android:name="com.cs446.kluster.PhotoTilesFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/phototiles_fragment" />
-    
-    <LinearLayout
-            android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-        <Button
-            android:layout_weight="1"
-      android:layout_height="wrap_content"
-      android:layout_width="match_parent"
-      android:text="Camera"
-      android:id="@+id/CameraButton" />
-        
-        <Button
-      android:layout_weight="1"
-      android:layout_height="wrap_content"
-      android:layout_width="match_parent"
-      android:text="MapView"
-      android:id="@+id/MapViewButton"/>
-    </LinearLayout>
-        
-       
+        tools:layout="@layout/phototiles_fragment" />       
 
 </LinearLayout>
