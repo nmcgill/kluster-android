@@ -4,10 +4,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +39,7 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
          */
         getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);
 
+        
         PhotoTilesFragment photoTilesFragmentOrganize=
         		(PhotoTilesFragment)
         		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
@@ -98,12 +101,20 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
     	case R.id.action_mapview:
 			PhotoMapFragment firstFragment = new PhotoMapFragment();
             // Add the fragment to the 'main_activity'
-			getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+			getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).addToBackStack(firstFragment.toString()).commit();
     		return true;	
     	} 	
     	return false;
     }
 
+    @Override
+	public void onBackPressed() {
+		FragmentManager fm = getFragmentManager();
+
+		if(fm.getBackStackEntryCount() > 0) {
+			fm.popBackStack();
+		}
+	}
 
 	@Override
 	public void onThumbnailClick() {

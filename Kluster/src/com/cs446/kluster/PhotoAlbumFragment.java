@@ -8,11 +8,18 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PhotoAlbumFragment extends GridFragment implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -53,6 +60,11 @@ public class PhotoAlbumFragment extends GridFragment implements LoaderManager.Lo
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return getActivity().onOptionsItemSelected(item);
 	}
 
 	@Override
