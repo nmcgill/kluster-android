@@ -18,10 +18,10 @@ public class PhotoAlbumFragment extends GridFragment implements LoaderManager.Lo
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		String[] cols = new String[] { "title" };
-		int[]   views = new int[]   { R.id.PhotoAlbumThumbnailText };
+		String[] cols = new String[] { "location" };
+		int[]   views = new int[]   { R.list.txtTitle };
 		
-		PhotoAlbumAdapter adapter = new PhotoAlbumAdapter(getActivity(), R.layout.photoalbumthumbnail_fragment, null, cols, views, 0);
+		PhotoAlbumAdapter adapter = new PhotoAlbumAdapter(getActivity(), R.layout.photoalbumgrid_layout, null, cols, views, 0);
         
         setGridAdapter(adapter);
         getGridView().setOnItemClickListener(this);
@@ -32,7 +32,7 @@ public class PhotoAlbumFragment extends GridFragment implements LoaderManager.Lo
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
-		return new CursorLoader(getActivity(), PhotoProvider.CONTENT_URI, null, "_id in (select _id from newsitems where position = 0 and category = 0 order by pubdate desc LIMIT 1) or _id in (select _id from newsitems where position = 0 and category = 1 order by pubdate desc LIMIT 1) or _id in (select _id from newsitems where position = 0 and category = 2 order by pubdate desc LIMIT 1)", null, null);
+		return new CursorLoader(getActivity(), PhotoProvider.CONTENT_URI, null, null, null, null);
 	}
 		
 	@Override

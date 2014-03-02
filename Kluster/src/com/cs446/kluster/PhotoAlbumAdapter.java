@@ -26,12 +26,12 @@ public class PhotoAlbumAdapter extends SimpleCursorAdapter {
 	
 	@Override
     public void bindView(View view, Context context, Cursor cursor) { 
-        TextView txtThumbnailText = (TextView)view.getTag(R.id.PhotoAlbumThumbnailText);
-        ImageView imgThumbnail = (ImageView)view.getTag(R.id.PhotoAlbumThumbnailImage);
+        TextView txtThumbnailText = (TextView)view.getTag(R.list.txtTitle);
+        ImageView imgThumbnail = (ImageView)view.getTag(R.list.imgPreview);
         
-        txtThumbnailText.setText(cursor.getInt(cursor.getColumnIndex("eventid")));
+        txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
 		
-        String location = cursor.getString(cursor.getColumnIndex("thumburl"));
+        String location = cursor.getString(cursor.getColumnIndex("localurl"));
         StorageAdapter.getCache().loadBitmap(location, imgThumbnail, mActivity);
 
 		imgThumbnail.invalidate();
@@ -39,10 +39,10 @@ public class PhotoAlbumAdapter extends SimpleCursorAdapter {
 	
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-    	View view = mInflator.inflate(R.layout.photoalbumthumbnail_fragment, parent, false);
+    	View view = mInflator.inflate(R.layout.photoalbumgrid_layout, parent, false);
     	
-        view.setTag(R.id.PhotoAlbumThumbnailImage, view.findViewById(R.id.PhotoAlbumThumbnailImage));
-        view.setTag(R.id.PhotoAlbumThumbnailText, view.findViewById(R.id.PhotoAlbumThumbnailText));
+        view.setTag(R.list.imgPreview, view.findViewById(R.list.imgPreview));
+        view.setTag(R.list.txtTitle, view.findViewById(R.list.txtTitle));
         
     	return view;
     }
