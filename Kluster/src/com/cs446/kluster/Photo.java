@@ -3,12 +3,13 @@ package com.cs446.kluster;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.location.Location;
 import android.net.Uri;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class Photo {
 	private long mPhotoId;
-	private Location mLocation;
+	private LatLng mLocation;
 	private Date mDate;
 	private long mUserId;
 	private String mUrl;
@@ -18,7 +19,7 @@ public class Photo {
 	private String mThumbnailUrl;
 	
 	public Photo(int pid,
-				Location loc,
+				LatLng loc,
 				Date date,
 				long uid,
 				String url,
@@ -42,7 +43,7 @@ public class Photo {
 		return mPhotoId;
 	}
 
-	public Location getLocation() {
+	public LatLng getLocation() {
 		return mLocation;
 	}
 

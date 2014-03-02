@@ -1,7 +1,6 @@
 package com.cs446.kluster.networkadapter;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +13,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.content.ContentResolver;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class POSTRequest extends AsyncTask<String, String, Boolean> {
-	private ContentResolver mContentResolver;
-	private int mUserID;
-	
-	public POSTRequest(ContentResolver resolver, int userid) {
-		mContentResolver = resolver;
-		mUserID = userid;
+
+	public POSTRequest() {
 	}
 	   
      @Override
@@ -55,7 +49,6 @@ public class POSTRequest extends AsyncTask<String, String, Boolean> {
 			httppost.setEntity(entity);
 			
 			HttpResponse response = httpclient.execute(httppost);
-
 		}
 	    catch (ClientProtocolException e) {
 	        // TODO Auto-generated catch block

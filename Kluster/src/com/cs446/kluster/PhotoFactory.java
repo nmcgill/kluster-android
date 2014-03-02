@@ -9,10 +9,10 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,10 +21,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
+import com.cs446.kluster.mapadapter.MapAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.maps.model.LatLng;
 
 /** Handles switching to Camera, saving data, and recording GPS information */
 public class PhotoFactory extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, 
@@ -34,7 +36,6 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static Uri fileUri;
     private static LocationClient mLocationClient = null;
-    private static ContentResolver mContentResolver;
     
     // Define a DialogFragment that displays the error dialog
     public static class ErrorDialogFragment extends DialogFragment {
@@ -77,9 +78,10 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
             	
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
+                Location lastloc = mLocationClient.getLastLocation();
                 
                 Photo photo = new Photo(0,
-                						mLocationClient.getLastLocation(),
+                						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,
                 						AccountAdapter.getCurrentUser().getID(),
                 						"",
@@ -125,9 +127,9 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
 		if (tags.length() > 0) {
 			tags.substring(0, tags.length()-1);
 		}
-		
+
 		values.put("photoid", item.getPhotoId());
-		values.put("location", item.getLocation().toString());
+		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
 		values.put("userid", item.getUserId());
 		values.put("url", item.getUrl());
