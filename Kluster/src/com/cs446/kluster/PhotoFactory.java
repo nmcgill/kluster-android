@@ -96,7 +96,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 
                 //Start upload service
                 Intent intent = new Intent(this, UploadService.class);
-                intent.putExtra("Photo", photo);
+                intent.putExtra("com.cs446.kluster.Photo", photo);
                 startService(intent);
                 
                 // Disconnecting the client invalidates it.

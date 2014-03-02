@@ -48,7 +48,7 @@ public class UploadService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		try {
-			UploadFile((Photo)intent.getSerializableExtra("Photo"));
+			UploadFile((Photo)intent.getParcelableExtra("com.cs446.kluster.Photo"));
 		} catch (IOException e) {
 		}
 	}
