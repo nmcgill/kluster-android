@@ -16,6 +16,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.JsonReader;
 
+import com.cs446.kluster.mapadapter.MapAdapter;
+import com.google.android.gms.maps.model.LatLng;
+
 // Sample JSON from request to Kluster API
 //{
 //    "photo": {
@@ -64,7 +67,7 @@ public class JSONReader {
 		ContentValues values = new ContentValues();
 		
 		values.put("photoid", item.getPhotoId());
-		values.put("location", item.getLocation().toString());
+		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
 		values.put("userid", item.getUserId());
 		values.put("url", item.getUrl());
@@ -79,7 +82,7 @@ public class JSONReader {
 	public Photo readPhoto(JsonReader reader) throws IOException, ParseException {
 	    //Photo photo = new Photo();
 		int photoId=-1;
-		Location location = null;
+		LatLng location = null;
 		Date date = null;
 		long userId = -1;
 		String url="";
@@ -109,7 +112,7 @@ public class JSONReader {
 		return new Photo(photoId, location, date, userId, url, new ArrayList<String>(Arrays.asList(tags)), true, Uri.parse(""), "");
 	}
 
-	private Location readLocation(JsonReader reader) throws IOException {
+	private LatLng readLocation(JsonReader reader) throws IOException {
 		double latitude=0;
 		double longitude=0;
 
@@ -124,10 +127,8 @@ public class JSONReader {
 				reader.skipValue();
 			}
 		}
-		Location location=new Location("null");
-		location.setLatitude(latitude);
-		location.setLongitude(longitude);
+		
 		reader.endObject();
-		return location;
+		return new LatLng(latitude, longitude);
 	}
 }
