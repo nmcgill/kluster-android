@@ -3,7 +3,6 @@ package com.cs446.kluster;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -50,25 +49,11 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 			}
 		});
 	}
-	
-	public void onBackPressed() {
-		FragmentManager fm = getFragmentManager();
 
-		if(fm.getBackStackEntryCount() > 0) {
-			fm.popBackStack();
-		}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return getActivity().onOptionsItemSelected(item);
 	}
-	
-    @Override
-    public boolean onOptionsItemSelected (MenuItem item) {
-    	switch (item.getItemId()) {
-    	case android.R.id.home:
-    		onBackPressed();
-    		return true;
-    	}
-    	
-    	return false;
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle)

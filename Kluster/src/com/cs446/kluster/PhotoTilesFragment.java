@@ -80,7 +80,7 @@ public class PhotoTilesFragment extends Fragment {
                 case MotionEvent.ACTION_UP:{
                 	formatClickableThumbnailOnActionUp();
     				PhotoAlbumFragment photoAlbumFragment = new PhotoAlbumFragment();
-    				getFragmentManager().beginTransaction().add(R.id.main_container, photoAlbumFragment).commit();
+    				getFragmentManager().beginTransaction().add(R.id.main_container, photoAlbumFragment).addToBackStack(photoAlbumFragment.toString()).commit();
                     break;
                 }
                 }
