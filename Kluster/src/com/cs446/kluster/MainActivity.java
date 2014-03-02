@@ -59,27 +59,6 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
 //
  //      photoTilesFragmentOrganize.setThumbnailImages(bitmaps);
         
-        
-        
-//        Button mTakePictureButton = (Button)findViewById(R.id.CameraButton);
-//        mTakePictureButton.setOnClickListener( new OnClickListener() {	
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
-//				startActivity(intent);
-//		    }
-//		});
-//        
-//        Button mViewMapButton = (Button)findViewById(R.id.MapViewButton);
-//        mViewMapButton.setOnClickListener(new OnClickListener() {	
-//			@Override
-//			public void onClick(View v) {
-//				PhotoMapFragment firstFragment = new PhotoMapFragment();
-//	            
-//	            // Add the fragment to the 'main_activity'
-//				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
-//			}
-//		});
     }
     
     
@@ -89,19 +68,6 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         getMenuInflater().inflate(R.menu.main_menu_options, menu);
         return true;
     }
-    
-    
-//	@Override
-//	public void onBackPressed() {
-//		FragmentManager fm = getFragmentManager();
-//
-//		if(fm.getBackStackEntryCount() > 0) {
-//			fm.popBackStack();
-//		}
-//		else {
-//			super.onBackPressed();
-//		}
-//	}
 	
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
@@ -115,8 +81,10 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
 			startActivity(intent);
     		return true;
     	case R.id.action_mapview:
-    		return true;
-    		
+			PhotoMapFragment firstFragment = new PhotoMapFragment();
+            // Add the fragment to the 'main_activity'
+			getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+    		return true;	
     	}
     	
     	return false;
