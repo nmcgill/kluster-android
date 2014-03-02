@@ -1,10 +1,13 @@
 package com.cs446.kluster.mapadapter;
 
 
+import java.io.File;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,7 +32,11 @@ public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
 		
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		Bitmap bitmap = BitmapFactory.decodeFile(mImagePath.toString(), options);
+		Bitmap bitmap = BitmapFactory.decodeFile(mImagePath.getPath(), options);
+		
+		
+		Log.d("klluster", mImagePath.toString());
+		
 		
 		imgPreview.setImageBitmap(bitmap);
 		return v;
