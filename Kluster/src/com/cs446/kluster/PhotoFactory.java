@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
 import com.cs446.kluster.mapadapter.MapAdapter;
+import com.cs446.kluster.networkadapter.UploadService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -92,6 +93,11 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 						"");
 
                 AddtoContentProvider(photo);
+                
+                //Start upload service
+                Intent intent = new Intent(this, UploadService.class);
+                intent.putExtra("Photo", photo);
+                startService(intent);
                 
                 // Disconnecting the client invalidates it.
                 Log.w("gps", mLocationClient.getLastLocation().toString());

@@ -1,5 +1,6 @@
 package com.cs446.kluster;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Photo {
+public class Photo implements Serializable  {
 	private long mPhotoId;
 	private long mUserId;
 	private long mEventId;
