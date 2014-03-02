@@ -7,5 +7,6 @@
     
     <string name="take_picture">Take a Picture</string>
 	<string name="view_pictures">View Pictures</string>
+	<string name="image_preview">Image Preview</string>
 
 </resources>

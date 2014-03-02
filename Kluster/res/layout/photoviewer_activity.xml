@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/infowindow"
     android:orientation="vertical" >
     
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imgPreview"
+        android:contentDescription="@string/image_preview"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/sample_a" />
     
 
