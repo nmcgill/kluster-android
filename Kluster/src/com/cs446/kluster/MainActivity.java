@@ -1,7 +1,12 @@
 package com.cs446.kluster;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +43,22 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         		(PhotoTilesFragment)
         		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
         photoTilesFragmentOrganize.setClickableThumbnailText("Yayy");
+        
+        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
+        
+        
+//        Bitmap bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_a));
+//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_b));
+//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_c));
+//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_d));
+//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_e));
+//
+ //      photoTilesFragmentOrganize.setThumbnailImages(bitmaps);
+        
         
         
         Button mTakePictureButton = (Button)findViewById(R.id.CameraButton);
