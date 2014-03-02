@@ -86,9 +86,10 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_menu_options, menu);
         return true;
     }
+    
     
 //	@Override
 //	public void onBackPressed() {
@@ -108,6 +109,13 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
     	case android.R.id.home:
     		onBackPressed();
     		return true;
+    	case R.id.action_camera:
+			Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
+			startActivity(intent);
+    		return true;
+    	case R.id.action_mapview:
+    		return true;
+    		
     	}
     	
     	return false;
