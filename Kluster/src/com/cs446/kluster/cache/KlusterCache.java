@@ -135,9 +135,12 @@ public class KlusterCache {
 	private static Bitmap decodeSampledBitmapFromResource(String link) {
 
         try {
-            URL url = new URL(link);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            return BitmapFactory.decodeStream(conn.getInputStream());
+            //URL url = new URL(link);
+            //HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            //return BitmapFactory.decodeStream(conn.getInputStream());
+    		BitmapFactory.Options options = new BitmapFactory.Options();
+    		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    		return BitmapFactory.decodeFile(link, options);
         }
         catch (Exception e) {
         	Log.e("Image_download", "Could not download: " + link);
@@ -170,12 +173,7 @@ public class KlusterCache {
 	    @Override
 	    protected Bitmap doInBackground(String... params) {
 	        data = params[0];
-	        final String imageKey = data.substring(data.lastIndexOf('/')+1);
-	        
-	        //check for invalid URL that comes up once in a while from the xml feed
-	        if (imageKey.contains("http://www.cbc.cahttp://")) {
-	        	return null;
-	        }
+	        final String imageKey = data;
 	        
 	    	//Lock thread while scrolling
 	    	while (flinging) {
