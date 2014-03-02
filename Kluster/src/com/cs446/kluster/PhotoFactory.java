@@ -1,6 +1,7 @@
 package com.cs446.kluster;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
 import com.cs446.kluster.mapadapter.MapAdapter;
+import com.cs446.kluster.networkadapter.POSTRequest;
+import com.cs446.kluster.networkadapter.UploadService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -80,9 +83,9 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
                 Location lastloc = mLocationClient.getLastLocation();
                 
-                Photo photo = new Photo(0,
+                Photo photo = new Photo(new BigInteger("531238e5f330ede5deafbc3b", 16),
                 						AccountAdapter.getCurrentUser().getID(),
-                						0,/**TODO: Event id*/
+                						new BigInteger("531238e5f330ede5deafbc3a", 16),/**TODO: Event id*/
                 						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,
                 						"",
@@ -92,6 +95,13 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 						"");
 
                 AddtoContentProvider(photo);
+                
+                //Start upload service
+                Intent intent = new Intent(this, UploadService.class);
+                intent.putExtra("com.cs446.kluster.Photo", photo);
+                startService(intent);
+                
+                new POSTRequest().execute(photo);
                 
                 // Disconnecting the client invalidates it.
                 Log.w("gps", mLocationClient.getLastLocation().toString());
@@ -129,10 +139,10 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
 			tags.substring(0, tags.length()-1);
 		}
 
-		values.put("photoid", item.getPhotoId());
+		values.put("photoid", item.getPhotoId().toString());
 		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
-		values.put("userid", item.getUserId());
+		values.put("userid", item.getUserId().toString());
 		values.put("url", item.getUrl());
 		values.put("tags", tags);
 		values.put("localurl", item.getLocalUrl().toString());

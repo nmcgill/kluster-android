@@ -1,28 +1,38 @@
 package com.cs446.kluster.networkadapter;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class POSTRequest extends AsyncTask<String, String, Boolean> {
+import com.cs446.kluster.Photo;
+
+public class POSTRequest extends AsyncTask<Photo, Photo, Boolean> {
 
 	public POSTRequest() {
 	}
 	   
      @Override
-     protected Boolean doInBackground(String... urls) {
+     protected Boolean doInBackground(Photo... urls) {
          try {
              return sendPOST(urls[0]);
          }
@@ -36,21 +46,39 @@ public class POSTRequest extends AsyncTask<String, String, Boolean> {
      protected void onPostExecute(Boolean completed) {   
     }
 
- 	private Boolean sendPOST(String url) throws IOException, ClientProtocolException {
- 	    HttpClient httpclient = new DefaultHttpClient();
- 	    HttpPost httppost = new HttpPost(url);
- 	    
+ 	@SuppressWarnings("deprecation")
+	private Boolean sendPOST(Photo photo) throws IOException {
+
  	    try {
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("param1", "value1"));
-			params.add(new BasicNameValuePair("param2", "value2"));
-			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
+ 	    	JSONArray longlat = new JSONArray();
+			longlat.put(photo.getLocation().longitude);
+			longlat.put(photo.getLocation().latitude);
 			
-			httppost.setEntity(entity);
-			
-			HttpResponse response = httpclient.execute(httppost);
+		    HttpParams params = new BasicHttpParams();
+		    params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+		    DefaultHttpClient mHttpClient = new DefaultHttpClient(params);
+
+	        HttpPost httppost = new HttpPost("http://klusterapi.herokuapp.com/photos/upload");
+	        
+			MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE); 
+	        
+	        multipartEntity.addPart("image", new FileBody(new File(photo.getLocalUrl().getPath())));
+	        Log.d("post", photo.getLocalUrl().getPath());
+	        multipartEntity.addPart("_event", new StringBody(photo.getEventId().toString(16)));
+	        Log.d("post", String.valueOf(photo.getEventId()));
+	        multipartEntity.addPart("tags[0]", new StringBody("foo"));
+	        Log.d("post", "foo");
+	        multipartEntity.addPart("tags[1]", new StringBody("dbar"));
+	        Log.d("post", "bar");
+	        multipartEntity.addPart("loc", new StringBody(longlat.toString()));
+	        Log.d("post", longlat.toString());
+	        multipartEntity.addPart("time", new StringBody(photo.getDate().toString()));
+	        httppost.setEntity(multipartEntity);
+	        Log.d("post", photo.getDate().toString());
+	        
+	        mHttpClient.execute(httppost, new PhotoUploadResponseHandler());
 		}
-	    catch (ClientProtocolException e) {
+	    catch (JSONException e) {
 	        // TODO Auto-generated catch block
 	    }
  	    catch (IOException e) {
@@ -61,4 +89,19 @@ public class POSTRequest extends AsyncTask<String, String, Boolean> {
  	    
 		return true;
  	}
+ 	
+	private class PhotoUploadResponseHandler implements ResponseHandler<Object> {
+
+	    @Override
+	    public Object handleResponse(HttpResponse response)
+	            throws ClientProtocolException, IOException {
+
+	        HttpEntity r_entity = response.getEntity();
+	        String responseString = EntityUtils.toString(r_entity);
+	        Log.d("UPLOAD", responseString);
+
+	        return null;
+	    }
+
+	}
  }
