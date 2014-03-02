@@ -2,6 +2,7 @@ package com.cs446.kluster;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,8 @@ public class PhotoAlbumAdapter extends SimpleCursorAdapter {
         
         txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
 		
-        String location = cursor.getString(cursor.getColumnIndex("localurl"));
-        StorageAdapter.getCache().loadBitmap(location, imgThumbnail, mActivity);
+        Uri location = Uri.parse(cursor.getString(cursor.getColumnIndex("localurl")));
+        StorageAdapter.getCache().loadBitmap(location.getPath(), imgThumbnail, mActivity);
 
 		imgThumbnail.invalidate();
 	}

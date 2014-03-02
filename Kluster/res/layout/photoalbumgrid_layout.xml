@@ -3,20 +3,28 @@
     android:layout_width="@dimen/grid_width"
     android:layout_height="@dimen/grid_height"
     android:orientation="vertical" >
-    
- <ImageView
-        android:id="@+list/imgPreview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button 1" 
-        android:src="@drawable/sample_a"/>
+
+    <ImageView
+       android:id="@+list/imgPreview"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:scaleType="centerCrop" />
  
     <TextView
         android:id="@+list/txtTitle"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="" />
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/title_text"
+        android:textColor="#FFFFFF"
+        android:lines="2"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="10" />
  
 
 </RelativeLayout>
