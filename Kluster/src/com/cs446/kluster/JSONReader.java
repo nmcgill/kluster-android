@@ -12,7 +12,6 @@ import java.util.Locale;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.location.Location;
 import android.net.Uri;
 import android.util.JsonReader;
 

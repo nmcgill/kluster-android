@@ -3,10 +3,9 @@ package com.cs446.kluster;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import android.location.Location;
 import android.net.Uri;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class Photo {
 	private long mPhotoId;

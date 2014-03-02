@@ -14,11 +14,9 @@ import com.cs446.kluster.JSONReader;
 
 public class GETRequest extends AsyncTask<String, String, Boolean> {
 	private ContentResolver mContentResolver;
-	private int mUserID;	
 	
-	public GETRequest(ContentResolver resolver, int userid) {
+	public GETRequest(ContentResolver resolver) {
 		mContentResolver = resolver;
-		mUserID = userid;
 	}
 	   
      @Override

@@ -5,7 +5,6 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,7 +73,6 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		Location pinLoc;
 		int locIndex;
 		
 		while (cursor.moveToNext()) {

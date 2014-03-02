@@ -9,7 +9,6 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -37,7 +36,6 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static Uri fileUri;
     private static LocationClient mLocationClient = null;
-    private static ContentResolver mContentResolver;
     
     // Define a DialogFragment that displays the error dialog
     public static class ErrorDialogFragment extends DialogFragment {
