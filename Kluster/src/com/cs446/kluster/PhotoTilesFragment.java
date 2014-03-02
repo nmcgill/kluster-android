@@ -25,7 +25,7 @@ import android.graphics.PorterDuff;
 
 public class PhotoTilesFragment extends Fragment {
 	
-	int ORGANIZE_COLOR=0xFFA10606;
+	int ORGANIZE_COLOR=0xFFF71111;
 	int SHARE_COLOR=0XFF19C9FF;
 	int DISCOVER_COLOR=0XFFF0D000;
 	
