@@ -3,6 +3,7 @@ package com.cs446.kluster;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,10 +66,10 @@ public class JSONReader {
 	private void AddtoPhotoProvider(Photo item) {
 		ContentValues values = new ContentValues();
 		
-		values.put("photoid", item.getPhotoId());
+		values.put("photoid", item.getPhotoId().toString());
 		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
-		values.put("userid", item.getUserId());
+		values.put("userid", item.getUserId().toString());
 		values.put("url", item.getUrl());
 		values.put("tags", item.getTags().toString());
 		values.put("localurl", item.getLocalUrl().toString());
@@ -80,11 +81,11 @@ public class JSONReader {
 
 	public Photo readPhoto(JsonReader reader) throws IOException, ParseException {
 	    //Photo photo = new Photo();
-		int photoId=-1;
-		long eventId=0;
+		BigInteger photoId = new BigInteger("0");
+		BigInteger eventId = new BigInteger("0");;
 		LatLng location = null;
 		Date date = null;
-		long userId = -1;
+		BigInteger userId = new BigInteger("0");;
 		String url="";
 		String[] tags = null;
 
@@ -92,20 +93,20 @@ public class JSONReader {
 		while (reader.hasNext()) {
 			String name = reader.nextName();
 			if (name.equals("photoID")) {
-				photoId=reader.nextInt();
+				photoId= new BigInteger(reader.nextString());
 			} else if (name.equals("location")) {
 				location=readLocation(reader);
 			} else if (name.equals("time")) {
 		        SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 		        date = df.parse(reader.nextString());
 			} else if (name.equals("userId")) {
-				userId=reader.nextLong();
+				userId=new BigInteger(reader.nextString());
 			} else if (name.equals("url")) {
 				url=reader.nextString();
 			} else if (name.equals("tags")) {
 				tags=(reader.nextString()).split(",");
 			} else if (name.equals("eventId")) {
-				eventId=reader.nextInt();
+				eventId=new BigInteger(reader.nextString());
 			}
 				else {
 				reader.skipValue();

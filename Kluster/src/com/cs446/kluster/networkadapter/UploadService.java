@@ -55,8 +55,7 @@ public class UploadService extends IntentService {
 
 	@SuppressWarnings("deprecation")
 	private boolean UploadFile(Photo photo) throws IOException {
-		OutputStream os = null;
-
+		
 		try {
 			JSONArray longlat = new JSONArray();
 			longlat.put(photo.getLocation().longitude);
@@ -85,10 +84,6 @@ public class UploadService extends IntentService {
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-		} finally {
-			if (os != null) {
-				os.close();
-			}
 		}
 
 		return false;

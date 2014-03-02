@@ -1,18 +1,14 @@
 package com.cs446.kluster;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
 
@@ -25,7 +21,7 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         setContentView(R.layout.activity_main); 
         
         //** TODO: Move user creation to main? */
-        AccountAdapter.setCurrentUser(new User(0, AccountAdapter.CreateAccount(this)));
+        AccountAdapter.setCurrentUser(new User(new BigInteger("531238e5f330ede5deafbc4e", 16), AccountAdapter.CreateAccount(this)));
         
         /*
          * Create a content observer object.

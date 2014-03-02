@@ -1,6 +1,7 @@
 package com.cs446.kluster;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import com.cs446.kluster.mapadapter.MapAdapter;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Photo implements Parcelable  {
-	private long mPhotoId;
-	private long mUserId;
-	private long mEventId;
+	private BigInteger mPhotoId;
+	private BigInteger mUserId;
+	private BigInteger mEventId;
 	private LatLng mLocation;
 	private Date mDate;
 	private String mUrl;
@@ -26,9 +27,9 @@ public class Photo implements Parcelable  {
 	private Uri mLocalUrl;
 	private String mThumbnailUrl;
 	
-	public Photo(int pid,
-				long uid,
-				long eid,
+	public Photo(BigInteger pid,
+				BigInteger uid,
+				BigInteger eid,
 				LatLng loc,
 				Date date,
 				String url,
@@ -49,7 +50,7 @@ public class Photo implements Parcelable  {
 		mThumbnailUrl = thumburl;
 	}
 
-	public long getPhotoId() {
+	public BigInteger getPhotoId() {
 		return mPhotoId;
 	}
 
@@ -57,7 +58,7 @@ public class Photo implements Parcelable  {
 		return mLocation;
 	}
 	
-	public long getEventId() {
+	public BigInteger getEventId() {
 		return mEventId;
 	}
 
@@ -65,7 +66,7 @@ public class Photo implements Parcelable  {
 		return mDate;
 	}
 
-	public long getUserId() {
+	public BigInteger getUserId() {
 		return mUserId;
 	}
 
@@ -96,9 +97,9 @@ public class Photo implements Parcelable  {
 	public Photo(Parcel in) {
         SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         
-		mPhotoId = in.readLong();
-		mUserId = in.readLong();
-		mEventId = in.readLong();
+		mPhotoId = new BigInteger(in.readString());
+		mUserId = new BigInteger(in.readString());
+		mEventId = new BigInteger(in.readString());
 		mLocation = MapAdapter.StringToLatLng(in.readString());
 		try {
 			mDate = df.parse(in.readString());
@@ -121,9 +122,9 @@ public class Photo implements Parcelable  {
 	public void writeToParcel(Parcel parcel, int flags) {
         SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         
-		parcel.writeLong(mPhotoId);
-		parcel.writeLong(mUserId);
-		parcel.writeLong(mEventId);
+		parcel.writeString(mPhotoId.toString());
+		parcel.writeString(mUserId.toString());
+		parcel.writeString(mEventId.toString());
 		parcel.writeString(MapAdapter.LatLngToString(mLocation));
 		parcel.writeString(df.format(mDate));
 		parcel.writeString(mUrl);
