@@ -61,25 +61,25 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         
         
         
-        Button mTakePictureButton = (Button)findViewById(R.id.CameraButton);
-        mTakePictureButton.setOnClickListener( new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
-				startActivity(intent);
-		    }
-		});
-        
-        Button mViewMapButton = (Button)findViewById(R.id.MapViewButton);
-        mViewMapButton.setOnClickListener(new OnClickListener() {	
-			@Override
-			public void onClick(View v) {
-				PhotoMapFragment firstFragment = new PhotoMapFragment();
-	            
-	            // Add the fragment to the 'main_activity'
-				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
-			}
-		});
+//        Button mTakePictureButton = (Button)findViewById(R.id.CameraButton);
+//        mTakePictureButton.setOnClickListener( new OnClickListener() {	
+//			@Override
+//			public void onClick(View v) {
+//				Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
+//				startActivity(intent);
+//		    }
+//		});
+//        
+//        Button mViewMapButton = (Button)findViewById(R.id.MapViewButton);
+//        mViewMapButton.setOnClickListener(new OnClickListener() {	
+//			@Override
+//			public void onClick(View v) {
+//				PhotoMapFragment firstFragment = new PhotoMapFragment();
+//	            
+//	            // Add the fragment to the 'main_activity'
+//				getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+//			}
+//		});
     }
     
     
