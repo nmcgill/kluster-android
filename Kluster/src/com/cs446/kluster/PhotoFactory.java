@@ -137,10 +137,10 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
 			tags.substring(0, tags.length()-1);
 		}
 
-		values.put("photoid", item.getPhotoId().toString());
+		values.put("photoid", item.getPhotoId().toString(16));
 		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
-		values.put("userid", item.getUserId().toString());
+		values.put("userid", item.getUserId().toString(16));
 		values.put("url", item.getUrl());
 		values.put("tags", tags);
 		values.put("localurl", item.getLocalUrl().toString());

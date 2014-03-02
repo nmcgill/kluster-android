@@ -3,7 +3,6 @@ package com.cs446.kluster;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
