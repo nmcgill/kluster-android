@@ -109,6 +109,7 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
     	case android.R.id.home:
     		onBackPressed();
     		return true;
+    		
     	case R.id.action_camera:
 			Intent intent = new Intent(getBaseContext(), PhotoFactory.class);
 			startActivity(intent);
