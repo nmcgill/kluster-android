@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,22 +43,39 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         PhotoTilesFragment photoTilesFragmentOrganize=
         		(PhotoTilesFragment)
         		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
-        photoTilesFragmentOrganize.setClickableThumbnailText("Yayy");
+        photoTilesFragmentOrganize.setClickableThumbnailText("Organize");
+        
+        PhotoTilesFragment photoTilesFragmentShare=
+        		(PhotoTilesFragment)
+        		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentShare);
+        photoTilesFragmentOrganize.setClickableThumbnailText("Organize");
+        
+        PhotoTilesFragment photoTilesFragmentDiscover=
+        		(PhotoTilesFragment)
+        		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentDiscover);
         
         ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
         
         
-//        Bitmap bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_a));
-//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_b));
-//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_c));
-//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_d));
-//        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.sample_e));
-//
- //      photoTilesFragmentOrganize.setThumbnailImages(bitmaps);
+        Bitmap bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_a));
+        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_b));
+        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_c));
+        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_d));
+        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_e));
+        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
+       photoTilesFragmentOrganize.setType("Organize");
+       photoTilesFragmentOrganize.setClickableThumbnailText("Organize  >");
+       photoTilesFragmentOrganize.setThumbnailImages(bitmaps);
+       photoTilesFragmentShare.setType("Share");
+       photoTilesFragmentShare.setClickableThumbnailText("Share  >");
+       photoTilesFragmentShare.setThumbnailImages(bitmaps);
+       photoTilesFragmentDiscover.setType("Discover");
+       photoTilesFragmentDiscover.setClickableThumbnailText("Discover  >");
+       photoTilesFragmentDiscover.setThumbnailImages(bitmaps);
         
     }
     
@@ -85,15 +103,17 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
             // Add the fragment to the 'main_activity'
 			getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
     		return true;	
-    	}
-    	
+    	} 	
     	return false;
     }
 
 
 	@Override
 	public void onThumbnailClick() {
+		Log.d("onClick", "thumbnailClicked");
 		// TODO Auto-generated method stub
+//		PhotoAlbumFragment photoAlbumFragment = new PhotoAlbumFragment();
+//		getFragmentManager().beginTransaction().add(R.id.main_container, photoAlbumFragment).commit();
 		
 	}
 }

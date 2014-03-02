@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/phototilesfragment"
+    android:id="@+id/Phototiles_Fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:paddingBottom="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,6 @@
             android:layout_height="match_parent"
             android:layout_weight="2" 
             android:clickable="true"
-            
             android:id="@+id/clickable_thumbnail">
 
             <ImageView
@@ -91,5 +91,5 @@
             android:contentDescription="@string/thumbnail_description"
             android:src="@drawable/sample_d" />
     </LinearLayout>
-
+	
 </LinearLayout>
