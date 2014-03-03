@@ -3,6 +3,7 @@ package com.cs446.kluster;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.ClipData.Item;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -47,8 +48,11 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
         
         /* Start loader */  
         getLoaderManager().initLoader(0, null, this);   
+        
+        setHasOptionsMenu(true);
 		return view;
 	}
+
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
@@ -68,6 +72,7 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     	super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.albumbrowser_options, menu);
     }
     
 	@Override

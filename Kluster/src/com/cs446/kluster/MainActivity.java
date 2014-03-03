@@ -42,12 +42,10 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         PhotoTilesFragment photoTilesFragmentOrganize=
         		(PhotoTilesFragment)
         		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
-        photoTilesFragmentOrganize.setClickableThumbnailText("Organize");
         
         PhotoTilesFragment photoTilesFragmentShare=
         		(PhotoTilesFragment)
         		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentShare);
-        photoTilesFragmentOrganize.setClickableThumbnailText("Organize");
         
         PhotoTilesFragment photoTilesFragmentDiscover=
         		(PhotoTilesFragment)
@@ -67,14 +65,17 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
         bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_e));
         bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
        photoTilesFragmentOrganize.setType("Organize");
-       photoTilesFragmentOrganize.setClickableThumbnailText("Organize  >");
+       photoTilesFragmentOrganize.setClickableThumbnailText("Organize ");
        photoTilesFragmentOrganize.setThumbnailImages(bitmaps);
+       photoTilesFragmentOrganize.setClickableThumbnailIcon(getResources().getDrawable(R.drawable.ic_action_collection));
        photoTilesFragmentShare.setType("Share");
-       photoTilesFragmentShare.setClickableThumbnailText("Share  >");
+       photoTilesFragmentShare.setClickableThumbnailText("Share ");
        photoTilesFragmentShare.setThumbnailImages(bitmaps);
+       photoTilesFragmentShare.setClickableThumbnailIcon(getResources().getDrawable(R.drawable.ic_action_share));
        photoTilesFragmentDiscover.setType("Discover");
-       photoTilesFragmentDiscover.setClickableThumbnailText("Discover  >");
+       photoTilesFragmentDiscover.setClickableThumbnailText("Discover ");
        photoTilesFragmentDiscover.setThumbnailImages(bitmaps);
+       photoTilesFragmentDiscover.setClickableThumbnailIcon(getResources().getDrawable(R.drawable.ic_action_location_searching));
         
     }
     
