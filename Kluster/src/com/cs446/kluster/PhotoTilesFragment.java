@@ -3,6 +3,8 @@ package com.cs446.kluster;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.cache.Resource;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 
 public class PhotoTilesFragment extends Fragment {
 	
@@ -39,6 +42,7 @@ public class PhotoTilesFragment extends Fragment {
 	TextView clickableThumbnailText;
 	ArrayList<ImageView> thumbnailPictures;
 	LinearLayout fragmentLayout;
+	ImageView thumbnailIcon;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -86,6 +90,7 @@ public class PhotoTilesFragment extends Fragment {
                     return true;
             }
 		});
+    	thumbnailIcon=(ImageView)view.findViewById(R.id.Thumbnail_Icon);
         fragmentLayout=(LinearLayout)view.findViewById(R.id.Phototiles_Fragment);
 
 
@@ -110,6 +115,10 @@ public class PhotoTilesFragment extends Fragment {
 	
 	public void setClickableThumbnailColor(String text) {
 		clickableThumbnailText.setText(text);
+	}
+	
+	public void setClickableThumbnailIcon(Drawable drawable) {
+		thumbnailIcon.setImageDrawable(drawable);
 	}
 
 	public void setThumbnailImages(ArrayList<Bitmap> bitmaps) {

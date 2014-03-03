@@ -39,16 +39,34 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/thumbnail_description"
                 android:src="@drawable/sample_a" />
+            
+            <RelativeLayout 
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+                
 
             <TextView
                 android:id="@+id/Thumbnail_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:text=""
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
                 android:textStyle="bold" />
+            
+            <ImageView
+                
+                android:id="@+id/Thumbnail_Icon"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/Thumbnail_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            
+            </RelativeLayout>
+            
         </FrameLayout>
     </LinearLayout>
 
