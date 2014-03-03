@@ -1,10 +1,10 @@
 package com.cs446.kluster;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -96,6 +96,7 @@ public class Photo implements Parcelable  {
 	
 	public Photo(Parcel in) {
         SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        String[] strArray = {};
         
 		mPhotoId = new BigInteger(in.readString());
 		mUserId = new BigInteger(in.readString());
@@ -106,7 +107,8 @@ public class Photo implements Parcelable  {
 		} catch (ParseException e) {
 		}
 		mUrl = in.readString();
-		mTags = in.readArrayList(String.class.getClassLoader());
+		in.readStringArray(strArray);
+		mTags = new ArrayList<String>(Arrays.asList(strArray));
 		mUploaded = Boolean.getBoolean(in.readString());
 		mLocalUrl = Uri.parse(in.readString());
 		mThumbnailUrl = in.readString();		
@@ -128,14 +130,14 @@ public class Photo implements Parcelable  {
 		parcel.writeString(MapAdapter.LatLngToString(mLocation));
 		parcel.writeString(df.format(mDate));
 		parcel.writeString(mUrl);
-		parcel.writeList(mTags);
+		parcel.writeStringArray((String[])mTags.toArray());
 		parcel.writeString(Boolean.toString(mUploaded));
 		parcel.writeString(mLocalUrl.toString());
 		parcel.writeString(mThumbnailUrl);
 	}
 	
-	public static final Parcelable.Creator CREATOR = 
-			new Parcelable.Creator() {
+	public static final Parcelable.Creator<Photo> CREATOR = 
+			new Parcelable.Creator<Photo>() {
 		public Photo createFromParcel(Parcel in) { 
 			return new Photo(in);
 			}
