@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.ContactsContract.Contacts.Photo;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,13 +33,12 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
          * Its code does not mutate the provider, so set
          * selfChange to "false"
          */
-        TableObserver observer = new TableObserver(AccountAdapter.getCurrentUser().getAccount(), this);
+        //TableObserver observer = new TableObserver(AccountAdapter.getCurrentUser().getAccount(), this);
         /*
          * Register the observer for the data table. The table's path
          * and any of its subpaths trigger the observer.
          */
-        getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);
-
+        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);
         
         PhotoTilesFragment photoTilesFragmentOrganize=
         		(PhotoTilesFragment)
@@ -102,8 +103,19 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
 			PhotoMapFragment firstFragment = new PhotoMapFragment();
             // Add the fragment to the 'main_activity'
 			getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).addToBackStack(firstFragment.toString()).commit();
-    		return true;	
-    	} 	
+    		return true;
+    	case R.id.action_refresh: 
+    	{
+            ContentResolver.setSyncAutomatically(AccountAdapter.getCurrentUser().getAccount(), PhotoProvider.PROVIDER_NAME, true);
+            
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+            settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+            ContentResolver.requestSync(AccountAdapter.getCurrentUser().getAccount(), PhotoProvider.PROVIDER_NAME, settingsBundle);  
+            return true;
+    	}
+    	}
     	return false;
     }
 
@@ -113,6 +125,10 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
 
 		if(fm.getBackStackEntryCount() > 0) {
 			fm.popBackStack();
+		}
+		
+		if (fm.getBackStackEntryCount() == 1) {
+			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}
 

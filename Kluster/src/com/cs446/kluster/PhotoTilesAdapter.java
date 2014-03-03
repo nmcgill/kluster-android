@@ -32,7 +32,7 @@ public class PhotoTilesAdapter extends SimpleCursorAdapter {
         txtThumbnailText.setText(cursor.getInt(cursor.getColumnIndex("location")));
 		
         String location = cursor.getString(cursor.getColumnIndex("localurl"));
-        StorageAdapter.getCache().loadBitmap(location, imgThumbnail, mActivity);
+        StorageAdapter.getCache().loadBitmapfromFile(location, imgThumbnail, mActivity);
 
 		imgThumbnail.invalidate();
 	}

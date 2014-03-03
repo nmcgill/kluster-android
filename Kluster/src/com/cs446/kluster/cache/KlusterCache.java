@@ -98,7 +98,24 @@ public class KlusterCache {
 	    return mMemoryCache.get(key);
 	}
 	
-	public void loadBitmap(String url, ImageView imageView, Context c) {
+	public void loadBitmapfromFile(String file, ImageView imageView, Context c) {
+		final String imageKey = file;
+
+	    Bitmap bitmap = getBitmapFromMemCache(imageKey);
+	    if (bitmap != null) {
+	    	imageView.setImageBitmap(bitmap);
+	    } else {
+	    	
+		    if (cancelPotentialWork(file, imageView)) {
+		        final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+		        final AsyncDrawable asyncDrawable = new AsyncDrawable(mContext.getResources(), mPlaceHolderBitmap, task);
+		        imageView.setImageDrawable(asyncDrawable);
+		        task.execute(file, "file");
+		    }
+	    }
+	}
+	
+	public void loadBitmapfromUrl(String url, ImageView imageView, Context c) {
 		final String imageKey = url.substring(url.lastIndexOf('/')+1);
 
 	    Bitmap bitmap = getBitmapFromMemCache(imageKey);
@@ -110,7 +127,7 @@ public class KlusterCache {
 		        final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 		        final AsyncDrawable asyncDrawable = new AsyncDrawable(mContext.getResources(), mPlaceHolderBitmap, task);
 		        imageView.setImageDrawable(asyncDrawable);
-		        task.execute(url);
+		        task.execute(url, "url");
 		    }
 	    }
 	}
@@ -132,19 +149,23 @@ public class KlusterCache {
 	    return true;
 	}
 	
-	private static Bitmap decodeSampledBitmapFromResource(String link) {
-
-        try {
-            //URL url = new URL(link);
-            //HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            //return BitmapFactory.decodeStream(conn.getInputStream());
+	private static Bitmap decodeSampledBitmapFromResource(String link, String type) {
+		
+		if (type == "file") {
     		BitmapFactory.Options options = new BitmapFactory.Options();
     		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-    		return BitmapFactory.decodeFile(link, options);
-        }
-        catch (Exception e) {
-        	Log.e("Image_download", "Could not download: " + link);
-        }
+    		return BitmapFactory.decodeFile(link, options);			
+		}
+		else {
+	        try {
+	            URL url = new URL(link);
+	            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+	            return BitmapFactory.decodeStream(conn.getInputStream());
+	        }
+	        catch (Exception e) {
+	        	Log.e("Image_download", "Could not download: " + link);
+	        }	
+		}
         
         return null;
 	}
@@ -173,6 +194,7 @@ public class KlusterCache {
 	    @Override
 	    protected Bitmap doInBackground(String... params) {
 	        data = params[0];
+	        String type = params[1];
 	        final String imageKey = data;
 	        
 	    	//Lock thread while scrolling
@@ -186,7 +208,7 @@ public class KlusterCache {
 	        Bitmap bitmap = getBitmapFromDiskCache(imageKey);
 	        
 	        if (bitmap == null) { // Not found in disk cache
-	        	bitmap = decodeSampledBitmapFromResource(data);
+	        	bitmap = decodeSampledBitmapFromResource(data, type);
 	        }
 	        
 	        if (bitmap != null) {

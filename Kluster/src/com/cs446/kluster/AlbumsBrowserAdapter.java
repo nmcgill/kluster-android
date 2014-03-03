@@ -32,7 +32,7 @@ public class AlbumsBrowserAdapter extends SimpleCursorAdapter {
         
         txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
         Uri location = Uri.parse(cursor.getString(cursor.getColumnIndex("localurl")));
-        StorageAdapter.getCache().loadBitmap(location.getPath(), imgThumbnail, mActivity);
+        StorageAdapter.getCache().loadBitmapfromFile(location.getPath(), imgThumbnail, mActivity);
 
 		imgThumbnail.invalidate();
 	}

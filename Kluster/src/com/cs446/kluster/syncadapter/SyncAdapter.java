@@ -5,12 +5,11 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.cs446.kluster.networkadapter.GETRequest;
-import com.cs446.kluster.networkadapter.UploadService;
 
 /**
  * Handle the transfer of data between a server and an
@@ -57,6 +56,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             SyncResult syncResult) {
     	
     	/** TODO: Put ALL data transfer code here. */
+    	Log.d("SYNC", "Performing sync");
     	new GETRequest(mContentResolver);
     }
 }

@@ -41,6 +41,8 @@ public class AlbumsBrowserFragment extends Fragment implements LoaderManager.Loa
 		String[] cols = new String[] { "location" };
 		int[]   views = new int[]   { R.id.gridTextCaption };
 		
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		adapter = new AlbumsBrowserAdapter(getActivity(), R.layout.photoalbumgrid_layout, null, cols, views, 0);
 		
 		GridView gridView=(GridView)view.findViewById(R.id.genericGridView);
