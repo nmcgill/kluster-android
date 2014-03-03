@@ -27,8 +27,8 @@ public class PhotoAlbumAdapter extends SimpleCursorAdapter {
 	
 	@Override
     public void bindView(View view, Context context, Cursor cursor) { 
-        TextView txtThumbnailText = (TextView)view.getTag(R.list.txtTitle);
-        ImageView imgThumbnail = (ImageView)view.getTag(R.list.imgPreview);
+        TextView txtThumbnailText = (TextView)view.getTag(R.id.gridTextCaption);
+        ImageView imgThumbnail = (ImageView)view.getTag(R.id.gridImageThumbnail);
         
         txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
 		
@@ -42,8 +42,8 @@ public class PhotoAlbumAdapter extends SimpleCursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
     	View view = mInflator.inflate(R.layout.photoalbumgrid_layout, parent, false);
     	
-        view.setTag(R.list.imgPreview, view.findViewById(R.list.imgPreview));
-        view.setTag(R.list.txtTitle, view.findViewById(R.list.txtTitle));
+        view.setTag(R.id.gridImageThumbnail, view.findViewById(R.id.gridImageThumbnail));
+        view.setTag(R.id.gridTextCaption, view.findViewById(R.id.gridTextCaption));
         
     	return view;
     }

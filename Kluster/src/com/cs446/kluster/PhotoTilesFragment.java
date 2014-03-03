@@ -64,7 +64,6 @@ public class PhotoTilesFragment extends Fragment {
 				Log.d("onClick", "thumbnailClicked");
 				PhotoAlbumFragment photoAlbumFragment = new PhotoAlbumFragment();
 				getFragmentManager().beginTransaction().add(R.id.main_container, photoAlbumFragment).commit();
-				//thumbnailClicked(v);
 			}
 		});
 		
@@ -79,8 +78,8 @@ public class PhotoTilesFragment extends Fragment {
                 }
                 case MotionEvent.ACTION_UP:{
                 	formatClickableThumbnailOnActionUp();
-    				PhotoAlbumFragment photoAlbumFragment = new PhotoAlbumFragment();
-    				getFragmentManager().beginTransaction().add(R.id.main_container, photoAlbumFragment).addToBackStack(photoAlbumFragment.toString()).commit();
+    				AlbumsBrowserFragment albumsBrowserFragment = new AlbumsBrowserFragment();
+    				getFragmentManager().beginTransaction().add(R.id.main_container, albumsBrowserFragment).addToBackStack(albumsBrowserFragment.toString()).commit();
                     break;
                 }
                 }
@@ -128,24 +127,18 @@ public class PhotoTilesFragment extends Fragment {
 	public void formatClickableThumbnailOnActionUp(){
 		if(type=="Organize")
 		{
-//		   thumbnailPictures.get(1).setColorFilter(0xffff0004,
-//				        PorterDuff.Mode.MULTIPLY);
 		   thumbnailPictures.get(1).setColorFilter(ORGANIZE_COLOR);
 		   thumbnailPictures.get(1).setBackgroundColor(ORGANIZE_COLOR);
 		   fragmentLayout.setBackgroundColor(ORGANIZE_COLOR);
 		}
 		else if(type=="Share")
 		{
-//		   thumbnailPictures.get(1).setColorFilter(0xff00db30,
-//				        PorterDuff.Mode.MULTIPLY);
 		   thumbnailPictures.get(1).setColorFilter(SHARE_COLOR);
 		   thumbnailPictures.get(1).setBackgroundColor(SHARE_COLOR);
 		   fragmentLayout.setBackgroundColor(SHARE_COLOR);
 		}
 		else //Discover just acts as a fall through case
 		{
-//		   thumbnailPictures.get(1).setColorFilter(0xff008dd9,
-//				        PorterDuff.Mode.MULTIPLY);
 		   thumbnailPictures.get(1).setColorFilter(DISCOVER_COLOR);
 		   thumbnailPictures.get(1).setBackgroundColor(DISCOVER_COLOR);
 		   fragmentLayout.setBackgroundColor(DISCOVER_COLOR);

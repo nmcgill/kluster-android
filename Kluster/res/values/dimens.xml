@@ -7,7 +7,12 @@
     <dimen name="grid_width">365dp</dimen>
     <dimen name="grid_height">170dp</dimen>
     
-    <dimen name="title_text">20sp</dimen>
+    <dimen name="grid_cell_width">140dp</dimen>
+    <dimen name="grid_cell_height">120dp</dimen>
+    <dimen name="grid_cell_thumbnail_height">120dp</dimen>
+    <dimen name="grid_cell_thumbnail_width">120dp</dimen>
+    
+    <dimen name="title_text">16sp</dimen>
     <dimen name="desc_text">14sp</dimen>
     <dimen name="sec_title_text">24sp</dimen>
 </resources>
