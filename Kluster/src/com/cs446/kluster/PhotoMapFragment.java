@@ -15,6 +15,7 @@ import android.view.View;
 import com.cs446.kluster.cache.StorageAdapter;
 import com.cs446.kluster.mapadapter.MapAdapter;
 import com.cs446.kluster.mapadapter.PhotoInfoWindowAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.Marker;
@@ -82,6 +83,8 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
 			Uri path;
+			
+			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapAdapter.StringToLatLng(cursor.getString(locIndex)), 13));
 	        
 			Marker marker = getMap().addMarker(new MarkerOptions()
 			.position(MapAdapter.StringToLatLng(cursor.getString(locIndex))));
