@@ -13,16 +13,19 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.cs446.kluster.R;
+import com.cs446.kluster.cache.StorageAdapter;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
 public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
 	private LayoutInflater mInflator;
-	private Uri mImagePath;
+	private String mPath;
+	private Context mContext;
 	
-	public PhotoInfoWindowAdapter(Context context, Uri filepath) {
+	public PhotoInfoWindowAdapter(Context context, String path) {
+		mContext = context;
 		mInflator = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mImagePath = filepath;
+		mPath = path;
 	}
 
 	@Override
@@ -30,15 +33,7 @@ public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
 		View v = mInflator.inflate(R.layout.photoviewer_activity, null);
 		ImageView imgPreview = (ImageView)v.findViewById(R.id.imgPreview);
 		
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		Bitmap bitmap = BitmapFactory.decodeFile(mImagePath.getPath(), options);
-		
-		
-		Log.d("klluster", mImagePath.toString());
-		
-		
-		imgPreview.setImageBitmap(bitmap);
+        StorageAdapter.getCache().loadBitmapfromFile(mPath, imgPreview, mContext);
 		return v;
 	}
 

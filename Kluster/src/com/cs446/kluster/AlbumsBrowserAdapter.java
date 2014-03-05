@@ -31,8 +31,17 @@ public class AlbumsBrowserAdapter extends SimpleCursorAdapter {
         ImageView imgThumbnail = (ImageView)view.getTag(R.id.gridImageThumbnail);
         
         txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
-        Uri location = Uri.parse(cursor.getString(cursor.getColumnIndex("localurl")));
-        StorageAdapter.getCache().loadBitmapfromFile(location.getPath(), imgThumbnail, mActivity);
+        
+        String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
+        String local = cursor.getString(cursor.getColumnIndex("localurl"));
+        
+        if (!remoteurl.equals("")) {
+	        StorageAdapter.getCache().loadBitmapfromUrl(remoteurl, imgThumbnail, mActivity);
+        }
+        else {
+	        Uri location = Uri.parse(local);
+	        StorageAdapter.getCache().loadBitmapfromFile(location.getPath(), imgThumbnail, mActivity);
+        }
 
 		imgThumbnail.invalidate();
 	}

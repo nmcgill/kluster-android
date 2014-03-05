@@ -1,5 +1,12 @@
 package com.cs446.kluster.syncadapter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
@@ -9,7 +16,7 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.cs446.kluster.networkadapter.GETRequest;
+import com.cs446.kluster.JSONReader;
 
 /**
  * Handle the transfer of data between a server and an
@@ -57,6 +64,39 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     	
     	/** TODO: Put ALL data transfer code here. */
     	Log.d("SYNC", "Performing sync");
-    	new GETRequest(mContentResolver);
+    	InputStream is = null;
+
+    	try {
+    		try {
+	 	        URL url;
+	 	        
+	 	        url = new URL("http://205.234.153.42/photos");
+	 	        
+	 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	 	        conn.setReadTimeout(10000 /* milliseconds */);
+	 	        conn.setConnectTimeout(15000 /* milliseconds */);
+	 	        conn.setRequestMethod("GET");
+	 	        conn.setDoInput(true);
+	 	        int response = conn.getResponseCode();
+	 	        Log.w("Download URL", "The response is: " + response);
+	 	        is = conn.getInputStream();
+	
+	 	        JSONReader reader = new JSONReader(mContentResolver);
+	 
+	 	        /* Read XML file (specific to this particular XML file) */
+	 	        reader.readJsonStream(is);
+			}
+ 	    	finally {
+	 	        if (is != null) {
+	 	            is.close();
+	 	        } 
+ 	    	}
+    	}
+    	catch (MalformedURLException e) {
+    	}
+    	catch (ParseException e) {	
+    	}
+    	catch (IOException e) {	
+    	}
     }
 }

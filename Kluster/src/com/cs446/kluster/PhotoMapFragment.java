@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.cs446.kluster.cache.StorageAdapter;
 import com.cs446.kluster.mapadapter.MapAdapter;
 import com.cs446.kluster.mapadapter.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +25,7 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
     
-    Map<Marker, Uri> mMarkerList = new HashMap<Marker, Uri>();
+    Map<Marker, String> mMarkerList = new HashMap<Marker, String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,18 +78,24 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		int locIndex;
-		int imgPathIndex;
-		
+
 		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
-			imgPathIndex = cursor.getColumnIndex("localurl");
-			
-			Uri imgPath = Uri.parse(cursor.getString(imgPathIndex));
-			
+			Uri path;
+	        
 			Marker marker = getMap().addMarker(new MarkerOptions()
 			.position(MapAdapter.StringToLatLng(cursor.getString(locIndex))));
-			
-			mMarkerList.put(marker, imgPath);
+
+			String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
+	        String local = cursor.getString(cursor.getColumnIndex("localurl"));
+	        
+	        if (!remoteurl.equals("")) {
+	        	mMarkerList.put(marker, remoteurl);
+	        }
+	        else {				
+		        path = Uri.parse(local);	
+				mMarkerList.put(marker, path.getPath());
+	        }
 		}
 	}
 

@@ -130,7 +130,7 @@ public class Photo implements Parcelable  {
 		parcel.writeString(MapAdapter.LatLngToString(mLocation));
 		parcel.writeString(df.format(mDate));
 		parcel.writeString(mUrl);
-		parcel.writeStringArray((String[])mTags.toArray());
+		parcel.writeArray(mTags.toArray());
 		parcel.writeString(Boolean.toString(mUploaded));
 		parcel.writeString(mLocalUrl.toString());
 		parcel.writeString(mThumbnailUrl);
