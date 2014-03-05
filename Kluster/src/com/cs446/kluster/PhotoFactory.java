@@ -82,7 +82,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
             	sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, fileUri));
             	
                 // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
                 Location lastloc = mLocationClient.getLastLocation();
                 
                 Photo photo = new Photo(new BigInteger("531238e5f330ede5deafbc3b", 16),
@@ -272,7 +272,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
 	@Override
 	public void onConnected(Bundle dataBundle) {
 		// Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
