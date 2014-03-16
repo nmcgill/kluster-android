@@ -15,7 +15,7 @@ public class KlusterApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		singleton = this;
-		mCacheAdapter = new KlusterCache(this);
+		mCacheAdapter = KlusterCache.getInstance(this);
 	}
 	
 	public static KlusterCache getCacheAdapter() {

@@ -18,9 +18,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
-import com.cs446.kluster.KlusterApplication;
-
 public class KlusterCache {
+	private static KlusterCache instance = null;
 	private static Context mContext;
 	private static boolean flinging = false;  
 
@@ -35,9 +34,17 @@ public class KlusterCache {
 	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 25; // 25MB
 	private static final String DISK_CACHE_SUBDIR = "thumbnails";
 	
-	public KlusterCache(Context c) {
+	protected KlusterCache(Context c) {
 		mContext = c;
 		InitCache();
+	}
+	
+	public static KlusterCache getInstance(Context c) {
+		if (instance == null) {
+			instance = new KlusterCache(c);
+		}
+		
+		return instance;
 	}
 		
 	private void InitCache() {
