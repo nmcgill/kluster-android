@@ -84,7 +84,7 @@
         </activity>
         
 	    <activity
-	        android:name="com.cs446.kluster.photo.PhotoFactory"
+	        android:name="com.cs446.kluster.PhotoFactory"
 	        android:label="@string/app_name"
 	        android:parentActivityName="com.cs446.kluster.MainActivity" >
 	        <meta-data
