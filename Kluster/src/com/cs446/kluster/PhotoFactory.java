@@ -21,10 +21,11 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cs446.kluster.accountadapter.AccountAdapter;
-import com.cs446.kluster.mapadapter.MapAdapter;
-import com.cs446.kluster.networkadapter.POSTRequest;
-import com.cs446.kluster.networkadapter.UploadService;
+import com.cs446.kluster.account.Accounts;
+import com.cs446.kluster.map.MapAdapter;
+import com.cs446.kluster.network.UploadService;
+import com.cs446.kluster.photo.Photo;
+import com.cs446.kluster.photo.PhotoProvider;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -86,7 +87,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 Location lastloc = mLocationClient.getLastLocation();
                 
                 Photo photo = new Photo(new BigInteger("531238e5f330ede5deafbc3b", 16),
-                						AccountAdapter.getCurrentUser().getID(),
+                						Accounts.getAccount().getUserId(),
                 						new BigInteger("531238e5f330ede5deafbc3a", 16),/**TODO: Event id*/
                 						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,

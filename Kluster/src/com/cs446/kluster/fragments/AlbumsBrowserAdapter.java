@@ -1,4 +1,4 @@
-package com.cs446.kluster;
+package com.cs446.kluster.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.cs446.kluster.MainActivity;
+import com.cs446.kluster.R;
+import com.cs446.kluster.R.id;
+import com.cs446.kluster.R.layout;
 import com.cs446.kluster.cache.StorageAdapter;
 
 public class AlbumsBrowserAdapter extends SimpleCursorAdapter {

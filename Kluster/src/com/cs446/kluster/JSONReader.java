@@ -16,7 +16,9 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.util.JsonReader;
 
-import com.cs446.kluster.mapadapter.MapAdapter;
+import com.cs446.kluster.map.MapAdapter;
+import com.cs446.kluster.photo.Photo;
+import com.cs446.kluster.photo.PhotoProvider;
 import com.google.android.gms.maps.model.LatLng;
 
 // Sample JSON from request to Kluster API

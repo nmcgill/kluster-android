@@ -1,4 +1,10 @@
-package com.cs446.kluster;
+package com.cs446.kluster.fragments;
+
+import com.cs446.kluster.R;
+import com.cs446.kluster.R.id;
+import com.cs446.kluster.R.layout;
+import com.cs446.kluster.R.menu;
+import com.cs446.kluster.photo.PhotoProvider;
 
 import android.app.Activity;
 import android.app.Fragment;
