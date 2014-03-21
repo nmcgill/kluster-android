@@ -6,28 +6,5 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <fragment
-        android:layout_weight="1"
-        android:id="@+id/pictureTilesFragmentOrganize"
-        android:name="com.cs446.kluster.PhotoTilesFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/phototiles_fragment" />
-
-    <fragment
-        android:layout_weight="1"
-        android:id="@+id/pictureTilesFragmentShare"
-        android:name="com.cs446.kluster.PhotoTilesFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/phototiles_fragment" />
-
-    <fragment
-        android:layout_weight="1"
-        android:id="@+id/pictureTilesFragmentDiscover"
-        android:name="com.cs446.kluster.PhotoTilesFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/phototiles_fragment" />       
 
 </LinearLayout>

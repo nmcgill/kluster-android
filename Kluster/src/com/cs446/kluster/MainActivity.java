@@ -17,7 +17,7 @@ import android.view.MenuItem;
 
 import com.cs446.kluster.accountadapter.AccountAdapter;
 
-public class MainActivity extends Activity implements PhotoTilesFragment.ThumbnailClickListener {    
+public class MainActivity extends Activity {    
 	PhotoFactory mFactory;
 	
     @Override
@@ -38,46 +38,7 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
          * Register the observer for the data table. The table's path
          * and any of its subpaths trigger the observer.
          */
-        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);
-        
-        PhotoTilesFragment photoTilesFragmentOrganize=
-        		(PhotoTilesFragment)
-        		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentOrganize);
-        
-        PhotoTilesFragment photoTilesFragmentShare=
-        		(PhotoTilesFragment)
-        		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentShare);
-        
-        PhotoTilesFragment photoTilesFragmentDiscover=
-        		(PhotoTilesFragment)
-        		getFragmentManager().findFragmentById(R.id.pictureTilesFragmentDiscover);
-        
-        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-        
-        
-        Bitmap bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_a));
-        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_b));
-        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_c));
-        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_d));
-        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-        bitmap=(BitmapFactory.decodeResource(getResources(), R.drawable.sample_e));
-        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 200, 100, false));
-       photoTilesFragmentOrganize.setType("Organize");
-       photoTilesFragmentOrganize.setClickableThumbnailText("Organize ");
-       photoTilesFragmentOrganize.setThumbnailImages(bitmaps);
-       photoTilesFragmentOrganize.setClickableThumbnailIcon(getResources().getDrawable(R.drawable.ic_action_collection));
-       photoTilesFragmentShare.setType("Share");
-       photoTilesFragmentShare.setClickableThumbnailText("Share ");
-       photoTilesFragmentShare.setThumbnailImages(bitmaps);
-       photoTilesFragmentShare.setClickableThumbnailIcon(getResources().getDrawable(R.drawable.ic_action_share));
-       photoTilesFragmentDiscover.setType("Discover");
-       photoTilesFragmentDiscover.setClickableThumbnailText("Discover ");
-       photoTilesFragmentDiscover.setThumbnailImages(bitmaps);
-       photoTilesFragmentDiscover.setClickableThumbnailIcon(getResources().getDrawable(R.drawable.ic_action_location_searching));
-        
+        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);        
     }
     
     
@@ -130,14 +91,5 @@ public class MainActivity extends Activity implements PhotoTilesFragment.Thumbna
 		if (fm.getBackStackEntryCount() == 1) {
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
-	}
-
-	@Override
-	public void onThumbnailClick() {
-		Log.d("onClick", "thumbnailClicked");
-		// TODO Auto-generated method stub
-//		PhotoAlbumFragment photoAlbumFragment = new PhotoAlbumFragment();
-//		getFragmentManager().beginTransaction().add(R.id.main_container, photoAlbumFragment).commit();
-		
 	}
 }
