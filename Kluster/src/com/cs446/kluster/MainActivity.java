@@ -15,7 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cs446.kluster.accountadapter.AccountAdapter;
+import com.cs446.kluster.account.Accounts;
+import com.cs446.kluster.fragments.PhotoMapFragment;
+import com.cs446.kluster.photo.PhotoProvider;
 
 public class MainActivity extends Activity {    
 	PhotoFactory mFactory;
@@ -26,7 +28,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main); 
         
         //** TODO: Move user creation to main? */
-        AccountAdapter.setCurrentUser(new User(new BigInteger("531238e5f330ede5deafbc4e", 16), AccountAdapter.CreateAccount(this)));
+        Accounts.CreateAccount(this, new BigInteger("531238e5f330ede5deafbc4e", 16));
         
         /*
          * Create a content observer object.
@@ -67,13 +69,13 @@ public class MainActivity extends Activity {
     		return true;
     	case R.id.action_refresh: 
     	{
-            ContentResolver.setSyncAutomatically(AccountAdapter.getCurrentUser().getAccount(), PhotoProvider.PROVIDER_NAME, true);
+            ContentResolver.setSyncAutomatically(Accounts.getAccount(), PhotoProvider.PROVIDER_NAME, true);
             
             Bundle settingsBundle = new Bundle();
             settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
             settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-            ContentResolver.requestSync(AccountAdapter.getCurrentUser().getAccount(), PhotoProvider.PROVIDER_NAME, settingsBundle);  
+            ContentResolver.requestSync(Accounts.getAccount(), PhotoProvider.PROVIDER_NAME, settingsBundle);  
             return true;
     	}
     	}

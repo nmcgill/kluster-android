@@ -26,10 +26,8 @@
 	<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
 	<uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-	<uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-	
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    
+	<uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>	
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>   
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     
@@ -72,7 +70,7 @@
         </service>
     	
         <service
-            android:name="com.cs446.kluster.networkadapter.UploadService"
+            android:name="com.cs446.kluster.network.UploadService"
             android:exported="false" />
         
         <activity
@@ -86,7 +84,7 @@
         </activity>
         
 	    <activity
-	        android:name="com.cs446.kluster.PhotoFactory"
+	        android:name="com.cs446.kluster.photo.PhotoFactory"
 	        android:label="@string/app_name"
 	        android:parentActivityName="com.cs446.kluster.MainActivity" >
 	        <meta-data
@@ -94,10 +92,14 @@
 	            android:value="com.cs446.kluster.MainActivity" />
 	    </activity>
     
-    	<provider android:name="PhotoProvider"
+    	<provider android:name="com.cs446.kluster.photo.PhotoProvider"
             android:readPermission="com.cs446.kluster.READ_PERMISSION"
             android:writePermission="com.cs446.kluster.WRITE_PERMISSION"
             android:authorities="com.cs446.kluster.Photos"></provider>  
+        <provider android:name="com.cs446.kluster.event.EventProvider"
+            android:readPermission="com.cs446.kluster.READ_PERMISSION"
+            android:writePermission="com.cs446.kluster.WRITE_PERMISSION"
+            android:authorities="com.cs446.kluster.Events"></provider>  
             
     </application>
 
