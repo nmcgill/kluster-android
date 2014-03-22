@@ -10,7 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cs446.kluster.fragments.PhotoMapFragment;
+import com.cs446.kluster.fragments.EventGridFragment;
+import com.cs446.kluster.fragments.EventMapFragment;
 import com.cs446.kluster.photo.PhotoProvider;
 import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.user.Users;
@@ -21,7 +22,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); 
+        setContentView(R.layout.main_activity); 
         
         //** TODO: Move user creation to main? */
         Users.CreateUser(this, new BigInteger("531238e5f330ede5deafbc4e", 16));
@@ -39,7 +40,14 @@ public class MainActivity extends Activity {
          * Register the observer for the data table. The table's path
          * and any of its subpaths trigger the observer.
          */
-        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);        
+        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);    
+        
+        EventGridFragment fragment = new EventGridFragment();
+        
+        // Add the fragment to the 'main_activity' RelativeLayout
+        getFragmentManager().beginTransaction().add(R.id.main_container, fragment).commit();
+        
+        getActionBar().setTitle("Discover");
     }
     
     
@@ -62,11 +70,11 @@ public class MainActivity extends Activity {
 			startActivity(intent);
     		return true;
     	case R.id.action_mapview:
-			PhotoMapFragment firstFragment = new PhotoMapFragment();
-            // Add the fragment to the 'main_activity'
-			getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).addToBackStack(firstFragment.toString()).commit();
+			EventMapFragment fragment = new EventMapFragment();
+
+			getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(fragment.toString()).commit();
     		return true;
-    	case R.id.action_refresh: 
+    	/*case R.id.action_refresh: 
     	{
             ContentResolver.setSyncAutomatically(Users.getUser().getAccount(), PhotoProvider.PROVIDER_NAME, true);
             
@@ -76,7 +84,7 @@ public class MainActivity extends Activity {
 
             ContentResolver.requestSync(Users.getUser().getAccount(), PhotoProvider.PROVIDER_NAME, settingsBundle);  
             return true;
-    	}
+    	}*/
     	}
     	return false;
     }
@@ -89,7 +97,7 @@ public class MainActivity extends Activity {
 			fm.popBackStack();
 		}
 		
-		if (fm.getBackStackEntryCount() == 1) {
+		if (fm.getBackStackEntryCount() <= 1){
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 		}
 	}

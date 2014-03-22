@@ -16,12 +16,12 @@ import com.cs446.kluster.R.id;
 import com.cs446.kluster.R.layout;
 import com.cs446.kluster.cache.StorageAdapter;
 
-public class AlbumsBrowserAdapter extends SimpleCursorAdapter {
+public class EventGridAdapter extends SimpleCursorAdapter {
 	
 	private final LayoutInflater mInflator;
 	private MainActivity mActivity;
 	
-	public AlbumsBrowserAdapter(Context context, int layout, Cursor c,
+	public EventGridAdapter(Context context, int layout, Cursor c,
 			String[] from, int[] to, int flags) {
 		super(context, layout, c, from, to, flags);
 		
@@ -31,10 +31,11 @@ public class AlbumsBrowserAdapter extends SimpleCursorAdapter {
 	
 	@Override
     public void bindView(View view, Context context, Cursor cursor) { 
-        TextView txtThumbnailText = (TextView)view.getTag(R.id.gridTextCaption);
+        TextView txtThumbnailText = (TextView)view.getTag(R.id.eventgrid_txtTitle);
         ImageView imgThumbnail = (ImageView)view.getTag(R.id.gridImageThumbnail);
         
-        txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
+        //TODO: Event name
+       //txtThumbnailText.setText(cursor.getString(cursor.getColumnIndex("location")));
         
         String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
         String local = cursor.getString(cursor.getColumnIndex("localurl"));
@@ -51,10 +52,10 @@ public class AlbumsBrowserAdapter extends SimpleCursorAdapter {
 	
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-    	View view = mInflator.inflate(R.layout.photoalbumgrid_layout, parent, false);
+    	View view = mInflator.inflate(R.layout.eventgridcell_layout, parent, false);
     	
         view.setTag(R.id.gridImageThumbnail, view.findViewById(R.id.gridImageThumbnail));
-        view.setTag(R.id.gridTextCaption, view.findViewById(R.id.gridTextCaption));
+        view.setTag(R.id.eventgrid_txtTitle, view.findViewById(R.id.eventgrid_txtTitle));
         
     	return view;
     }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/albumBrowserGridCell"
+    android:layout_width="@dimen/grid_cell_width"
+    android:layout_height="@dimen/grid_cell_height"
+    android:orientation="vertical" 
+    >
+    
+    <ImageView
+        android:id="@+id/gridImageThumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+    
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/backrepeat" />
+
+    <TextView
+        android:id="@+id/eventgrid_txtTitle"
+        android:text="Event Name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/title_text"
+        android:textColor="#FFFFFF"
+        android:lines="2"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="10" />
+    
+     <TextView
+        android:id="@+id/eventgrid_txtDate"
+        android:text="Sun Feb 20 2014 12:00PM"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/eventgrid_txtTitle"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/desc_text"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="2" />
+</RelativeLayout>

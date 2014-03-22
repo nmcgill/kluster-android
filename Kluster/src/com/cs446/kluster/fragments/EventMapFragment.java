@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class PhotoMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EventMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
     
@@ -90,7 +90,7 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 			.position(MapAdapter.StringToLatLng(cursor.getString(locIndex))));
 
 			String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
-	        String local = cursor.getString(cursor.getColumnIndex("localurl"));
+	        String localurl = cursor.getString(cursor.getColumnIndex("localurl"));
 	        
 	        ImageView imgView = new ImageView(getActivity());
 	        mMarkerList.put(marker, imgView);
@@ -99,7 +99,7 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 	        	StorageAdapter.getCache().loadBitmapfromUrl(remoteurl, imgView, getActivity());
 	        }
 	        else {				
-	        	StorageAdapter.getCache().loadBitmapfromFile(remoteurl, imgView, getActivity());
+	        	StorageAdapter.getCache().loadBitmapfromFile(localurl, imgView, getActivity());
 	        }
 		}
 	}
