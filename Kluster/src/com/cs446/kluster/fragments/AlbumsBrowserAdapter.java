@@ -43,8 +43,7 @@ public class AlbumsBrowserAdapter extends SimpleCursorAdapter {
 	        StorageAdapter.getCache().loadBitmapfromUrl(remoteurl, imgThumbnail, mActivity);
         }
         else {
-	        Uri location = Uri.parse(local);
-	        StorageAdapter.getCache().loadBitmapfromFile(location.getPath(), imgThumbnail, mActivity);
+	        StorageAdapter.getCache().loadBitmapfromFile(local, imgThumbnail, mActivity);
         }
 
 		imgThumbnail.invalidate();

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.cs446.kluster.fragments.PhotoMapFragment;
 import com.cs446.kluster.photo.PhotoProvider;
+import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.user.Users;
 
 public class MainActivity extends Activity {    
@@ -24,6 +25,9 @@ public class MainActivity extends Activity {
         
         //** TODO: Move user creation to main? */
         Users.CreateUser(this, new BigInteger("531238e5f330ede5deafbc4e", 16));
+        
+        //Add Testing Data
+        TestData.CreateTestData(getContentResolver());
         
         /*
          * Create a content observer object.

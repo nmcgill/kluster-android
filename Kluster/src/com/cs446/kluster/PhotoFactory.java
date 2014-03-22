@@ -94,7 +94,7 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 						"",
                 						new ArrayList<String>(),
                 						false,
-                						fileUri,
+                						fileUri.getPath(),
                 						"");
 
                 AddtoContentProvider(photo);

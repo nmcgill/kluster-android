@@ -54,7 +54,7 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
 	private boolean UploadFile(Photo photo, ResponseHandler<Object> handler) {
   		JSONArray longlat = new JSONArray();
 
-		String image = photo.getLocalUrl().getPath();
+		String image = photo.getLocalUrl();
 		String eventid = photo.getEventId().toString(16);
 		String tagOne = "foo";
 		String tagTwo = "bar";

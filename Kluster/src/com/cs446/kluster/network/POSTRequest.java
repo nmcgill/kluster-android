@@ -50,7 +50,7 @@ public class POSTRequest extends AsyncTask<Photo, Photo, Boolean> implements Res
  	public static Boolean sendPOST(Photo photo, ResponseHandler<Object> handler) throws IOException { 	
   		JSONArray longlat = new JSONArray();
 
-		String image = photo.getLocalUrl().getPath();
+		String image = photo.getLocalUrl();
 		String eventid = photo.getEventId().toString(16);
 		String tagOne = "foo";
 		String tagTwo = "bar";

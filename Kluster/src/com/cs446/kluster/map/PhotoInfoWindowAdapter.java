@@ -32,8 +32,16 @@ public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
 	public View getInfoContents(Marker marker) {
 		View v = mInflator.inflate(R.layout.photoviewer_activity, null);
 		ImageView imgPreview = (ImageView)v.findViewById(R.id.imgPreview);
-		
-        StorageAdapter.getCache().loadBitmapfromFile(mPath, imgPreview, mContext);
+        
+        if (mPath.toLowerCase().contains("http".toLowerCase())) {
+	        StorageAdapter.getCache().loadBitmapfromUrl(mPath, imgPreview, mContext);
+        }
+        else {
+	        StorageAdapter.getCache().loadBitmapfromFile(mPath, imgPreview, mContext);
+        }
+        
+        imgPreview.invalidate();
+
 		return v;
 	}
 
