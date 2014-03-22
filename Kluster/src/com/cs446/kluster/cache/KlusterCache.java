@@ -217,7 +217,7 @@ public class KlusterCache {
 	        if (bitmap == null) { // Not found in disk cache
 	        	bitmap = decodeSampledBitmapFromResource(data, type);
 	        }
-	        
+
 	        if (bitmap != null) {
 		        // Add final bitmap to caches
 		        addBitmapToCache(imageKey, bitmap);

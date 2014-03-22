@@ -7,10 +7,10 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.cs446.kluster.cache.StorageAdapter;
 import com.cs446.kluster.map.MapAdapter;
@@ -27,7 +27,7 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
     
-    Map<Marker, String> mMarkerList = new HashMap<Marker, String>();
+    Map<Marker, ImageView> mMarkerList = new HashMap<Marker, ImageView>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +83,7 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 
 		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
-			Uri path;
-			
+
 			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapAdapter.StringToLatLng(cursor.getString(locIndex)), 13));
 	        
 			Marker marker = getMap().addMarker(new MarkerOptions()
@@ -93,12 +92,14 @@ public class PhotoMapFragment extends MapFragment implements LoaderManager.Loade
 			String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
 	        String local = cursor.getString(cursor.getColumnIndex("localurl"));
 	        
-	        if (!remoteurl.equals("")) {
-	        	mMarkerList.put(marker, remoteurl);
+	        ImageView imgView = new ImageView(getActivity());
+	        mMarkerList.put(marker, imgView);
+	        
+	        if (remoteurl.toLowerCase().contains("http")) {
+	        	StorageAdapter.getCache().loadBitmapfromUrl(remoteurl, imgView, getActivity());
 	        }
 	        else {				
-		        path = Uri.parse(local);	
-				mMarkerList.put(marker, path.getPath());
+	        	StorageAdapter.getCache().loadBitmapfromFile(remoteurl, imgView, getActivity());
 	        }
 		}
 	}
