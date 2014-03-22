@@ -24,7 +24,7 @@ public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
 
 	@Override
 	public View getInfoContents(Marker marker) {
-		View v = mInflator.inflate(R.layout.photoviewer_activity, null);
+		View v = mInflator.inflate(R.layout.photoviewer_layout, null);
 		ImageView imgPreview = (ImageView)v.findViewById(R.id.imgPreview);
 		
 		imgPreview.setImageBitmap(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
