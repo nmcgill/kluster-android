@@ -24,7 +24,7 @@ public class Photo implements Parcelable  {
 	private String mUrl;
 	private ArrayList<String> mTags;
 	private Boolean mUploaded;
-	private Uri mLocalUrl;
+	private String mLocalUrl;
 	private String mThumbnailUrl;
 	
 	public Photo(BigInteger pid,
@@ -35,7 +35,7 @@ public class Photo implements Parcelable  {
 				String url,
 				ArrayList<String> tags,
 				Boolean uploaded,
-				Uri localurl,
+				String localurl,
 				String thumburl) {
 		
 		mPhotoId = pid;
@@ -82,7 +82,7 @@ public class Photo implements Parcelable  {
 		return mUploaded;
 	}
 	
-	public Uri getLocalUrl() {
+	public String getLocalUrl() {
 		return mLocalUrl;
 	}
 	
@@ -110,7 +110,7 @@ public class Photo implements Parcelable  {
 		in.readStringArray(strArray);
 		mTags = new ArrayList<String>(Arrays.asList(strArray));
 		mUploaded = Boolean.getBoolean(in.readString());
-		mLocalUrl = Uri.parse(in.readString());
+		mLocalUrl = in.readString();
 		mThumbnailUrl = in.readString();		
 	}
 	

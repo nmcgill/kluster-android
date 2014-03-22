@@ -115,7 +115,7 @@ public class JSONReader {
 			}
 		}
 		reader.endObject();
-		return new Photo(photoId, userId, eventId, location, date, url, new ArrayList<String>(Arrays.asList(tags)), true, Uri.parse(""), "");
+		return new Photo(photoId, userId, eventId, location, date, url, new ArrayList<String>(Arrays.asList(tags)), true, "", "");
 	}
 
 	private LatLng readLocation(JsonReader reader) throws IOException {

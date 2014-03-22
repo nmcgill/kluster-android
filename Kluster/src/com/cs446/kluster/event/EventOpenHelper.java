@@ -14,7 +14,7 @@ public class EventOpenHelper extends SQLiteOpenHelper {
 					"eventid text not null, " +
 					"location text not null, " +
 					"date text not null, " + 
-					"photos blob);";
+					"photos text);";
 	
 	public EventOpenHelper(Context context) {
 		super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);

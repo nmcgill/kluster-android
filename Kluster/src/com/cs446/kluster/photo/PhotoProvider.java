@@ -64,7 +64,7 @@ public class PhotoProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 
 		/* Check to see if the unique GUID is already in table */
-		Cursor c = mDb.rawQuery("SELECT * FROM photoitems WHERE localurl = '" + values.getAsString("localurl") + "'", null);
+		Cursor c = mDb.rawQuery("SELECT * FROM photoitems WHERE photoid = '" + values.getAsString("photoid") + "'", null);
 		try {
 			if(c.moveToFirst()) {
 				return uri;

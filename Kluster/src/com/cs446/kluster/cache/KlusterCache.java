@@ -202,7 +202,7 @@ public class KlusterCache {
 	    protected Bitmap doInBackground(String... params) {
 	        data = params[0];
 	        String type = params[1];
-	        final String imageKey = data;
+	        final String imageKey = (type == "url" ? data.substring(data.lastIndexOf('/')+1) : data);
 	        
 	    	//Lock thread while scrolling
 	    	while (flinging) {
