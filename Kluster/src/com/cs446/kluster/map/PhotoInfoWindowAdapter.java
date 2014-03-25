@@ -5,13 +5,14 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.cs446.kluster.R;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
-public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
+public class PhotoInfoWindowAdapter implements InfoWindowAdapter, OnClickListener {
 	private LayoutInflater mInflator;
 	private ImageView mImageView;
 	private Context mContext;
@@ -35,5 +36,11 @@ public class PhotoInfoWindowAdapter implements InfoWindowAdapter {
 	@Override
 	public View getInfoWindow(Marker marker) {
 		return null;
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
 	}
 }

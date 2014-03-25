@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.cs446.kluster.MainActivity;
 import com.cs446.kluster.cache.StorageAdapter;
 import com.cs446.kluster.map.MapAdapter;
 import com.cs446.kluster.map.PhotoInfoWindowAdapter;
@@ -29,12 +30,13 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
     
     Map<Marker, ImageView> mMarkerList = new HashMap<Marker, ImageView>();
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+    	super.onActivityCreated(savedInstanceState);
+
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-	}
+
+    }
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -90,17 +92,11 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
 			.position(MapAdapter.StringToLatLng(cursor.getString(locIndex))));
 
 			String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
-	        String localurl = cursor.getString(cursor.getColumnIndex("localurl"));
 	        
 	        ImageView imgView = new ImageView(getActivity());
 	        mMarkerList.put(marker, imgView);
-	        
-	        if (remoteurl.toLowerCase().contains("http")) {
-	        	StorageAdapter.getCache().loadBitmapfromUrl(remoteurl, imgView, getActivity());
-	        }
-	        else {				
-	        	StorageAdapter.getCache().loadBitmapfromFile(localurl, imgView, getActivity());
-	        }
+
+	        StorageAdapter.getCache().loadBitmap(remoteurl, imgView, getActivity());
 		}
 	}
 
