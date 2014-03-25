@@ -9,12 +9,14 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Event {
 	private BigInteger mEventId;
+	private String mName;
 	private LatLng mLocation;
 	private Date mDate;
 	private List<BigInteger> mPhotos;
 	
-	public Event(BigInteger id, LatLng loc, Date date, List<BigInteger> photos) {
+	public Event(BigInteger id, String name, LatLng loc, Date date, List<BigInteger> photos) {
 		mEventId = id;
+		mName = name;
 		mLocation = loc;
 		mDate = date;
 		mPhotos = photos;
@@ -22,6 +24,10 @@ public class Event {
 	
 	public BigInteger getEventId() {
 		return mEventId;
+	}
+	
+	public String getName() {
+		return mName;
 	}
 	
 	public LatLng getLocation() {

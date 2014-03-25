@@ -12,6 +12,7 @@ public class EventOpenHelper extends SQLiteOpenHelper {
 			"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
 					"_id integer primary key autoincrement, " +
 					"eventid text not null, " +
+					"name text not null, " +
 					"location text not null, " +
 					"date text not null, " + 
 					"photos text);";

@@ -4,13 +4,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
-    <dimen name="grid_width">365dp</dimen>
-    <dimen name="grid_height">170dp</dimen>
+    <dimen name="eventgridcell_width">365dp</dimen>
+    <dimen name="eventgridcell_height">170dp</dimen>
     
-    <dimen name="grid_cell_width">365dp</dimen>
-    <dimen name="grid_cell_height">170dp</dimen>
-    <dimen name="grid_cell_thumbnail_height">120dp</dimen>
-    <dimen name="grid_cell_thumbnail_width">120dp</dimen>
+    <dimen name="photogridcell_width">118dp</dimen>
+    <dimen name="photogridcell_height">118dp</dimen>
     
     <dimen name="title_text">16sp</dimen>
     <dimen name="desc_text">14sp</dimen>

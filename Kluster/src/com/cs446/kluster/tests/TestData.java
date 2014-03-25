@@ -65,9 +65,9 @@ public class TestData {
 		collection3.add(photo10.getPhotoId());
 		collection3.add(photo11.getPhotoId());
 		
-		Event event1 = new Event(new BigInteger("ad226e5caaf0880d8a3060e7", 16), new LatLng(43.469460, -80.553256), new Date(), collection1);
-		Event event2 = new Event(new BigInteger("ad226e5caaf0880d8a3061a6", 16), new LatLng(43.470610, -80.552703), new Date(), collection2);
-		Event event3 = new Event(new BigInteger("e5d9a23aab8aae062efd1dca", 16), new LatLng(43.471129, -80.551166), new Date(), collection3);
+		Event event1 = new Event(new BigInteger("ad226e5caaf0880d8a3060e7", 16), "Camping in the Mountains", new LatLng(43.469460, -80.553256), new Date(), collection1);
+		Event event2 = new Event(new BigInteger("ad226e5caaf0880d8a3061a6", 16), "Steve's Birthday Party", new LatLng(43.470610, -80.552703), new Date(), collection2);
+		Event event3 = new Event(new BigInteger("e5d9a23aab8aae062efd1dca", 16), "Red Hot Chili Peppers 2014", new LatLng(43.471129, -80.551166), new Date(), collection3);
 		
 		AddtoContentEventProvider(event1);
 		AddtoContentEventProvider(event2);
@@ -113,6 +113,7 @@ public class TestData {
 		}
 		
 		values.put("eventid", item.getEventId().toString(16));
+		values.put("name", item.getName());
 		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
 		values.put("photos", photos);
