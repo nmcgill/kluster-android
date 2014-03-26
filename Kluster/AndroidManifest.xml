@@ -91,6 +91,15 @@
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="com.cs446.kluster.MainActivity" />
 	    </activity>
+	    
+	    <activity
+	        android:name="com.cs446.kluster.PhotoGridActivity"
+	        android:label="@string/app_name"
+	        android:parentActivityName="com.cs446.kluster.MainActivity" >
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.cs446.kluster.MainActivity" />
+	    </activity>
     
     	<provider android:name="com.cs446.kluster.photo.PhotoProvider"
             android:readPermission="com.cs446.kluster.READ_PERMISSION"
