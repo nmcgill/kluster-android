@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.cs446.kluster.MainActivity;
+import com.cs446.kluster.PhotoGridActivity;
 import com.cs446.kluster.R;
 import com.cs446.kluster.cache.StorageAdapter;
 import com.cs446.kluster.photo.PhotoProvider;
@@ -131,14 +133,13 @@ public class EventGridAdapter extends SimpleCursorAdapter implements LoaderManag
     			
     			@Override
     			public void onClick(View v) {
-    				PhotoGridFragment fragment = new PhotoGridFragment();
-    				
+    				Intent intent = new Intent(mActivity, PhotoGridActivity.class);
     				Bundle bundle = new Bundle();
     				bundle.putString("eventid", mEventId);
     				bundle.putString("eventname", mEventName);
-    				fragment.setArguments(bundle);
+    				intent.putExtra("events", bundle);
     				
-    				mActivity.getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(fragment.toString()).commit();
+    				mActivity.startActivity(intent);
     			}
     		});
 

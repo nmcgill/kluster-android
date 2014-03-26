@@ -1,5 +1,6 @@
 package com.cs446.kluster.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -8,21 +9,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 
-import com.cs446.kluster.MainActivity;
 import com.cs446.kluster.R;
 import com.cs446.kluster.cache.StorageAdapter;
 
 public class PhotoGridAdapter extends SimpleCursorAdapter {
 	
 	private final LayoutInflater mInflator;
-	private MainActivity mActivity;
+	private Activity mActivity;
 	
 	public PhotoGridAdapter(Context context, int layout, Cursor c,
 			String[] from, int[] to, int flags) {
 		super(context, layout, c, from, to, flags);
 		
 		mInflator = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mActivity = (MainActivity)context;
+		mActivity = (Activity)context;
 	}
 	
 	@Override
