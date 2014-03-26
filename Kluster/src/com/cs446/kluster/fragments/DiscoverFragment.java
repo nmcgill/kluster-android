@@ -25,16 +25,6 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener 
         mPager = (ViewPager) view.findViewById(R.id.viewpager_noswipe);
         mPager.setAdapter(new DemoCollectionPagerAdapter(getChildFragmentManager()));  
         
-        // Specify that tabs should be displayed in the action bar.
-        ActionBar ab = getActivity().getActionBar();
-        
-        ab.setTitle("Discover");
-		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        ab.removeAllTabs();
-        ab.addTab(ab.newTab().setText("PHOTO").setTabListener(this));
-        ab.addTab(ab.newTab().setText("MAP").setTabListener(this));
-		
 		return view;
 	}
 
@@ -58,6 +48,16 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener 
 	     public int getCount() {
 	         return 2;
 	     }
+	     
+	     @Override
+	    public CharSequence getPageTitle(int position) {
+	            if (position == 0) {
+		         	return "PHOTO";
+		         }
+		         else {
+		         	return "MAP";	     		
+		         }
+	    }
 	 }
 
 	@Override

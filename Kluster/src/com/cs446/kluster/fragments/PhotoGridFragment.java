@@ -59,16 +59,7 @@ public class PhotoGridFragment extends Fragment implements LoaderManager.LoaderC
         
         mEventName = getArguments().getString("eventname");
         getActivity().getActionBar().setTitle(mEventName);
-        
-        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
 		return view;
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 	}
 	
 	@Override
