@@ -26,7 +26,6 @@ public class MainActivity extends Activity {
         
         //** TODO: Move user creation to main? */
         Users.CreateUser(this, new BigInteger("531238e5f330ede5deafbc4e", 16));
-        
         //Add Testing Data
         TestData.CreateTestData(getContentResolver());
         

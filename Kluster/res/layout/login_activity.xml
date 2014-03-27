@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signup_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/loginScreenBackground"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/image_preview"
+        android:scaleType="centerCrop"
+        android:src="@drawable/collage"
+        android:tint="#99000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/loginScreenLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_preview"
+            android:src="@drawable/kluster_text" 
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="30sp"/>
+
+        <EditText
+            android:id="@+id/loginUserNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="10sp"
+            android:background="#F0FFFFFF"
+            android:text="jsmith@example.com"
+            android:textSize="15sp"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/loginPasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="5sp"
+           android:background="#F0FFFFFF"
+            android:textSize="15sp"
+            android:text="123456"
+            android:inputType="textPassword"
+            android:textColor="#000000" />
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            
+            
+            <Button
+            android:id="@+id/loginKlusterAccountButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="5sp"
+            android:layout_marginTop="10sp"
+           android:background="#F0FFFFFF"
+            android:text="Login"
+            android:layout_weight="1"
+            android:textColor="#000000" />
+            
+             <Button
+            android:id="@+id/signupKlusterAccountButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginTop="10sp"
+           android:background="#F0FFFFFF"
+            android:text="Signup"
+            android:layout_weight="1"
+            android:textColor="#000000" />
+            
+        </LinearLayout>
+
+        
+
+        <Button
+            android:id="@+id/loginGoogleAccountButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+           android:background="#F0FFFFFF"
+            android:text="Google"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+</RelativeLayout>

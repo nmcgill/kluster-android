@@ -16,7 +16,7 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.cs446.kluster.JSONReader;
+import com.cs446.kluster.json.JSONReader;
 
 /**
  * Handle the transfer of data between a server and an
