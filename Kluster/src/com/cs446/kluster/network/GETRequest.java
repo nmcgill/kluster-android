@@ -10,7 +10,7 @@ import android.content.ContentResolver;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.cs446.kluster.JSONReader;
+import com.cs446.kluster.json.JSONReader;
 
 public class GETRequest extends AsyncTask<String, String, Boolean> {
 	private ContentResolver mContentResolver;
