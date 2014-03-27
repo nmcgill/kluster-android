@@ -3,13 +3,18 @@ package com.cs446.kluster.data;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import com.cs446.kluster.models.Event;
+import com.cs446.kluster.views.map.MapAdapter;
 
 public class EventProvider extends ContentProvider {
 	public static final String PROVIDER_NAME = "com.cs446.kluster.Events";
@@ -128,6 +133,46 @@ public class EventProvider extends ContentProvider {
 		getContext().getContentResolver().notifyChange(uri, null);
 		
 		return count;
+	}
+	
+    public static ContentValues getContentValues(Event item) {
+        ContentValues values = new ContentValues();
+
+		values.put("eventid", item.getEventId());
+		values.put("name", item.getName());
+		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
+		values.put("date", item.getDate().toString());
+		values.put("photos", TextUtils.join(",", item.getPhotos()));
+
+        return values;
+    }
+	
+	protected static final class EventOpenHelper extends SQLiteOpenHelper {
+		private static final int DATABASE_VERSION = 1;
+		private static final String DATABASE_TABLE_NAME = "eventitems";
+		private static final String DATABASE_TABLE_CREATE =
+				"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
+						"_id integer primary key autoincrement, " +
+						"eventid text not null, " +
+						"name text not null, " +
+						"location text not null, " +
+						"date text not null, " + 
+						"photos text);";
+		
+		public EventOpenHelper(Context context) {
+			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			db.execSQL(DATABASE_TABLE_CREATE);
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_NAME);
+			onCreate(db);
+		}
 	}
 
 }

@@ -6,19 +6,30 @@ import com.cs446.kluster.cache.KlusterCache;
 
 public class KlusterApplication extends Application {
 	private static KlusterApplication singleton;
-	private static KlusterCache mCacheAdapter; 
+	private KlusterCache mKlusterCache; 
+	private ConfigManager mConfigManager;
 	
-	public KlusterApplication getInstance(){
+	public static KlusterApplication getInstance(){
 		return singleton;
 	}
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		singleton = this;
-		mCacheAdapter = KlusterCache.getInstance(this);
-	}
 	
-	public static KlusterCache getCacheAdapter() {
-		return mCacheAdapter;
+    @Override
+    public void onCreate() {
+    	super.onCreate();
+        init();
+    }
+
+    private void init() {
+		singleton = this;
+        this.mConfigManager = new ConfigManager(this);
+		this.mKlusterCache = KlusterCache.getInstance(this);
+    }
+
+    public ConfigManager getConfigManager() {
+        return this.mConfigManager;
+    }
+	
+	public KlusterCache getCache() {
+		return this.mKlusterCache;
 	}
 }

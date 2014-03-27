@@ -28,7 +28,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.cs446.kluster.model.Photo;
+import com.cs446.kluster.models.Photo;
 
 @SuppressWarnings("deprecation")
 public class UploadService extends IntentService implements ResponseHandler<Object> {
@@ -55,7 +55,7 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
   		JSONArray longlat = new JSONArray();
 
 		String image = photo.getLocalUrl();
-		String eventid = photo.getEventId().toString(16);
+		String eventid = photo.getEventId();
 		String tagOne = "foo";
 		String tagTwo = "bar";
 		String time = photo.getDate().toString();

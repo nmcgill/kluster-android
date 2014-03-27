@@ -74,7 +74,7 @@
             android:exported="false" />
         
         <activity
-            android:name="com.cs446.kluster.MainActivity"
+            android:name="com.cs446.kluster.views.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -84,24 +84,24 @@
         </activity>
         
 	    <activity
-	        android:name="com.cs446.kluster.PhotoFactory"
+	        android:name="com.cs446.kluster.views.activities.PhotoFactory"
 	        android:label="@string/app_name"
-	        android:parentActivityName="com.cs446.kluster.MainActivity" >
+	        android:parentActivityName="com.cs446.kluster.views.activities.MainActivity" >
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
-	            android:value="com.cs446.kluster.MainActivity" />
+	            android:value="com.cs446.kluster.views.activities.MainActivity" />
 	    </activity>
 	    
 	    <activity
-	        android:name="com.cs446.kluster.PhotoGridActivity"
+	        android:name="com.cs446.kluster.views.activities.PhotoGridActivity"
 	        android:label="@string/app_name"
-	        android:parentActivityName="com.cs446.kluster.MainActivity" >
+	        android:parentActivityName="com.cs446.kluster.views.activities.MainActivity" >
 	        <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
-	            android:value="com.cs446.kluster.MainActivity" />
+	            android:value="com.cs446.kluster.views.activities.MainActivity" />
 	    </activity>
     
-    	<provider android:name="com.cs446.kluster.photo.PhotoProvider"
+    	<provider android:name="com.cs446.kluster.data.PhotoProvider"
             android:readPermission="com.cs446.kluster.READ_PERMISSION"
             android:writePermission="com.cs446.kluster.WRITE_PERMISSION"
             android:authorities="com.cs446.kluster.Photos"></provider>  
