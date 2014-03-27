@@ -1,4 +1,4 @@
-package com.cs446.kluster.network;
+package com.cs446.kluster.net;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

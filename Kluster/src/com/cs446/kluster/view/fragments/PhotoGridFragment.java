@@ -1,6 +1,5 @@
-package com.cs446.kluster.fragments;
+package com.cs446.kluster.view.fragments;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -16,7 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.photo.PhotoProvider;
+import com.cs446.kluster.data.PhotoProvider;
 
 public class PhotoGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	PhotoGridAdapter mAdapter;

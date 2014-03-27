@@ -1,4 +1,4 @@
-package com.cs446.kluster.fragments;
+package com.cs446.kluster.view.fragments;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;

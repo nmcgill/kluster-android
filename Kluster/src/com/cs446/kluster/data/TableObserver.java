@@ -1,4 +1,4 @@
-package com.cs446.kluster.photo;
+package com.cs446.kluster.data;
 
 
 import android.accounts.Account;

@@ -1,4 +1,4 @@
-package com.cs446.kluster.fragments;
+package com.cs446.kluster.view.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import com.cs446.kluster.MainActivity;
 import com.cs446.kluster.PhotoGridActivity;
 import com.cs446.kluster.R;
 import com.cs446.kluster.cache.StorageAdapter;
-import com.cs446.kluster.photo.PhotoProvider;
+import com.cs446.kluster.data.PhotoProvider;
 
 public class EventGridAdapter extends SimpleCursorAdapter implements LoaderManager.LoaderCallbacks<Cursor> {
 	private final LayoutInflater mInflator;

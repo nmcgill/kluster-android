@@ -1,4 +1,4 @@
-package com.cs446.kluster.sync;
+package com.cs446.kluster.net.sync;
 
 import android.app.Service;
 import android.content.Intent;

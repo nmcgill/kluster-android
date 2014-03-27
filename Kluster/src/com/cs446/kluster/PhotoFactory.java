@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -21,11 +22,11 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cs446.kluster.data.PhotoProvider;
 import com.cs446.kluster.map.MapAdapter;
-import com.cs446.kluster.network.UploadService;
-import com.cs446.kluster.photo.Photo;
-import com.cs446.kluster.photo.PhotoProvider;
-import com.cs446.kluster.user.Users;
+import com.cs446.kluster.model.Photo;
+import com.cs446.kluster.model.Users;
+import com.cs446.kluster.net.UploadService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;

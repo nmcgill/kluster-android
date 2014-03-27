@@ -1,4 +1,4 @@
-package com.cs446.kluster.event;
+package com.cs446.kluster.model;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

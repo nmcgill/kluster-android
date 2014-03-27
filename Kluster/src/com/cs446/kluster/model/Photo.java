@@ -1,4 +1,4 @@
-package com.cs446.kluster.photo;
+package com.cs446.kluster.model;
 
 import java.math.BigInteger;
 import java.text.ParseException;

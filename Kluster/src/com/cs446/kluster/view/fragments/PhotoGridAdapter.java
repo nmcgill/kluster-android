@@ -1,4 +1,4 @@
-package com.cs446.kluster.fragments;
+package com.cs446.kluster.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;

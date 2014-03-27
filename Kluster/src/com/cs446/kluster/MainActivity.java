@@ -2,6 +2,7 @@ package com.cs446.kluster;
 
 import java.math.BigInteger;
 
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,10 +18,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.cs446.kluster.fragments.DiscoverFragment;
-import com.cs446.kluster.fragments.EventMapFragment;
+import com.cs446.kluster.model.Users;
 import com.cs446.kluster.tests.TestData;
-import com.cs446.kluster.user.Users;
+import com.cs446.kluster.view.fragments.DiscoverFragment;
+import com.cs446.kluster.view.fragments.EventMapFragment;
 
 public class MainActivity extends Activity {    
 	private ActionBarDrawerToggle mDrawerToggle;

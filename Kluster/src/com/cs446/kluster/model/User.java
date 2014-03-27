@@ -1,4 +1,4 @@
-package com.cs446.kluster.user;
+package com.cs446.kluster.model;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 
-import com.cs446.kluster.photo.PhotoProvider;
+import com.cs446.kluster.data.PhotoProvider;
 
 public class User {
 	// An account type, in the form of a domain name

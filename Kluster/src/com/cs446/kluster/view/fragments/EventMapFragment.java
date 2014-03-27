@@ -1,4 +1,4 @@
-package com.cs446.kluster.fragments;
+package com.cs446.kluster.view.fragments;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +14,9 @@ import android.widget.ImageView;
 
 import com.cs446.kluster.MainActivity;
 import com.cs446.kluster.cache.StorageAdapter;
+import com.cs446.kluster.data.PhotoProvider;
 import com.cs446.kluster.map.MapAdapter;
 import com.cs446.kluster.map.PhotoInfoWindowAdapter;
-import com.cs446.kluster.photo.PhotoProvider;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;

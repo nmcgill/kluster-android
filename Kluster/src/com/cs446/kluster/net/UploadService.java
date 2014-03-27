@@ -1,4 +1,4 @@
-package com.cs446.kluster.network;
+package com.cs446.kluster.net;
 
 
 import java.io.File;
@@ -28,7 +28,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.cs446.kluster.photo.Photo;
+import com.cs446.kluster.model.Photo;
 
 @SuppressWarnings("deprecation")
 public class UploadService extends IntentService implements ResponseHandler<Object> {

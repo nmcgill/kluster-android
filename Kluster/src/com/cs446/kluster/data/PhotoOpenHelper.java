@@ -1,4 +1,4 @@
-package com.cs446.kluster.photo;
+package com.cs446.kluster.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,9 +1,12 @@
-package com.cs446.kluster.user;
+package com.cs446.kluster.model;
 
 import java.math.BigInteger;
 
 import android.accounts.Account;
 import android.content.Context;
+
+
+/**TODO: Replace this */
 
 public class Users {
 	public static User mCurrentUser;

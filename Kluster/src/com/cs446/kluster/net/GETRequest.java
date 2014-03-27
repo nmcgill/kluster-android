@@ -1,4 +1,4 @@
-package com.cs446.kluster.network;
+package com.cs446.kluster.net;
 
 import java.io.IOException;
 import java.io.InputStream;

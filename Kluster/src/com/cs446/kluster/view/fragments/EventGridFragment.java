@@ -1,4 +1,4 @@
-package com.cs446.kluster.fragments;
+package com.cs446.kluster.view.fragments;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.event.EventProvider;
+import com.cs446.kluster.data.EventProvider;
 
 public class EventGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	EventGridAdapter mAdapter;

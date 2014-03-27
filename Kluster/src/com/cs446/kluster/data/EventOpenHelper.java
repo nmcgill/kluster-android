@@ -1,4 +1,4 @@
-package com.cs446.kluster.event;
+package com.cs446.kluster.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

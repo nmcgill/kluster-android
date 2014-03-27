@@ -1,4 +1,4 @@
-package com.cs446.kluster.photo;
+package com.cs446.kluster.data;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -11,20 +11,20 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
-public class PhotoProvider extends ContentProvider {
-	public static final String PROVIDER_NAME = "com.cs446.kluster.Photos";
-	public static final Uri CONTENT_URI = Uri.parse("content://"+PROVIDER_NAME+"/photoitems");
+public class EventProvider extends ContentProvider {
+	public static final String PROVIDER_NAME = "com.cs446.kluster.Events";
+	public static final Uri CONTENT_URI = Uri.parse("content://"+PROVIDER_NAME+"/eventitems");
 	
-	static final int PHOTOITEMS = 1;
-	static final int PHOTOITEM_ID = 2;
+	static final int EVENTITEMS = 1;
+	static final int EVENTITEM_ID = 2;
 	
-	private PhotoOpenHelper mOpenHelper;
+	private EventOpenHelper mOpenHelper;
 	private SQLiteDatabase mDb;
 	
 	private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-		mUriMatcher.addURI(PROVIDER_NAME, "photoitems", PHOTOITEMS);
-		mUriMatcher.addURI(PROVIDER_NAME, "photoitems/#", PHOTOITEM_ID);
+		mUriMatcher.addURI(PROVIDER_NAME, "eventitems", EVENTITEMS);
+		mUriMatcher.addURI(PROVIDER_NAME, "eventitems/#", EVENTITEM_ID);
 	}
 	
 	@Override
@@ -32,12 +32,12 @@ public class PhotoProvider extends ContentProvider {
 		int count = 0;
 		
 		switch (mUriMatcher.match(uri)) {
-			case PHOTOITEMS:
-				count = mDb.delete("photoitems", selection, selectionArgs);
+			case EVENTITEMS:
+				count = mDb.delete("eventitems", selection, selectionArgs);
 				break;
-			case PHOTOITEM_ID:
+			case EVENTITEM_ID:
 				String id = uri.getPathSegments().get(1);
-				count = mDb.delete("photoitems", "_id = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
+				count = mDb.delete("eventitems", "_id = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);
@@ -51,10 +51,10 @@ public class PhotoProvider extends ContentProvider {
 	@Override
 	public String getType(Uri uri) {
 		switch (mUriMatcher.match(uri)) {
-			case PHOTOITEMS:
-				return "vnd.android.cursor.dir/vnd.kluster.Photos ";
-			case PHOTOITEM_ID:
-				return "vnd.android.cursor.item/vnd.kluster.Photos ";
+			case EVENTITEMS:
+				return "vnd.android.cursor.dir/vnd.kluster.Events ";
+			case EVENTITEM_ID:
+				return "vnd.android.cursor.item/vnd.kluster.Events ";
 			default:
 				throw new IllegalArgumentException("Unsupported URI " + uri);
 		}
@@ -64,7 +64,7 @@ public class PhotoProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 
 		/* Check to see if the unique GUID is already in table */
-		Cursor c = mDb.rawQuery("SELECT * FROM photoitems WHERE photoid = '" + values.getAsString("photoid") + "'", null);
+		Cursor c = mDb.rawQuery("SELECT * FROM eventitems WHERE eventid = '" + values.getAsString("eventid") + "'", null);
 		try {
 			if(c.moveToFirst()) {
 				return uri;
@@ -74,7 +74,7 @@ public class PhotoProvider extends ContentProvider {
 			c.close();
 		}
 		
-		long rowID = mDb.insert("photoitems", "", values);
+		long rowID = mDb.insert("eventitems", "", values);
 
 		if (rowID > 0) {
 			Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
@@ -87,7 +87,7 @@ public class PhotoProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		mOpenHelper = new PhotoOpenHelper(getContext());
+		mOpenHelper = new EventOpenHelper(getContext());
 		mDb = mOpenHelper.getWritableDatabase();
 		
 		return ((mDb == null) ? false : true);
@@ -97,9 +97,9 @@ public class PhotoProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 
-        qBuilder.setTables("photoitems");
+        qBuilder.setTables("eventitems");
 
-        if((mUriMatcher.match(uri)) == PHOTOITEM_ID) {
+        if((mUriMatcher.match(uri)) == EVENTITEM_ID) {
             qBuilder.appendWhere("_id=" + uri.getPathSegments().get(1));
         }
 
@@ -115,11 +115,11 @@ public class PhotoProvider extends ContentProvider {
 		int count = 0;
 		
 		switch (mUriMatcher.match(uri)) {
-			case PHOTOITEMS:
-				count = mDb.update("photoitems", values, selection, selectionArgs);
+			case EVENTITEMS:
+				count = mDb.update("eventitems", values, selection, selectionArgs);
 				break;
-			case PHOTOITEM_ID:
-				count = mDb.update("photoitems", values, selection, selectionArgs);
+			case EVENTITEM_ID:
+				count = mDb.update("eventitems", values, selection, selectionArgs);
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);

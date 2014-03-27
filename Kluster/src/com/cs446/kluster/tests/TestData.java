@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 
-import com.cs446.kluster.event.Event;
-import com.cs446.kluster.event.EventProvider;
+import com.cs446.kluster.data.EventProvider;
+import com.cs446.kluster.data.PhotoProvider;
 import com.cs446.kluster.map.MapAdapter;
-import com.cs446.kluster.photo.Photo;
-import com.cs446.kluster.photo.PhotoProvider;
-import com.cs446.kluster.user.Users;
+import com.cs446.kluster.model.Event;
+import com.cs446.kluster.model.Photo;
+import com.cs446.kluster.model.Users;
 import com.google.android.gms.maps.model.LatLng;
 
 public class TestData {
