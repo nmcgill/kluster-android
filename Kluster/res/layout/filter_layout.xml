@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="300dp" >
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="300dp"
+	    android:orientation="vertical"
+	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp" >
+	    
+   	<Button android:id="@+id/filter_btnDate"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp"
+	    android:text="Select Date"
+	     />
+
+   	<Button android:id="@+id/filter_btnTime"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp"
+	    android:text="Select Time"
+	     />     
+    
+    <TextView android:layout_width="match_parent"
+       		android:layout_height="wrap_content"
+       		android:textSize="18sp"
+       		android:text="Contributor" />
+    <EditText android:id="@+id/filter_user"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />    
+    
+    <TextView android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		android:textSize="18sp"
+   		android:text="Tags" />
+    <EditText android:id="@+id/filter_tags"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+	     
+   	<Button android:id="@+id/filter_btnApply"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp"
+	    android:text="Apply"
+	    android:background="?android:attr/selectableItemBackground" />
+	        
+	    <!-- loc, time, userId,eventId, tags -->
+	
+	</LinearLayout>
+</ScrollView>
