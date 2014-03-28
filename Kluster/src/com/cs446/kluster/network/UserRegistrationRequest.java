@@ -48,9 +48,9 @@ public class UserRegistrationRequest extends AsyncTask<UserInfo, Void, Boolean> 
  	    	
 			nameJson.put("last", userInfo.getmLastName());
 	        nameJson.put("first", userInfo.getmFirstName());
+	        requestJson.put("username", userInfo.getmUserName());
 	        requestJson.put("password", userInfo.getmPassword());
 	        requestJson.put("email", userInfo.getmUserEmail());
-	        requestJson.put("username", userInfo.getmUserName());
 	        requestJson.put("name", nameJson);
 			
 	        Log.w("UserRegistrationRequest", requestJson.toString());
@@ -58,11 +58,16 @@ public class UserRegistrationRequest extends AsyncTask<UserInfo, Void, Boolean> 
  	    	String url="http://205.234.153.42/users";
  	    	
  	    	StringEntity stringEntity=new StringEntity(requestJson.toString());
- 	    	stringEntity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 
  	        HttpPost httppost = new HttpPost(url);
+ 	        httppost.setHeader("Accept", "application/json");
+ 	        httppost.setHeader("Content-type", "application/json");
  	        httppost.setEntity(stringEntity); 	        
  	        response=client.execute(httppost);
+ 	        
+ 	        
+ 	        Log.w("UserRegistrationRequest", Integer.toString(response.getStatusLine().getStatusCode()));
+ 	       
  	        
  	        if(response.getStatusLine().getStatusCode() >= 300){
  	        	return false;

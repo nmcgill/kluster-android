@@ -21,8 +21,6 @@ import android.util.Log;
 import com.cs446.kluster.json.AuthResponseReader;
 import com.cs446.kluster.user.UserAuthInfo;
 
-//TODO: Merge this with the GETRequest file some how
-//TODO: I don't think a provider is needed for this.
 //TODO: Create and throw exception for invalid username and password based on server response when it is implemented.
 
 public class AuthRequest extends AsyncTask<String, String, UserAuthInfo> {
