@@ -2,7 +2,6 @@ package com.cs446.kluster.network;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 
@@ -13,7 +12,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import android.content.ContentResolver;
 import android.os.AsyncTask;
@@ -21,7 +19,6 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.cs446.kluster.json.AuthResponseReader;
-import com.cs446.kluster.json.JSONReader;
 import com.cs446.kluster.user.UserAuthInfo;
 
 //TODO: Merge this with the GETRequest file some how
