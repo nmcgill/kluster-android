@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.cs446.kluster.models.Event;
-import com.cs446.kluster.views.map.MapAdapter;
+import com.cs446.kluster.views.map.MapUtils;
 
 public class EventProvider extends ContentProvider {
 	public static final String PROVIDER_NAME = "com.cs446.kluster.Events";
@@ -140,8 +140,9 @@ public class EventProvider extends ContentProvider {
 
 		values.put("eventid", item.getEventId());
 		values.put("name", item.getName());
-		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
-		values.put("date", item.getDate().toString());
+		values.put("location", MapUtils.latLngToString(item.getLocation()));
+		values.put("startdate", Event.getDateFormat().format(item.getStartDate()));
+		values.put("enddate", Event.getDateFormat().format(item.getEndDate()));
 		values.put("tags", TextUtils.join("", item.getTags()));
 		values.put("photos", TextUtils.join(",", item.getPhotos()));
 
@@ -157,9 +158,10 @@ public class EventProvider extends ContentProvider {
 						"eventid text not null, " +
 						"name text not null, " +
 						"location text not null, " +
-						"date text not null, " + 
-						"tags text not null" +
-						"photos text);";
+						"startdate text not null, " + 
+						"enddate text not null, " +
+						"tags text not null, " +
+						"photos text not null);";
 		
 		public EventOpenHelper(Context context) {
 			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);

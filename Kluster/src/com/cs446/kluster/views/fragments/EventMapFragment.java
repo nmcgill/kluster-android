@@ -4,21 +4,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.cs446.kluster.KlusterApplication;
+import com.cs446.kluster.data.EventStorageAdapter;
 import com.cs446.kluster.data.PhotoProvider;
-import com.cs446.kluster.views.map.MapAdapter;
+import com.cs446.kluster.data.serialize.EventSerializer;
+import com.cs446.kluster.models.Event;
+import com.cs446.kluster.net.EventRequest;
+import com.cs446.kluster.net.http.task.HttpContentRequestTask;
+import com.cs446.kluster.views.map.MapUtils;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -33,8 +43,9 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
     public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
 
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    	LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
+		getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.locationToLatLng(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)), 13));
     }
 	
 	@Override
@@ -52,6 +63,18 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
 				return true;
 			}
 		});
+		
+		getMap().setOnCameraChangeListener(new OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition position) {
+                LatLngBounds bounds = getMap().getProjection().getVisibleRegion().latLngBounds;
+                
+        		EventRequest request = EventRequest.create(bounds.northeast, bounds.southwest);
+        		HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
+        	
+        		task.executeAsync(request);
+            }
+        });
 	}
 
 	@Override
@@ -84,18 +107,16 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
 
 		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
-
-			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapAdapter.StringToLatLng(cursor.getString(locIndex)), 13));
 	        
 			Marker marker = getMap().addMarker(new MarkerOptions()
-			.position(MapAdapter.StringToLatLng(cursor.getString(locIndex))));
+			.position(MapUtils.stringToLatLng(cursor.getString(locIndex))));
 
-			String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
+			String url = cursor.getString(cursor.getColumnIndex("url"));
 	        
 	        ImageView imgView = new ImageView(getActivity());
 	        mMarkerList.put(marker, imgView);
 
-	        KlusterApplication.getInstance().getCache().loadBitmap(remoteurl, imgView, getActivity());
+	        KlusterApplication.getInstance().getCache().loadBitmap(url, imgView, getActivity());
 		}
 	}
 

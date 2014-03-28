@@ -24,9 +24,10 @@ import com.cs446.kluster.net.http.HttpRequestListener;
 import com.cs446.kluster.net.http.task.HttpContentRequestTask;
 import com.google.android.gms.maps.model.LatLng;
 
-public class DiscoverFragment extends Fragment implements ActionBar.TabListener, HttpRequestListener<Event> {
+public class DiscoverFragment extends Fragment implements ActionBar.TabListener, HttpRequestListener<Event>, android.location.LocationListener {
     private ViewPager mPager;	
-   
+    private LocationManager mLocationManager;
+    
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.discover_layout, container, false);
@@ -40,17 +41,9 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-		String locationProvider = LocationManager.GPS_PROVIDER;
-
-		Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-		
-		EventRequest request = EventRequest.create(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 30000);
-		HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
-	
-		task.executeAsync(request);
+        
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 	}
 
 	 public class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
@@ -87,8 +80,6 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -98,25 +89,40 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {      		
+		if (getActivity() != null) {
+			EventRequest request = EventRequest.create(new LatLng(location.getLatitude(), location.getLongitude()), 30000);
+			HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
 		
+			task.executeAsync(request);
+			mLocationManager.removeUpdates(this);
+		}
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
 
 	@Override
 	public void onComplete() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onError(Exception e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onSuccess(Event result) {
-		// TODO Auto-generated method stub
-		
 	}
 }

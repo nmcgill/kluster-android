@@ -11,7 +11,7 @@ import java.util.Locale;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.cs446.kluster.views.map.MapAdapter;
+import com.cs446.kluster.views.map.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Photo implements Parcelable  {
@@ -20,22 +20,18 @@ public class Photo implements Parcelable  {
 	private String mEventId;
 	private LatLng mLocation;
 	private Date mDate;
-	private String mUrl;
+	private String[] mUrl;
 	private List<String> mTags;
-	private Boolean mUploaded;
-	private String mLocalUrl;
-	private String mThumbnailUrl;
+	private String[] mRating;
 	
 	public Photo(String pid,
 			String uid,
 			String eid,
 			LatLng loc,
 			Date date,
-			String url,
+			String[] url,
 			List<String> tags,
-			Boolean uploaded,
-			String localurl,
-			String thumburl) {
+			String[] rating) {
 		
 		mPhotoId = pid;
 		mUserId = uid;
@@ -44,9 +40,8 @@ public class Photo implements Parcelable  {
 		mDate = date;
 		mUrl = url;
 		mTags = tags;
-		mUploaded = uploaded;
-		mLocalUrl = localurl;
-		mThumbnailUrl = thumburl;
+		mRating = rating;
+
 	}
 
 	public String getPhotoId() {
@@ -68,49 +63,61 @@ public class Photo implements Parcelable  {
 	public String getUserId() {
 		return mUserId;
 	}
-
-	public String getUrl() {
+	
+	public String[] getAllUrls() {
 		return mUrl;
+	}
+	
+	public String getUrl() {
+		return mUrl[0];
+	}
+	
+	public String getMediumUrl() {
+		return mUrl[1];
+	}
+	
+	public String getThumbUrl() {
+		return mUrl[2];
 	}
 
 	public List<String> getTags() {
 		return mTags;
 	}
 	
-	public Boolean getUploaded() {
-		return mUploaded;
+	public String getRatingsDown() {
+		return mRating[0];
 	}
 	
-	public String getLocalUrl() {
-		return mLocalUrl;
+	public String getRatingsUp() {
+		return mRating[1];
 	}
 	
-	public String getThumbnailUrl() {
-		return mThumbnailUrl;
+	public String[] getRatings() {
+		return mRating;
 	}
-	
+		
 	public String getTag(String val) {
 		return mTags.get(mTags.indexOf(val));
 	}
 	
+	public static SimpleDateFormat getDateFormat() {
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:zzz'Z'", Locale.US);
+	}
+	
 	public Photo(Parcel in) {
-        SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         String[] strArray = {};
         
 		mPhotoId = in.readString();
 		mUserId = in.readString();
 		mEventId = in.readString();
-		mLocation = MapAdapter.StringToLatLng(in.readString());
+		mLocation = MapUtils.stringToLatLng(in.readString());
 		try {
-			mDate = df.parse(in.readString());
+			mDate = getDateFormat().parse(in.readString());
 		} catch (ParseException e) {
 		}
-		mUrl = in.readString();
+		in.readStringArray(mUrl);
 		in.readStringArray(strArray);
-		mTags = new ArrayList<String>(Arrays.asList(strArray));
-		mUploaded = Boolean.getBoolean(in.readString());
-		mLocalUrl = in.readString();
-		mThumbnailUrl = in.readString();		
+		mTags = new ArrayList<String>(Arrays.asList(strArray));	
 	}
 	
 
@@ -121,18 +128,13 @@ public class Photo implements Parcelable  {
 
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
-        SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-        
 		parcel.writeString(mPhotoId.toString());
 		parcel.writeString(mUserId.toString());
 		parcel.writeString(mEventId.toString());
-		parcel.writeString(MapAdapter.LatLngToString(mLocation));
-		parcel.writeString(df.format(mDate));
-		parcel.writeString(mUrl);
+		parcel.writeString(MapUtils.latLngToString(mLocation));
+		parcel.writeString(getDateFormat().format(mDate));
+		parcel.writeStringArray(mUrl);
 		parcel.writeArray(mTags.toArray());
-		parcel.writeString(Boolean.toString(mUploaded));
-		parcel.writeString(mLocalUrl.toString());
-		parcel.writeString(mThumbnailUrl);
 	}
 	
 	public static final Parcelable.Creator<Photo> CREATOR = 

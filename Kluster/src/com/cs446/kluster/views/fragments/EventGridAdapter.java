@@ -143,7 +143,7 @@ public class EventGridAdapter extends SimpleCursorAdapter implements LoaderManag
     			}
     		});
 
-            KlusterApplication.getInstance().getCache().loadBitmap((String)mCursor.getString(mCursor.getColumnIndex("remoteurl")), imgMain, mActivity);
+            KlusterApplication.getInstance().getCache().loadBitmap((String)mCursor.getString(mCursor.getColumnIndex("url")), imgMain, mActivity);
             
           
             ((ViewPager)view).addView(imgMain);

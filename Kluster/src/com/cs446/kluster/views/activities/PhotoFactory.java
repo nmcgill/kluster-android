@@ -89,11 +89,9 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 						"531238e5f330ede5deafbc3a",
                 						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,
-                						"",
+                						new String[] {fileUri.getPath(), fileUri.getPath(), fileUri.getPath()},
                 						new ArrayList<String>(),
-                						false,
-                						fileUri.getPath(),
-                						"");
+                						new String[] {"0", "0"});
 
                 photoStorage.insert(photo);
             	

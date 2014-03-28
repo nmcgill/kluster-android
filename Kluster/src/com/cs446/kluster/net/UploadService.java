@@ -2,12 +2,9 @@ package com.cs446.kluster.net;
 
 
 import java.io.File;
-
-
 import java.io.IOException;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
@@ -60,11 +57,11 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
 	    
   		JSONArray longlat = new JSONArray();
 
-		String image = photo.getLocalUrl();
+		String image = photo.getUrl();
 		String eventid = photo.getEventId();
 		String tagOne = "foo";
 		String tagTwo = "bar";
-		String time = photo.getDate().toString();
+		String time = Photo.getDateFormat().format(photo.getDate());
 			
   	    try {
 			longlat.put(photo.getLocation().longitude);

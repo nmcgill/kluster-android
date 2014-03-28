@@ -1,7 +1,7 @@
 package com.cs446.kluster.data;
 
 import com.cs446.kluster.models.Photo;
-import com.cs446.kluster.views.map.MapAdapter;
+import com.cs446.kluster.views.map.MapUtils;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -141,13 +141,13 @@ public class PhotoProvider extends ContentProvider {
 		values.put("photoid", item.getPhotoId());
 		values.put("userid", item.getUserId());
 		values.put("eventid", item.getEventId());
-		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
-		values.put("date", item.getDate().toString());
-		values.put("remoteurl", item.getUrl());
+		values.put("location", MapUtils.latLngToString(item.getLocation()));
+		values.put("date", Photo.getDateFormat().format(item.getDate()));
+		values.put("url", item.getUrl());
+		values.put("mediumurl", item.getMediumUrl());
+		values.put("thumburl", item.getThumbUrl());
 		values.put("tags", TextUtils.join(",", item.getTags()));
-		values.put("uploaded", item.getUploaded());
-		values.put("localurl", item.getLocalUrl());
-		values.put("thumburl", item.getThumbnailUrl());
+		values.put("rating", TextUtils.join(",", item.getRatings()));
 
         return values;
     }
@@ -163,11 +163,11 @@ public class PhotoProvider extends ContentProvider {
 						"eventid text not null, " +
 						"location text not null, " +
 						"date text not null, " + 
-						"remoteurl text, " +
-						"tags text, " +
-						"uploaded integer not null," +
-						"localurl text, " +
-						"thumburl text);";
+						"url text not null, " +
+						"mediumurl text not null, " +
+						"thumburl text not null, " +
+						"tags text not null, " +
+						"rating text not null);";
 		
 		public PhotoOpenHelper(Context context) {
 			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);

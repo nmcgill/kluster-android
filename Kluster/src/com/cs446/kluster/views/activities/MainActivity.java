@@ -2,6 +2,7 @@ package com.cs446.kluster.views.activities;
 
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -26,6 +27,7 @@ import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.views.fragments.DiscoverFragment;
 import com.cs446.kluster.views.fragments.EventMapFragment;
 import com.cs446.kluster.views.fragments.SearchFragment;
+import com.google.android.gms.ads.a;
 
 public class MainActivity extends Activity {    
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -38,11 +40,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity); 
+        
+        View header = (View)getLayoutInflater().inflate(R.layout.drawerheader_layout, null);
 
         mTitle = "Discover";
         
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.addHeaderView(header);
         
         mMenuTitles = getResources().getStringArray(R.array.menu_list);
 
@@ -102,8 +107,7 @@ public class MainActivity extends Activity {
 			
 			Bundle bundle = new Bundle();
 			bundle.putString("query", query);
-			          
-			setTitle("Search");
+
 			Fragment fragment = new SearchFragment();
 			fragment.setArguments(bundle);
 			FragmentManager fragmentManager = getFragmentManager();
@@ -160,7 +164,8 @@ public class MainActivity extends Activity {
 			startActivity(intent);
     		return true;
     	case R.id.action_search:
-    		 setTitle("Search");
+    		 mTitle = "Search";
+    		 invalidateOptionsMenu();
 	       	 Fragment fragment = new SearchFragment();
 	         FragmentManager fragmentManager = getFragmentManager();
 	         fragmentManager.beginTransaction()
@@ -210,12 +215,15 @@ public class MainActivity extends Activity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         Fragment fragment;
-        if (position == 0) {
+        if (position == 1) {
 	       	 fragment = new SearchFragment();	 
-         }
-         else {
-         	fragment = new DiscoverFragment();
-         }
+        }
+        else if (position == 2) {
+        	fragment = new DiscoverFragment();
+        }
+        else {
+        	return;
+        }
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
@@ -225,13 +233,13 @@ public class MainActivity extends Activity {
 
         // Highlight the seleted item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(mMenuTitles[position]);
+        setTitle(mMenuTitles[position-1]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
     @Override
     public void setTitle(CharSequence title) {
     	mTitle = title;
-    	getActionBar().setTitle(title);
+    	super.setTitle(title);
     }
 }

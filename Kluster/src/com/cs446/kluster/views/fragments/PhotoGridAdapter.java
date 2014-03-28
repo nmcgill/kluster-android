@@ -29,16 +29,16 @@ public class PhotoGridAdapter extends SimpleCursorAdapter {
 	public Object getItem(int position) {
 		getCursor().moveToPosition(position);
 		
-		return getCursor().getString(getCursor().getColumnIndex("remoteurl"));
+		return getCursor().getString(getCursor().getColumnIndex("url"));
 	}
 	
 	@Override
     public void bindView(View view, Context context, Cursor cursor) { 
         ImageView imgBackground = (ImageView)view.getTag(R.id.photogrid_imgBackground);
         
-        String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
+        String url = cursor.getString(cursor.getColumnIndex("url"));
         
-	    KlusterApplication.getInstance().getCache().loadBitmap(remoteurl, imgBackground, mActivity);
+	    KlusterApplication.getInstance().getCache().loadBitmap(url, imgBackground, mActivity);
 
 	    imgBackground.invalidate();
 	}

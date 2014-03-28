@@ -13,13 +13,13 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp"
 	    android:text="Select Date"
-	     />
+	    android:background="?android:attr/selectableItemBackground" />
 
    	<Button android:id="@+id/filter_btnTime"
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp"
 	    android:text="Select Time"
-	     />     
+	    android:background="?android:attr/selectableItemBackground" />     
     
     <TextView android:layout_width="match_parent"
        		android:layout_height="wrap_content"

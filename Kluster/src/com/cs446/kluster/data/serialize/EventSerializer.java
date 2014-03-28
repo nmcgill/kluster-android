@@ -3,12 +3,14 @@ package com.cs446.kluster.data.serialize;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import android.annotation.TargetApi;
 import android.util.JsonReader;
 import android.util.JsonToken;
+import android.util.Log;
 
 import com.cs446.kluster.models.Event;
 import com.google.android.gms.maps.model.LatLng;
@@ -40,7 +42,8 @@ public class EventSerializer implements Serializer<Event> {
         Double[] loc = null;
         List<String> photos = null;
         List<String> tags = null;
-        Date date = new Date();
+        Date startdate = null;
+        Date enddate = null;
         
         reader.beginObject();
         while (reader.hasNext()) {
@@ -53,11 +56,27 @@ public class EventSerializer implements Serializer<Event> {
             else if (name.equals("name")) {
                 eventName = reader.nextString();
             }
+            else if (name.equals("start_time")) {
+            	try {
+					startdate = Event.getDateFormat().parse(reader.nextString());
+				} catch (ParseException e) {
+					Log.e("readEvent", "Could not parse start time");
+					startdate = new Date();
+				}
+            }
+            else if (name.equals("end_time")) {
+            	try {
+					enddate = Event.getDateFormat().parse(reader.nextString());
+				} catch (ParseException e) {
+					Log.e("readEvent", "Could not end time");
+					enddate = new Date();
+				}
+            }
             else if (name.equals("tags")) {
                 tags = SerializerUtils.readStringArray(reader); 
             }
             else if (name.equals("photos")) {
-                    photos = SerializerUtils.readStringArray(reader);
+                photos = SerializerUtils.readStringArray(reader);
             }
             else {
                 reader.skipValue();
@@ -65,7 +84,7 @@ public class EventSerializer implements Serializer<Event> {
         }
         reader.endObject();
 
-        return new Event(eventId, eventName, new LatLng(loc[0], loc[1]), date, tags, photos);
+        return new Event(eventId, eventName, new LatLng(loc[0], loc[1]), startdate, enddate, tags, photos);
         
     }
 }

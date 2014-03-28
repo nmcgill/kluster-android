@@ -1,5 +1,7 @@
 package com.cs446.kluster.views.fragments;
 
+import java.util.HashMap;
+
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -16,7 +18,8 @@ import com.cs446.kluster.data.EventProvider;
 
 public class SearchGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	EventGridAdapter mAdapter;
-
+	HashMap <String,String> mFilters;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.searchgrid_layout, container, false);
@@ -50,9 +53,14 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
 		Bundle args = getArguments();
+		mFilters = (HashMap<String, String>) args.getSerializable("filters");
 		
-		double[] loc = args.getDoubleArray("location");
+		double[] loc = new double[] {1, 2};
 		double radius = 30000;
+		
+		if (args != null) {
+			loc = args.getDoubleArray("location");
+		}
 		
 		String[] selection = new String[] {"1"};
 		

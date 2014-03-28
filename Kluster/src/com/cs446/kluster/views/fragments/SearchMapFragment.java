@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.data.PhotoProvider;
-import com.cs446.kluster.views.map.MapAdapter;
+import com.cs446.kluster.views.map.MapUtils;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -85,17 +85,17 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
 
-			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapAdapter.StringToLatLng(cursor.getString(locIndex)), 13));
+			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.stringToLatLng(cursor.getString(locIndex)), 13));
 	        
 			Marker marker = getMap().addMarker(new MarkerOptions()
-			.position(MapAdapter.StringToLatLng(cursor.getString(locIndex))));
+			.position(MapUtils.stringToLatLng(cursor.getString(locIndex))));
 
-			String remoteurl = cursor.getString(cursor.getColumnIndex("remoteurl"));
+			String url = cursor.getString(cursor.getColumnIndex("url"));
 	        
 	        ImageView imgView = new ImageView(getActivity());
 	        mMarkerList.put(marker, imgView);
 
-	        KlusterApplication.getInstance().getCache().loadBitmap(remoteurl, imgView, getActivity());
+	        KlusterApplication.getInstance().getCache().loadBitmap(url, imgView, getActivity());
 		}
 	}
 

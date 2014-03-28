@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawerheader_content"
+    android:layout_width="wrap_content"
+    android:layout_height="100dp"
+    android:orientation="vertical" >
+    
+	<ImageView android:id="@+id/drawerheader_imgDisplayPic"
+	    android:padding="3dp"
+	    android:background="@drawable/common_signin_btn_icon_focus_dark"
+	    android:layout_width="50dp"
+	    android:layout_height="50dp" />
+	
+	<TextView android:id="@+id/drawerheader_txtName"
+	    android:layout_width="match_parent"
+	    android:layout_height="25dp"
+	    android:textSize="20sp"
+	    android:text="John Smith"
+	    android:layout_toRightOf="@+id/drawerheader_imgDisplayPic" />
+	<TextView android:id="@+id/drawerheader_txtEvent"
+	    android:layout_width="match_parent"
+	    android:layout_height="25dp"
+	    android:text="You are not at an event"
+	    android:layout_toRightOf="@+id/drawerheader_imgDisplayPic"
+	    android:layout_below="@+id/drawerheader_txtName" />
+</RelativeLayout>
+

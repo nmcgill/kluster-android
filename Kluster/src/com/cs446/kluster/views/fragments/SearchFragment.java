@@ -3,7 +3,6 @@ package com.cs446.kluster.views.fragments;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -26,7 +25,7 @@ import com.cs446.kluster.views.fragments.FilterDialogFragment.FilterListener;
 
 public class SearchFragment extends Fragment implements ActionBar.TabListener {
     private ViewPager mPager;	
-    private Map<String, String> mFilters;
+    private HashMap<String, String> mFilters;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +33,9 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 		
 		mFilters = new HashMap<String, String>();
 		
-		mFilters.put("location", getArguments().getString("query"));
+		if (getArguments() != null) {
+			mFilters.put("location", getLocationString(getArguments().getString("query")));
+		}
 
         mPager = (ViewPager) view.findViewById(R.id.viewpager_noswipe);
         mPager.setAdapter(new DemoCollectionPagerAdapter(getChildFragmentManager()));  
@@ -64,22 +65,24 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 		return view;
 	}
 	
-	public Bundle createBundle() {
-		Bundle bundle = new Bundle();
-		
+	public String getLocationString(String name) {
+
 		Geocoder geocoder = new Geocoder(getActivity());
 		List<Address> addr = null;
 		try {
-			 addr = geocoder.getFromLocationName(mFilters.get("location"), 1);
+			if (mFilters.size() > 0) {
+				addr = geocoder.getFromLocationName(mFilters.get("location"), 1);
+			}
 		}
 		catch (IOException e) {
 		}
 		
 		if (addr != null) {
-			bundle.putDoubleArray("location", new double[]{addr.get(0).getLatitude(), addr.get(0).getLongitude()});
+			return String.format("%f,%f", addr.get(0).getLatitude(), addr.get(0).getLongitude());
 		}
-
-		return bundle;
+		else {
+			return "";
+		}
 	}
 
 	@Override
@@ -109,7 +112,9 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 
             if (position == 0) {
             	Fragment fragment = new SearchGridFragment();
-            	fragment.setArguments(createBundle());
+            	Bundle bundle = new Bundle();
+            	bundle.putSerializable("filters", mFilters);
+            	fragment.setArguments(bundle);
 	         	return new SearchGridFragment();
 	         }
 	         else {
