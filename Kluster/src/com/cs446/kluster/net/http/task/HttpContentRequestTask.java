@@ -3,10 +3,10 @@ package com.cs446.kluster.net.http.task;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import com.cs446.kluster.data.StorageAdapter;
 import com.cs446.kluster.net.http.HttpRequestListener;
 import com.cs446.kluster.net.http.Request;
 import com.cs446.kluster.net.http.Response;
+import com.cs446.kluster.data.StorageAdapter;
 import com.cs446.kluster.data.serialize.Serializer;
 
 import java.io.IOException;

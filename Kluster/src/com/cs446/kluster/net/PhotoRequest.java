@@ -2,12 +2,12 @@ package com.cs446.kluster.net;
 
 import com.cs446.kluster.ConfigManager;
 import com.cs446.kluster.KlusterApplication;
-import com.cs446.kluster.net.http.Request;
+import com.cs446.kluster.net.http.AuthRequest;
 
 /**
  * Created by Marlin Gingerich on 2014-03-10.
  */
-public class PhotoRequest extends Request {
+public class PhotoRequest extends AuthRequest {
 
     final private static String ENDPOINT_PHOTOS = "/photos";
 

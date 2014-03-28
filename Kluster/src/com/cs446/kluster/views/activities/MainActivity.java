@@ -93,7 +93,22 @@ public class MainActivity extends Activity {
          * Register the observer for the data table. The table's path
          * and any of its subpaths trigger the observer.
          */
-        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer);  
+        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer); 
+        
+        // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			
+			Bundle bundle = new Bundle();
+			bundle.putString("query", query);
+			          
+			setTitle("Search");
+			Fragment fragment = new SearchFragment();
+			fragment.setArguments(bundle);
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
+        }
         
         Fragment firstFragment = new DiscoverFragment();
         getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();

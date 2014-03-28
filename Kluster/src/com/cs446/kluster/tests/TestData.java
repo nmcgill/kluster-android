@@ -64,9 +64,12 @@ public class TestData {
 		collection3.add(photo10.getPhotoId());
 		collection3.add(photo11.getPhotoId());
 		
-		Event event1 = new Event("ad226e5caaf0880d8a3060e7", "Camping in the Mountains", new LatLng(43.469460, -80.553256), new Date(), collection1);
-		Event event2 = new Event("ad226e5caaf0880d8a3061a6", "Steve's Birthday Party", new LatLng(43.470610, -80.552703), new Date(), collection2);
-		Event event3 = new Event("e5d9a23aab8aae062efd1dca", "Red Hot Chili Peppers 2014", new LatLng(43.471129, -80.551166), new Date(), collection3);
+		List<String> tags = new ArrayList<String>();
+		tags.add("test");
+		
+		Event event1 = new Event("ad226e5caaf0880d8a3060e7", "Camping in the Mountains", new LatLng(43.469460, -80.553256), new Date(), tags, collection1);
+		Event event2 = new Event("ad226e5caaf0880d8a3061a6", "Steve's Birthday Party", new LatLng(43.470610, -80.552703), new Date(), tags, collection2);
+		Event event3 = new Event("e5d9a23aab8aae062efd1dca", "Red Hot Chili Peppers 2014", new LatLng(43.471129, -80.551166), new Date(), tags, collection3);
 		
 		eventStorage.insert(event1);
 		eventStorage.insert(event2);

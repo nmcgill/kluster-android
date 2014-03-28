@@ -11,13 +11,15 @@ public class Event {
 	private String mName;
 	private LatLng mLocation;
 	private Date mDate;
+	private List<String> mTags;
 	private List<String> mPhotos;
 	
-	public Event(String id, String name, LatLng loc, Date date, List<String> photos) {
+	public Event(String id, String name, LatLng loc, Date date, List<String> tags, List<String> photos) {
 		mEventId = id;
 		mName = name;
 		mLocation = loc;
 		mDate = date;
+		mTags = tags;
 		mPhotos = photos;
 	}
 	
@@ -35,6 +37,10 @@ public class Event {
 	
 	public Date getDate() {
 		return mDate;
+	}
+	
+	public List<String> getTags() {
+		return mTags;
 	}
 	
 	public List<String> getPhotos() {

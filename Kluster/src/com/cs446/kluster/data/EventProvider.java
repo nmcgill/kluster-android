@@ -142,6 +142,7 @@ public class EventProvider extends ContentProvider {
 		values.put("name", item.getName());
 		values.put("location", MapAdapter.LatLngToString(item.getLocation()));
 		values.put("date", item.getDate().toString());
+		values.put("tags", TextUtils.join("", item.getTags()));
 		values.put("photos", TextUtils.join(",", item.getPhotos()));
 
         return values;
@@ -157,6 +158,7 @@ public class EventProvider extends ContentProvider {
 						"name text not null, " +
 						"location text not null, " +
 						"date text not null, " + 
+						"tags text not null" +
 						"photos text);";
 		
 		public EventOpenHelper(Context context) {

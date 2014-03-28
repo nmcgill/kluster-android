@@ -16,7 +16,7 @@ import com.cs446.kluster.data.EventProvider;
 
 public class SearchGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	EventGridAdapter mAdapter;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.searchgrid_layout, container, false);
@@ -49,6 +49,11 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
+		Bundle args = getArguments();
+		
+		double[] loc = args.getDoubleArray("location");
+		double radius = 30000;
+		
 		String[] selection = new String[] {"1"};
 		
 		return new CursorLoader(getActivity(), EventProvider.CONTENT_URI, null, "eventid = ?", selection, null);
