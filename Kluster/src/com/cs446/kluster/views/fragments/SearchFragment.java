@@ -1,8 +1,8 @@
 package com.cs446.kluster.views.fragments;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -25,17 +25,24 @@ import com.cs446.kluster.views.fragments.FilterDialogFragment.FilterListener;
 
 public class SearchFragment extends Fragment implements ActionBar.TabListener {
     private ViewPager mPager;	
-    private HashMap<String, String> mFilters;
+    private Bundle mFilters;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
+		mFilters = new Bundle();
+		
+		if (getArguments() != null) {
+			mFilters.putString("location", getLocationString(getArguments().getString("query")));
+		}
+		else {
+			mFilters.putString("location", "0,0");
+		}
+    }
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.search_layout, container, false);
-		
-		mFilters = new HashMap<String, String>();
-		
-		if (getArguments() != null) {
-			mFilters.put("location", getLocationString(getArguments().getString("query")));
-		}
 
         mPager = (ViewPager) view.findViewById(R.id.viewpager_noswipe);
         mPager.setAdapter(new DemoCollectionPagerAdapter(getChildFragmentManager()));  
@@ -50,7 +57,7 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 				fragment.setFilterListener(new FilterListener() {
 					@Override
 					public void userSetFilter(String filter, String value) {
-						mFilters.put(filter, value);
+						mFilters.putString(filter, value);
 					}
 
 					@Override
@@ -70,15 +77,13 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 		Geocoder geocoder = new Geocoder(getActivity());
 		List<Address> addr = null;
 		try {
-			if (mFilters.size() > 0) {
-				addr = geocoder.getFromLocationName(mFilters.get("location"), 1);
-			}
+			addr = geocoder.getFromLocationName(name, 1);
 		}
 		catch (IOException e) {
 		}
 		
 		if (addr != null) {
-			return String.format("%f,%f", addr.get(0).getLatitude(), addr.get(0).getLongitude());
+			return String.format(Locale.US, "%f,%f", addr.get(0).getLatitude(), addr.get(0).getLongitude());
 		}
 		else {
 			return "";
@@ -112,10 +117,8 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 
             if (position == 0) {
             	Fragment fragment = new SearchGridFragment();
-            	Bundle bundle = new Bundle();
-            	bundle.putSerializable("filters", mFilters);
-            	fragment.setArguments(bundle);
-	         	return new SearchGridFragment();
+            	fragment.setArguments(mFilters);
+	         	return fragment;
 	         }
 	         else {
 	         	return new SearchMapFragment();	     		

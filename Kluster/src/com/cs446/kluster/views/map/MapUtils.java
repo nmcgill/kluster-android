@@ -23,5 +23,9 @@ public class MapUtils {
 	public static LatLng locationToLatLng(Location loc) {
 		return new LatLng(loc.getLatitude(), loc.getLongitude());
 	}
+	
+	public static String locationToString(Location loc) {
+		return latLngToString(locationToLatLng(loc));
+	}
 
 }

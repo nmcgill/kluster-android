@@ -1,8 +1,5 @@
 package com.cs446.kluster.views.activities;
 
-import java.util.ArrayList;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -25,9 +22,8 @@ import com.cs446.kluster.R;
 import com.cs446.kluster.models.Users;
 import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.views.fragments.DiscoverFragment;
-import com.cs446.kluster.views.fragments.EventMapFragment;
+import com.cs446.kluster.views.fragments.EventDialogFragment;
 import com.cs446.kluster.views.fragments.SearchFragment;
-import com.google.android.gms.ads.a;
 
 public class MainActivity extends Activity {    
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -87,19 +83,7 @@ public class MainActivity extends Activity {
         
         //Add Testing Data
         TestData.CreateTestData(getContentResolver());
-        	        
-        /*
-         * Create a content observer object.
-         * Its code does not mutate the provider, so set
-         * selfChange to "false"
-         */
-        //TableObserver observer = new TableObserver(AccountAdapter.getCurrentUser().getAccount(), this);
-        /*
-         * Register the observer for the data table. The table's path
-         * and any of its subpaths trigger the observer.
-         */
-        //getContentResolver().registerContentObserver(PhotoProvider.CONTENT_URI, true, observer); 
-        
+
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -112,10 +96,12 @@ public class MainActivity extends Activity {
 			fragment.setArguments(bundle);
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
+			setTitle("Search");
         }
-        
-        Fragment firstFragment = new DiscoverFragment();
-        getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+        else {
+	        Fragment firstFragment = new DiscoverFragment();
+	        getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
+        }
     }
     
     @Override
@@ -173,55 +159,33 @@ public class MainActivity extends Activity {
 	                        .commit();
 	         
 			return true;
-    	/*case R.id.action_refresh: 
-    	{
-            ContentResolver.setSyncAutomatically(Users.getUser().getAccount(), PhotoProvider.PROVIDER_NAME, true);
-            
-            Bundle settingsBundle = new Bundle();
-            settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-            settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-
-            ContentResolver.requestSync(Users.getUser().getAccount(), PhotoProvider.PROVIDER_NAME, settingsBundle);  
-            return true;
-    	}*/
     	}
     	
     	return super.onOptionsItemSelected(item);
     }
-
-    @Override
-	public void onBackPressed() {
-		/*FragmentManager fm = getFragmentManager();
-
-		if(fm.getBackStackEntryCount() > 1) {
-			fm.popBackStack();
-			
-			if (fm.getBackStackEntryCount() <= 2){
-				getActionBar().setDisplayHomeAsUpEnabled(false);
-			}
-		}
-		else {
-			super.onBackPressed();
-		}*/
-	}
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     }
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        Fragment fragment;
-        if (position == 1) {
-	       	 fragment = new SearchFragment();	 
+        Fragment fragment = null;
+        
+        switch (position) {
+        case 1:
+        {
+        	new EventDialogFragment().show(getFragmentManager(), "eventDialog");
+        	return;
         }
-        else if (position == 2) {
-        	fragment = new DiscoverFragment();
-        }
-        else {
+        case 2:
+        	fragment = new SearchFragment(); break;
+        case 3:
+        	fragment = new DiscoverFragment(); break;
+        default:
         	return;
         }
 

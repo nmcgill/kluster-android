@@ -24,7 +24,7 @@
     <TextView android:layout_width="match_parent"
        		android:layout_height="wrap_content"
        		android:textSize="18sp"
-       		android:text="Contributor" />
+       		android:text="Event Name" />
     <EditText android:id="@+id/filter_user"
         android:layout_width="match_parent"
         android:layout_height="50dp" />    

@@ -8,7 +8,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -91,7 +90,7 @@ public class FilterDialogFragment extends DialogFragment {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				mListener.userSetFilter("username", s.toString());
+				mListener.userSetFilter("eventname", s.toString());
 			}
 		});
 		

@@ -24,8 +24,8 @@ public class EventRequest extends AuthRequest {
         return request;
     }
     
-    public static EventRequest create(LatLng brng, double radius) {
-    	String param = String.format("%f,%f,%f", brng.latitude, brng.longitude, radius);
+    public static EventRequest create(String brng, double radius) {
+    	String param = String.format("%s,%f", brng, radius);
     	
         ConfigManager config = KlusterApplication.getInstance().getConfigManager();
         String url = config.getProperty(ConfigManager.PROP_URL) + ENDPOINT_EVENTS;
