@@ -12,4 +12,12 @@
 	
 	<string name="drawer_open">Open navigation drawer</string>
 	<string name="drawer_close">Close navigation drawer</string>
+	
+	<string name="search_hint">Search location</string>
+	
+	<string-array name="menu_list">
+	    <item>Create Event</item>
+	    <item>Search</item>
+	    <item>Discover</item>
+	</string-array>
 </resources>

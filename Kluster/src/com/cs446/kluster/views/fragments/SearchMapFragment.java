@@ -4,36 +4,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.cs446.kluster.KlusterApplication;
-import com.cs446.kluster.data.EventStorageAdapter;
 import com.cs446.kluster.data.PhotoProvider;
-import com.cs446.kluster.data.serialize.EventSerializer;
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.net.EventRequest;
-import com.cs446.kluster.net.http.task.HttpContentRequestTask;
 import com.cs446.kluster.views.map.MapUtils;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class EventMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SearchMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
     
@@ -43,9 +33,8 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
     public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
 
-    	LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.locationToLatLng(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)), 13));
     }
 	
 	@Override
@@ -63,18 +52,6 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
 				return true;
 			}
 		});
-		
-		getMap().setOnCameraChangeListener(new OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition position) {
-                LatLngBounds bounds = getMap().getProjection().getVisibleRegion().latLngBounds;
-                
-        		EventRequest request = EventRequest.create(bounds.northeast, bounds.southwest);
-        		HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
-        	
-        		task.executeAsync(request);
-            }
-        });
 	}
 
 	@Override
@@ -92,8 +69,8 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
                             getActivity(),   // Parent activity context
                             PhotoProvider.CONTENT_URI,        // Table to query
                             null,     		 // Projection to return
-                            null,            // No selection clause
-                            null,            // No selection arguments
+                            "eventid = ?",            // No selection clause
+                            new String[] {"1"},            // No selection arguments
                             null             // Default sort order
             );
             default:
@@ -107,6 +84,8 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
 
 		while (cursor != null && cursor.moveToNext()) {
 			locIndex = cursor.getColumnIndex("location");
+
+			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.stringToLatLng(cursor.getString(locIndex)), 13));
 	        
 			Marker marker = getMap().addMarker(new MarkerOptions()
 			.position(MapUtils.stringToLatLng(cursor.getString(locIndex))));

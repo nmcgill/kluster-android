@@ -1,23 +1,19 @@
 package com.cs446.kluster.views.fragments;
 
-import java.util.concurrent.ExecutionException;
-
-import com.cs446.kluster.R;
-import com.cs446.kluster.R.id;
-import com.cs446.kluster.R.layout;
-import com.cs446.kluster.network.UserRegistrationRequest;
-import com.cs446.kluster.user.UserInfo;
-
-import android.app.Application;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cs446.kluster.R;
+import com.cs446.kluster.net.UserRequest;
+import com.cs446.kluster.net.http.HttpRequestListener;
+import com.cs446.kluster.net.http.task.HttpRequestTaskCompat;
+import com.cs446.kluster.user.User;
 
 public class SignupFragment extends Fragment {
 
@@ -66,36 +62,48 @@ public class SignupFragment extends Fragment {
 					return;
 				}
 
-				UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
-				UserInfo userInfo = new UserInfo(userName.getText().toString(),
-						userEmail.getText().toString(), firstName.getText()
-								.toString(), lastName.getText().toString());
-				userInfo.setPassword(password.getText().toString());
-				userRegistrationRequest.execute(userInfo);
-				Boolean ret = false;
-				try {
-					ret = userRegistrationRequest.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (ret == true) {
-					Toast.makeText(getActivity().getBaseContext(),
-							"Registration Complete...", Toast.LENGTH_LONG)
-							.show();
-					getActivity().onBackPressed();
-				} else {
-					Toast.makeText(getActivity().getBaseContext(),
-							"Could not create user...", Toast.LENGTH_LONG)
-							.show();
-				}
+				User user = new User(userName.getText().toString(),
+									userEmail.getText().toString(),
+									firstName.getText().toString(),
+									lastName.getText().toString());
+				
+				user.setPassword(password.getText().toString());
+				
+				HttpRequestTaskCompat<User> task = new HttpRequestTaskCompat<User>(new HttpRequestListener<User>() {
+
+					@Override
+					public void onStart() {
+						Toast.makeText(getActivity().getBaseContext(),
+								"Sending user request", Toast.LENGTH_SHORT)
+								.show();
+					}
+
+					@Override
+					public void onComplete() {
+					}
+
+					@Override
+					public void onError(Exception e) {
+						Toast.makeText(getActivity().getBaseContext(),
+								"Could not create user...", Toast.LENGTH_LONG)
+								.show();
+					}
+
+					@Override
+					public void onSuccess(User result) {
+						Toast.makeText(getActivity().getBaseContext(),
+								"Registration Complete...", Toast.LENGTH_LONG)
+								.show();
+						getActivity().onBackPressed();
+					}
+				});
+				
+				UserRequest request = UserRequest.create(user);
+				
+				task.executeAsync(request);
 			}
 		});
 
 		return view;
 	}
-
 }

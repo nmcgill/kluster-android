@@ -5,8 +5,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.R.id;
-import com.cs446.kluster.R.layout;
 import com.cs446.kluster.views.fragments.PhotoGridFragment;
 
 public class PhotoGridActivity extends Activity {    

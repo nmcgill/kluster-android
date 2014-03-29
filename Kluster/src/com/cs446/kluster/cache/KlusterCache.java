@@ -34,17 +34,16 @@ public class KlusterCache {
 	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 25; // 25MB
 	private static final String DISK_CACHE_SUBDIR = "thumbnails";
 	
-	protected KlusterCache(Context c) {
-		mContext = c;
-		InitCache();
-	}
-	
 	public static KlusterCache getInstance(Context c) {
 		if (instance == null) {
 			instance = new KlusterCache(c);
-		}
-		
+		}	
 		return instance;
+	}
+	
+	protected KlusterCache(Context c) {
+		mContext = c;
+		InitCache();
 	}
 		
 	private void InitCache() {

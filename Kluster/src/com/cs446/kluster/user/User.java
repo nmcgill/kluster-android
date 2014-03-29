@@ -1,16 +1,15 @@
 package com.cs446.kluster.user;
 
-import java.math.BigInteger;
 
-public class UserInfo{
+public class User {
 	
     private String mUserName;
     private String mUserEmail;
     private String mFirstName;
     private String mLastName;
-    private String mPassWord;
+    private String mPassword;
     
-    public UserInfo(String userName, String userEmail, String firstName, String lastName){
+    public User(String userName, String userEmail, String firstName, String lastName) {
     	mUserName=userName;
         mFirstName=firstName;
         mLastName=lastName;
@@ -18,26 +17,26 @@ public class UserInfo{
     }
     
     public void setPassword(String password){
-    	mPassWord=password;
+    	this.mPassword = password;
     }
     
-    public String getmPassword(){
-    	return mPassWord;
+    public String getPassword(){
+    	return mPassword;
     }
 
-	public String getmUserEmail() {
+	public String getUserEmail() {
 		return mUserEmail;
 	}
 
-	public String getmUserName() {
+	public String getUserName() {
 		return mUserName;
 	}
 
-	public String getmFirstName() {
+	public String getFirstName() {
 		return mFirstName;
 	}
 
-	public String getmLastName() {
+	public String getLastName() {
 		return mLastName;
 	}
 }

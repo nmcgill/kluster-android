@@ -37,7 +37,7 @@ public class DiskLruImageCache {
         throws IOException, FileNotFoundException {
         OutputStream out = null;
         try {
-            out = new BufferedOutputStream( editor.newOutputStream( 0 ), Utils.IO_BUFFER_SIZE );
+            out = new BufferedOutputStream( editor.newOutputStream( 0 ), CacheUtils.IO_BUFFER_SIZE );
             return bitmap.compress( mCompressFormat, mCompressQuality, out );
         } finally {
             if ( out != null ) {
@@ -95,7 +95,7 @@ public class DiskLruImageCache {
             final InputStream in = snapshot.getInputStream( 0 );
             if ( in != null ) {
                 final BufferedInputStream buffIn = 
-                new BufferedInputStream( in, Utils.IO_BUFFER_SIZE );
+                new BufferedInputStream( in, CacheUtils.IO_BUFFER_SIZE );
                 bitmap = BitmapFactory.decodeStream( buffIn );              
             }   
         } catch ( IOException e ) {
@@ -155,7 +155,7 @@ public class DiskLruImageCache {
 	    // otherwise use internal cache dir
 	    final String cachePath =
 	            Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||
-	                    !Utils.isExternalStorageRemovable() ? Utils.getExternalCacheDir(context).getPath() :
+	                    !CacheUtils.isExternalStorageRemovable() ? CacheUtils.getExternalCacheDir(context).getPath() :
 	                            context.getCacheDir().getPath();
 
 	    return new File(cachePath + File.separator + uniqueName);

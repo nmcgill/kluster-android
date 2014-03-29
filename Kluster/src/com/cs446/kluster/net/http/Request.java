@@ -1,13 +1,14 @@
 package com.cs446.kluster.net.http;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.apache.http.entity.StringEntity;
 
 /**
  * Created by Marlin Gingerich on 2014-03-08.
@@ -91,12 +92,18 @@ public class Request implements HttpRequestWrapper {
         this.request.getParams().setParameter(name, value);
         return this;
     }
+    
+    public Request entity(StringEntity entity) {
+        ((HttpPost)this.request).setEntity(entity);
+        return this;
+    }
 
     public Request header(String name, String value) {
         if (this.headers == null) {
             this.headers = new LinkedHashMap<String, String>();
         }
         this.headers.put(name, value);
+        this.request.setHeader(name, value);
         return this;
     }
 
