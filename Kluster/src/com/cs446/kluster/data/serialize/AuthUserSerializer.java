@@ -7,7 +7,7 @@ import java.io.Writer;
 import android.annotation.TargetApi;
 import android.util.JsonReader;
 
-import com.cs446.kluster.user.AuthUser;
+import com.cs446.kluster.models.AuthUser;
 
 /**
  * Created by Marlin Gingerich on 2014-03-09.
@@ -24,6 +24,11 @@ public class AuthUserSerializer implements Serializer<AuthUser> {
         } finally {
             jr.close();
         }
+    }
+    
+    @TargetApi(11)
+    public AuthUser read(JsonReader jr) throws IOException {
+    	return AuthUserSerializer.readEvent(jr);
     }
 
     public void write(Writer writer, AuthUser user) {

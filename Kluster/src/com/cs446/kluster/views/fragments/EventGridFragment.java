@@ -2,9 +2,11 @@ package com.cs446.kluster.views.fragments;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,30 @@ import android.widget.GridView;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.EventProvider;
+import com.cs446.kluster.data.EventStorageAdapter;
+import com.cs446.kluster.data.serialize.EventSerializer;
+import com.cs446.kluster.models.Event;
+import com.cs446.kluster.net.EventRequest;
+import com.cs446.kluster.net.http.task.HttpCollectionRequestTask;
+import com.cs446.kluster.views.map.MapUtils;
 
 public class EventGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	EventGridAdapter mAdapter;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+    	LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+		String current = MapUtils.locationToString(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+		
+		EventRequest request = EventRequest.create(current, 30000);
+		HttpCollectionRequestTask<Event> task = new HttpCollectionRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
+	
+		task.executeAsync(request);
+		
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

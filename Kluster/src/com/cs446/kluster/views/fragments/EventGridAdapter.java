@@ -1,5 +1,7 @@
 package com.cs446.kluster.views.fragments;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +29,12 @@ import android.widget.TextView;
 import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.PhotoProvider;
+import com.cs446.kluster.data.PhotoStorageAdapter;
+import com.cs446.kluster.data.serialize.PhotoSerializer;
+import com.cs446.kluster.models.Event;
+import com.cs446.kluster.models.Photo;
+import com.cs446.kluster.net.PhotoRequest;
+import com.cs446.kluster.net.http.task.HttpContentRequestTask;
 import com.cs446.kluster.views.activities.MainActivity;
 import com.cs446.kluster.views.activities.PhotoGridActivity;
 
@@ -51,8 +61,18 @@ public class EventGridAdapter extends SimpleCursorAdapter implements LoaderManag
 	
 	@Override
     public void bindView(View view, Context context, Cursor cursor) { 
+		SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy hh:mmaa");
         TextView txtTitle = (TextView)view.getTag(R.id.eventgrid_txtTitle);
+        TextView txtDate = (TextView)view.getTag(R.id.eventgrid_txtDate);
         ViewPager mPager = (ViewPager)view.getTag(R.id.eventgrid_pager);
+        
+        String[] photos = TextUtils.split(cursor.getString(cursor.getColumnIndex("photos")), ",");
+    	    	
+    	for (String photoid : photos) {
+        	HttpContentRequestTask<Photo> task = new HttpContentRequestTask<Photo>(new PhotoSerializer(), new PhotoStorageAdapter(mActivity.getContentResolver()));
+    		PhotoRequest request = PhotoRequest.create(photoid);
+    		task.executeAsync(request);
+    	}
         
         mPagerAdapterList.add(cursor.getPosition(), new EventPagerAdapter(cursor.getString(cursor.getColumnIndex("eventid")),
         																	cursor.getString(cursor.getColumnIndex("name"))));
@@ -61,6 +81,11 @@ public class EventGridAdapter extends SimpleCursorAdapter implements LoaderManag
         mActivity.getLoaderManager().initLoader(cursor.getPosition(), null, this);
 
        txtTitle.setText(cursor.getString(cursor.getColumnIndex("name")));
+       try {
+    	   txtDate.setText(df.format(Event.getDateFormat().parse(cursor.getString(cursor.getColumnIndex("startdate")))));
+       } catch (ParseException e) {
+    	   Log.e("EventGridAdapter", e.toString());
+       }
 
 	}
 	
@@ -70,6 +95,7 @@ public class EventGridAdapter extends SimpleCursorAdapter implements LoaderManag
     	
         view.setTag(R.id.eventgrid_pager, view.findViewById(R.id.eventgrid_pager));
         view.setTag(R.id.eventgrid_txtTitle, view.findViewById(R.id.eventgrid_txtTitle));
+        view.setTag(R.id.eventgrid_txtDate, view.findViewById(R.id.eventgrid_txtDate));
         
     	return view;
     }

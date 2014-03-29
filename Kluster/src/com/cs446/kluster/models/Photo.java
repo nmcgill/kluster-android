@@ -72,12 +72,16 @@ public class Photo implements Parcelable  {
 		return mUrl[0];
 	}
 	
-	public String getMediumUrl() {
+	public String getSmallUrl() {
 		return mUrl[1];
 	}
 	
-	public String getThumbUrl() {
+	public String getMediumUrl() {
 		return mUrl[2];
+	}
+	
+	public String getThumbUrl() {
+		return mUrl[3];
 	}
 
 	public List<String> getTags() {
@@ -101,7 +105,7 @@ public class Photo implements Parcelable  {
 	}
 	
 	public static SimpleDateFormat getDateFormat() {
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:zzz'Z'", Locale.US);
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 	}
 	
 	public Photo(Parcel in) {
@@ -115,8 +119,8 @@ public class Photo implements Parcelable  {
 			mDate = getDateFormat().parse(in.readString());
 		} catch (ParseException e) {
 		}
-		in.readStringArray(mUrl);
-		in.readStringArray(strArray);
+		mUrl = in.createStringArray();
+		strArray = in.createStringArray();
 		mTags = new ArrayList<String>(Arrays.asList(strArray));	
 	}
 	

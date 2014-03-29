@@ -26,8 +26,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class SearchMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
-    
-    Map<Marker, ImageView> mMarkerList = new HashMap<Marker, ImageView>();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -47,7 +45,7 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 			
 			@Override
 			public boolean onMarkerClick(Marker marker) {
-				getMap().setInfoWindowAdapter(new PhotoInfoWindowAdapter(getActivity(), mMarkerList.get(marker)));
+				getMap().setInfoWindowAdapter(new PhotoInfoWindowAdapter(getActivity()));
 				marker.showInfoWindow();
 				return true;
 			}
@@ -87,15 +85,9 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 
 			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.stringToLatLng(cursor.getString(locIndex)), 13));
 	        
-			Marker marker = getMap().addMarker(new MarkerOptions()
+			getMap().addMarker(new MarkerOptions()
 			.position(MapUtils.stringToLatLng(cursor.getString(locIndex))));
 
-			String url = cursor.getString(cursor.getColumnIndex("url"));
-	        
-	        ImageView imgView = new ImageView(getActivity());
-	        mMarkerList.put(marker, imgView);
-
-	        KlusterApplication.getInstance().getCache().loadBitmap(url, imgView, getActivity());
 		}
 	}
 

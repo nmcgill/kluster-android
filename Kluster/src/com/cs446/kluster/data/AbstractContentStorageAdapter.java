@@ -25,7 +25,7 @@ abstract class AbstractContentStorageAdapter<T> implements StorageAdapter<T> {
     @Override
     public Uri upsert(T item) {
         ContentValues values = this.getContentValues(item);
-        values.put(StorageConstants.INSERT_OR_UPDATE, true);
+        //values.put(StorageConstants.INSERT_OR_UPDATE, true);
         return this.mContentResolver.insert(this.getContentUri(), values);
     }
 

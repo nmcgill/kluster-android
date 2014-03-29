@@ -10,10 +10,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cs446.kluster.R;
+import com.cs446.kluster.models.User;
 import com.cs446.kluster.net.UserRequest;
 import com.cs446.kluster.net.http.HttpRequestListener;
 import com.cs446.kluster.net.http.task.HttpRequestTaskCompat;
-import com.cs446.kluster.user.User;
 
 public class SignupFragment extends Fragment {
 

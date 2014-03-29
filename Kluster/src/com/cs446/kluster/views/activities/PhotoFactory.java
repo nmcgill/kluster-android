@@ -9,8 +9,10 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,9 +21,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cs446.kluster.data.PhotoStorageAdapter;
 import com.cs446.kluster.models.Photo;
-import com.cs446.kluster.models.Users;
 import com.cs446.kluster.net.UploadService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -76,24 +76,24 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
             	Date timeStamp = new Date();
-            	PhotoStorageAdapter photoStorage = new PhotoStorageAdapter(getContentResolver());
-            	
+
             	sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, fileUri));
+            	
+            	SharedPreferences pref = getSharedPreferences("User", Context.MODE_PRIVATE);
+            	String userid = pref.getString("id", null);
             	
                 // Image captured and saved to fileUri specified in the Intent
                 //Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
                 Location lastloc = mLocationClient.getLastLocation();
                 
                 Photo photo = new Photo("531238e5f330ede5deafbc3b",
-                						Users.getUser().getUserId(),
+                						userid,
                 						"531238e5f330ede5deafbc3a",
                 						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,
                 						new String[] {fileUri.getPath(), fileUri.getPath(), fileUri.getPath()},
                 						new ArrayList<String>(),
                 						new String[] {"0", "0"});
-
-                photoStorage.insert(photo);
             	
                 //Start upload service
                 Intent intent = new Intent(this, UploadService.class);

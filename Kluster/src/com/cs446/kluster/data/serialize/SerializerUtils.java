@@ -1,11 +1,14 @@
 package com.cs446.kluster.data.serialize;
 
-import android.annotation.TargetApi;
-import android.util.JsonReader;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cs446.kluster.models.Event;
+import com.cs446.kluster.models.Photo;
+
+import android.annotation.TargetApi;
+import android.util.JsonReader;
 
 /**
  * Created by Marlin Gingerich on 2014-03-10.

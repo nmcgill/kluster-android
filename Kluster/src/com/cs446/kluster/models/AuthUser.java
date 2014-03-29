@@ -1,4 +1,4 @@
-package com.cs446.kluster.user;
+package com.cs446.kluster.models;
 
 
 public class AuthUser extends User {
@@ -12,7 +12,6 @@ public class AuthUser extends User {
     	mUserID=userID;
         mToken=token;
         mTokenExpiry=tokenExpiry;
-
     }
 
 	public String getUserID() {

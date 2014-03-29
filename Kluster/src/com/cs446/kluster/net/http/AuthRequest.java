@@ -11,7 +11,7 @@ public class AuthRequest extends Request {
     
     public AuthRequest(Method method, String url) {
         super(method, url);
-        header("Authorization: Bearer ", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzRjNTMzNDc1NjZhZGU2N2RlNDE2OCIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTI4VDAzOjMwOjI4LjgxNloifQ.btUmhI4oL2ay-HM_YiY4nzt97LhC9QJckmRK6pejWtQ");
+        header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzRjNTMzNDc1NjZhZGU2N2RlNDE2OCIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTI4VDA1OjI3OjEyLjM5NloifQ.IoXnCbZhQJJq0TuSFXXN1-RPSxFl_lG_SqhunrPjgQQ");
     }
     
     public static Request create(String userName, String password) {

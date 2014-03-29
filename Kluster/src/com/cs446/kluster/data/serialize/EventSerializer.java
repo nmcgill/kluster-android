@@ -31,6 +31,11 @@ public class EventSerializer implements Serializer<Event> {
             jr.close();
         }
     }
+    
+    @TargetApi(11)
+    public Event read(JsonReader jr) throws IOException {
+    	return EventSerializer.readEvent(jr);
+    }
 
     public void write(Writer writer, Event event) {
 
@@ -38,13 +43,13 @@ public class EventSerializer implements Serializer<Event> {
 
     public static Event readEvent(JsonReader reader) throws IOException {
         String eventId = null;
-        String eventName = null;
+        String eventName = "EventName";
         Double[] loc = null;
         List<String> photos = null;
         List<String> tags = null;
         Date startdate = null;
         Date enddate = null;
-        
+
         reader.beginObject();
         while (reader.hasNext()) {
             String name = reader.nextName();
@@ -60,7 +65,7 @@ public class EventSerializer implements Serializer<Event> {
             	try {
 					startdate = Event.getDateFormat().parse(reader.nextString());
 				} catch (ParseException e) {
-					Log.e("readEvent", "Could not parse start time");
+					Log.e("readEvent", "Could not parse start time:" + e);
 					startdate = new Date();
 				}
             }
@@ -68,14 +73,14 @@ public class EventSerializer implements Serializer<Event> {
             	try {
 					enddate = Event.getDateFormat().parse(reader.nextString());
 				} catch (ParseException e) {
-					Log.e("readEvent", "Could not end time");
+					Log.e("readEvent", "Could not end time" + e);
 					enddate = new Date();
 				}
             }
-            else if (name.equals("tags")) {
+            else if (name.equals("tags") && reader.peek() != JsonToken.NULL) {
                 tags = SerializerUtils.readStringArray(reader); 
             }
-            else if (name.equals("photos")) {
+            else if (name.equals("photos") && reader.peek() != JsonToken.NULL) {
                 photos = SerializerUtils.readStringArray(reader);
             }
             else {

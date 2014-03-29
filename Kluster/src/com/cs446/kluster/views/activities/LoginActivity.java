@@ -2,7 +2,9 @@ package com.cs446.kluster.views.activities;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -12,12 +14,11 @@ import android.widget.Toast;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.serialize.AuthUserSerializer;
+import com.cs446.kluster.models.AuthUser;
 import com.cs446.kluster.net.http.AuthRequest;
 import com.cs446.kluster.net.http.HttpRequestListener;
 import com.cs446.kluster.net.http.Request;
-import com.cs446.kluster.net.http.task.HttpRequestTask;
 import com.cs446.kluster.net.http.task.HttpRequestTaskCompat;
-import com.cs446.kluster.user.AuthUser;
 import com.cs446.kluster.views.fragments.SignupFragment;
 
 //TODO: Store the token in shared preferences. Populate UI only if no token found
@@ -58,6 +59,14 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onSuccess(AuthUser result) {
+						
+						SharedPreferences pref = getSharedPreferences("User", Context.MODE_PRIVATE);
+						SharedPreferences.Editor editor = pref.edit();
+						
+						editor.putString("id", result.getUserID());
+						editor.putString("name", result.getFirstName() + " " + result.getLastName());
+						editor.commit();
+												
 						Toast.makeText(getApplicationContext(),
 								"Hello " + result.getFirstName(), Toast.LENGTH_LONG)
 								.show();
@@ -79,7 +88,6 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				getFragmentManager().beginTransaction().add(R.id.signup_page, signupFragment).addToBackStack(signupFragment.toString()).commit();
-
 			}
 		});
     }

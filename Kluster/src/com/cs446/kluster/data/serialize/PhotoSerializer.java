@@ -30,6 +30,11 @@ public class PhotoSerializer implements Serializer<Photo> {
             jr.close();
         }
     }
+    
+    @TargetApi(11)
+    public Photo read(JsonReader jr) throws IOException {
+            return PhotoSerializer.readPhoto(jr);
+    }
 
     public void write(Writer writer, Photo photo) {
 
@@ -41,7 +46,7 @@ public class PhotoSerializer implements Serializer<Photo> {
         String userId = null;
         Double[] loc = null;
         List<String> tags = null;
-        String[] urls = null;
+        String[] urls = new String[4];
         Date createdAt = new Date();
         String[] rating = new String[2];
 
@@ -63,12 +68,23 @@ public class PhotoSerializer implements Serializer<Photo> {
 					createdAt = new Date();
 				}
             } else if (name.equals("url") && reader.peek() != JsonToken.NULL) {
-                urls = SerializerUtils.readStringArray(reader).toArray(new String[3]);
+            	reader.beginObject();
+            	reader.nextName();
+            	urls[1] = reader.nextString(); // small
+            	reader.nextName();
+            	urls[2] = reader.nextString(); // medium
+            	reader.nextName();
+            	urls[0] = reader.nextString(); // default
+            	reader.nextName();
+            	urls[3] = reader.nextString(); // thumb
+            	reader.endObject();
             } else if (name.equals("tags") && reader.peek() != JsonToken.NULL) {
                 tags = SerializerUtils.readStringArray(reader);
             } else if (name.equals("rating")) {
             	reader.beginObject();
+            	reader.nextName();
             	rating[0] = Integer.toString(reader.nextInt());
+            	reader.nextName();
             	rating[1] = Integer.toString(reader.nextInt());
             	reader.endObject();
             } else {

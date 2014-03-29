@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 import com.cs446.kluster.ConfigManager;
 import com.cs446.kluster.KlusterApplication;
+import com.cs446.kluster.models.User;
 import com.cs446.kluster.net.http.Request;
-import com.cs446.kluster.user.User;
 
 public class UserRequest extends Request {
 

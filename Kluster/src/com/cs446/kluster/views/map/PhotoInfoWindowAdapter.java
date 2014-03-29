@@ -14,21 +14,16 @@ import com.google.android.gms.maps.model.Marker;
 
 public class PhotoInfoWindowAdapter implements InfoWindowAdapter, OnClickListener {
 	private LayoutInflater mInflator;
-	private ImageView mImageView;
 	private Context mContext;
 	
-	public PhotoInfoWindowAdapter(Context context, ImageView imgview) {
+	public PhotoInfoWindowAdapter(Context context) {
 		mContext = context;
 		mInflator = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mImageView = imgview;
 	}
 
 	@Override
 	public View getInfoContents(Marker marker) {
 		View v = mInflator.inflate(R.layout.infowindow_layout, null);
-		ImageView imgPreview = (ImageView)v.findViewById(R.id.imgPreview);
-		
-		imgPreview.setImageBitmap(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
 		return v;
 	}

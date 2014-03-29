@@ -1,17 +1,10 @@
 package com.cs446.kluster.net.http.task;
 
-import android.os.AsyncTask;
-import android.os.Handler;
-
-import com.cs446.kluster.net.http.HttpRequestListener;
-import com.cs446.kluster.net.http.Request;
-import com.cs446.kluster.net.http.Response;
-import com.cs446.kluster.data.StorageAdapter;
-import com.cs446.kluster.data.serialize.Serializer;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,19 +13,28 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.util.JsonReader;
+
+import com.cs446.kluster.data.StorageAdapter;
+import com.cs446.kluster.data.serialize.Serializer;
+import com.cs446.kluster.net.http.HttpRequestListener;
+import com.cs446.kluster.net.http.Request;
+
 /**
  * Created by Marlin Gingerich on 2014-03-10.
  */
-public class HttpContentRequestTask<Result> extends AbstractHttpRequestTask<Result> {
+public class HttpCollectionRequestTask<Result> extends AbstractHttpRequestTask<Result> {
 
     private StorageAdapter<Result> mStorageAdapter = null;
 
-    public HttpContentRequestTask(HttpRequestListener<Result> listener, Serializer<Result> serializer, StorageAdapter<Result> storageAdapter) {
+    public HttpCollectionRequestTask(HttpRequestListener<Result> listener, Serializer<Result> serializer, StorageAdapter<Result> storageAdapter) {
         super(listener, serializer);
         this.mStorageAdapter = storageAdapter;
     }
 
-    public HttpContentRequestTask(Serializer<Result> serializer, StorageAdapter<Result> storageAdapter) {
+    public HttpCollectionRequestTask(Serializer<Result> serializer, StorageAdapter<Result> storageAdapter) {
         this(null, serializer, storageAdapter);
     }
 
@@ -52,13 +54,13 @@ public class HttpContentRequestTask<Result> extends AbstractHttpRequestTask<Resu
 
                     @Override
                     public void run() {
-                        if (HttpContentRequestTask.this.mListener != null) {
-                            HttpContentRequestTask.this.mListener.onComplete();
-                            if (HttpContentRequestTask.this.mError != null) {
-                                HttpContentRequestTask.this.mListener.onError(HttpContentRequestTask.this.mError);
+                        if (HttpCollectionRequestTask.this.mListener != null) {
+                            HttpCollectionRequestTask.this.mListener.onComplete();
+                            if (HttpCollectionRequestTask.this.mError != null) {
+                                HttpCollectionRequestTask.this.mListener.onError(HttpCollectionRequestTask.this.mError);
                                 return;
                             }
-                            HttpContentRequestTask.this.mListener.onSuccess(result);
+                            HttpCollectionRequestTask.this.mListener.onSuccess(result);
                         }
                     }
                 });
@@ -70,16 +72,26 @@ public class HttpContentRequestTask<Result> extends AbstractHttpRequestTask<Resu
         return this.doWork(request);
     }
 
-    protected Result parse(HttpEntity content) throws IOException {
-        /*if (this.mSerializer != null) {
-            InputStreamReader reader = new InputStreamReader(response.getBody());
-            return this.mSerializer.read(reader);
-        }
-        return null;*/
+    protected List<Result> parse(HttpEntity content) throws IOException {
+    	List<Result> list = new ArrayList<Result>();
+    	Reader reader = new InputStreamReader(content.getContent());
+        JsonReader jr = new JsonReader(reader);
+
         if (this.mSerializer != null) {
-            return this.mSerializer.read(new InputStreamReader(content.getContent()));
+	        try {
+	        	jr.beginArray();
+	            while (jr.hasNext()) {
+	                list.add(this.mSerializer.read(jr));
+	            }
+	            jr.endArray();
+		    } catch (IOException e) {
+		        return null;
+		    } finally {
+		        jr.close();
+		    }
         }
-        return null;
+        
+        return list;
     }
 
     protected void store(Result result) {
@@ -123,11 +135,13 @@ public class HttpContentRequestTask<Result> extends AbstractHttpRequestTask<Resu
                 this.mError = new Exception(response.getStatusLine().toString());
                 return null;
             }
-            Result result = parse(response.getEntity());
+            List<Result> result = parse(response.getEntity());
             if (result != null) {
-            	store(result);
+            	for (Result res : result) {
+                	store(res);
+            	}
             }
-            return result;
+            return null;
         } catch (Exception e) {
             this.mError = e;
         }

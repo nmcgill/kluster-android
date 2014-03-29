@@ -1,8 +1,8 @@
 package com.cs446.kluster.net;
 
-
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,6 +28,8 @@ import android.util.Log;
 
 import com.cs446.kluster.ConfigManager;
 import com.cs446.kluster.KlusterApplication;
+import com.cs446.kluster.data.PhotoStorageAdapter;
+import com.cs446.kluster.data.serialize.PhotoSerializer;
 import com.cs446.kluster.models.Photo;
 
 @SuppressWarnings("deprecation")
@@ -73,7 +75,7 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
 
  	        HttpPost httppost = new HttpPost(config.getProperty(ConfigManager.PROP_URL) + ENDPOINT_PHOTOS);
  	        
- 	        httppost.addHeader("Authorization: Bearer ", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzRjNTMzNDc1NjZhZGU2N2RlNDE2OCIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTI3VDAwOjQxOjQwLjQ5MloifQ.ehgvn9o0e2Q-HYCIjBStdDP1g-EKimxl0jZ8Cqdyawg");
+ 	        httppost.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzRjNTMzNDc1NjZhZGU2N2RlNDE2OCIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTI4VDA1OjI3OjEyLjM5NloifQ.IoXnCbZhQJJq0TuSFXXN1-RPSxFl_lG_SqhunrPjgQQ");
 		    
  			MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE); 
  	        
@@ -90,7 +92,7 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
  	        Log.d("post", tagOne);
  	        Log.d("post", tagTwo);
  	        Log.d("post", longlat.toString());
- 	        Log.d("post", photo.getDate().toString());
+ 	        Log.d("post", Photo.getDateFormat().format(photo.getDate()));
  	        
  	        httppost.setEntity(multipartEntity); 	        
  	        mHttpClient.execute(httppost, handler);
@@ -109,9 +111,14 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
  	
 	@Override
 	public Object handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-        HttpEntity r_entity = response.getEntity();
-        String responseString = EntityUtils.toString(r_entity);
-        Log.d("UPLOAD", responseString);
+
+        //String responseString = EntityUtils.toString(entity);
+        //Log.d("UPLOAD", responseString);
+        
+        PhotoSerializer serializer = new PhotoSerializer(); 
+        PhotoStorageAdapter storage = new PhotoStorageAdapter(getContentResolver());
+        Photo item = serializer.read(new InputStreamReader(response.getEntity().getContent()));       
+        storage.insert(item);
 
         return null;
 	}

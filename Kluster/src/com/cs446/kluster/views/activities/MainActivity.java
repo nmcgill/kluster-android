@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -17,9 +18,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.models.Users;
 import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.views.fragments.DiscoverFragment;
 import com.cs446.kluster.views.fragments.EventDialogFragment;
@@ -37,8 +38,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity); 
         
+        SharedPreferences pref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        
+        String name = pref.getString("name", "No name");
+        
         View header = (View)getLayoutInflater().inflate(R.layout.drawerheader_layout, null);
-
+        TextView txtUserName = (TextView) header.findViewById(R.id.drawerheader_txtName);
+        txtUserName.setText(name);
+        
         mTitle = "Discover";
         
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -77,12 +84,9 @@ public class MainActivity extends Activity {
         
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-                
-        //** TODO: Move user creation to test cases? */
-        Users.CreateUser(this, "531238e5f330ede5deafbc4e");
-        
+
         //Add Testing Data
-        TestData.CreateTestData(getContentResolver());
+        TestData.CreateTestData(this);
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();

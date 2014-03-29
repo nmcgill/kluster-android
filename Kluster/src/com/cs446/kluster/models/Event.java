@@ -64,6 +64,6 @@ public class Event {
 	}	
 	
 	public static SimpleDateFormat getDateFormat() {
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:zzz'Z'", Locale.US);
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 	}
 }

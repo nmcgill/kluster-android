@@ -1,5 +1,7 @@
 package com.cs446.kluster.data;
 
+import java.util.List;
+
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -161,7 +163,8 @@ public class EventProvider extends ContentProvider {
 						"startdate text not null, " + 
 						"enddate text not null, " +
 						"tags text not null, " +
-						"photos text not null);";
+						"photos text not null, " +
+						"view text not null);";
 		
 		public EventOpenHelper(Context context) {
 			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);
