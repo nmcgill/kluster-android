@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.cs446.kluster.data.PhotoProvider;
+import com.cs446.kluster.data.SearchProvider;
 import com.cs446.kluster.map.MapUtils;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -60,10 +60,10 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
                 // Returns a new CursorLoader
                 return new CursorLoader(
                             getActivity(),   // Parent activity context
-                            PhotoProvider.CONTENT_URI,        // Table to query
+                            SearchProvider.CONTENT_URI,        // Table to query
                             null,     		 // Projection to return
-                            "eventid = ?",            // No selection clause
-                            new String[] {"1"},            // No selection arguments
+                            null,            // No selection clause
+                            null,            // No selection arguments
                             null             // Default sort order
             );
             default:

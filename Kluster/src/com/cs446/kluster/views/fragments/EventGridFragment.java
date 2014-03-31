@@ -37,7 +37,7 @@ public class EventGridFragment extends Fragment implements LoaderManager.LoaderC
 		.build();	
 		KlusterService service = restAdapter.create(KlusterService.class);
 		
-		service.getEvents(current + "," + Integer.toString(25000), new EventsCallback(getActivity()));
+		service.getEvents(current, Integer.toString(25000), new EventsCallback(getActivity()));
 	}
 	
 	@Override

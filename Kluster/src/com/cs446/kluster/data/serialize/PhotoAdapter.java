@@ -3,6 +3,7 @@ package com.cs446.kluster.data.serialize;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,9 @@ public class PhotoAdapter extends TypeAdapter<Photo> {
           } else if (name.equals("_contributor")) {
               userId = reader.nextString();
           } else if (name.equals("loc") && reader.peek() != JsonToken.NULL) {
-              loc = readDoublesArray(reader).toArray(new Double[2]);
+        	  List<Double> list = readDoublesArray(reader);
+              Collections.reverse(list);
+              loc = list.toArray(new Double[2]);
           } else if (name.equals("time")) {
           	try {
 					createdAt = Photo.getDateFormat().parse(reader.nextString());

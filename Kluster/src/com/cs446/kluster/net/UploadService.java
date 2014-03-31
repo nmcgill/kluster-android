@@ -46,8 +46,8 @@ public class UploadService extends IntentService {
 		String time = Photo.getDateFormat().format(photo.getDate());
 		
 		try {
-			longlat.put(photo.getLocation().latitude);
 			longlat.put(photo.getLocation().longitude);
+			longlat.put(photo.getLocation().latitude);
 		} catch (JSONException e) {
 		}	
 		

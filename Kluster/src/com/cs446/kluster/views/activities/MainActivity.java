@@ -3,7 +3,8 @@ package com.cs446.kluster.views.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
 import com.cs446.kluster.R;
+import com.cs446.kluster.data.SearchProvider;
 import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.views.fragments.DiscoverFragment;
 import com.cs446.kluster.views.fragments.EventDialogFragment;
@@ -88,26 +90,9 @@ public class MainActivity extends Activity {
 
         //Add Testing Data
         TestData.CreateTestData(this);
-
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			
-			Bundle bundle = new Bundle();
-			bundle.putString("query", query);
-
-			Fragment fragment = new SearchFragment();
-			fragment.setArguments(bundle);
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
-			setTitle("Search");
-			invalidateOptionsMenu();
-        }
-        else {
+        
 	        Fragment firstFragment = new DiscoverFragment();
 	        getFragmentManager().beginTransaction().add(R.id.main_container, firstFragment).commit();
-        }
     }
     
     @Override
@@ -134,7 +119,8 @@ public class MainActivity extends Activity {
         
         searchView.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {	
+            public boolean onQueryTextSubmit(String query) {
+            	
     			Bundle bundle = new Bundle();
     			bundle.putString("query", query);
 
@@ -177,6 +163,13 @@ public class MainActivity extends Activity {
 			startActivity(intent);
     		return true;
     	case R.id.action_search:
+    	
+        	 ContentResolver resolver = getContentResolver();
+        	 ContentProviderClient client = resolver.acquireContentProviderClient("com.cs446.kluster.Search");
+        	 SearchProvider provider = (SearchProvider) client.getLocalContentProvider();
+        	 provider.resetDatabase();
+        	 client.release();
+        	
     		 mTitle = "Search";
     		 invalidateOptionsMenu();
 	       	 Fragment fragment = new SearchFragment();

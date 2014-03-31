@@ -45,7 +45,7 @@ public interface KlusterService {
 	void getEvents(Callback<List<Event>> cb);
 	
 	@GET("/events")
-	void getEvents(@Query("ll") String ll, Callback<List<Event>> cb);
+	void getEvents(@Query("ll") String ll, @Query("radius_meters") String radius, Callback<List<Event>> cb);
 	
 	@GET("/events")
 	void getEvents(@Query("ids") String eventids, @Query("limit") String limit, @Query("bounds") String bounds, Callback<List<Event>> cb);

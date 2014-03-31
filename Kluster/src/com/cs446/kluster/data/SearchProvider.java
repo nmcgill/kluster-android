@@ -69,7 +69,7 @@ public class SearchProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-
+        
 		/* Check to see if the unique GUID is already in table */
 		Cursor c = mDb.rawQuery("SELECT * FROM " + SearchOpenHelper.DATABASE_TABLE_NAME + " WHERE eventid = '" + values.getAsString("eventid") + "'", null);
 		try {
@@ -105,10 +105,17 @@ public class SearchProvider extends ContentProvider {
 		
 		return ((mDb == null) ? false : true);
 	}
+	
+	public void resetDatabase() {
+		//mOpenHelper.close();
+		mOpenHelper.onUpgrade(mDb, mDb.getVersion(), mDb.getVersion()+1);
+		//().deleteDatabase(PROVIDER_NAME);
+	}
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
+        
+		SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 
         qBuilder.setTables(SearchOpenHelper.DATABASE_TABLE_NAME);
 
@@ -157,7 +164,7 @@ public class SearchProvider extends ContentProvider {
         return values;
     }
 	
-	protected static final class SearchOpenHelper extends SQLiteOpenHelper {
+	public static final class SearchOpenHelper extends SQLiteOpenHelper {
         public static final String COLUMN_ID = BaseColumns._ID;
         public static final String COLUMN_EVENT_ID = "eventid";
         public static final String COLUMN_EVENT_NAME = "eventname";
@@ -182,18 +189,18 @@ public class SearchProvider extends ContentProvider {
 		
 		public SearchOpenHelper(Context context) {
 			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);
+			
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DATABASE_TABLE_CREATE);
 		}
-
+			
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_NAME);
 			onCreate(db);
 		}
 	}
-
 }

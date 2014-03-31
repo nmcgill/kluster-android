@@ -9,6 +9,6 @@ public class AuthInterceptor implements RequestInterceptor {
 
 	@Override
 	public void intercept(RequestFacade request) {
-		request.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzhkNTZhZjY3YjY5ZTkxMjMxYjc1ZSIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTMwVDAyOjQwOjA4LjMwMFoifQ._7s-WLqDBT33Md-Cfs3y5--1aJQ7uPqhd9FRbHq6N2k");
+		request.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzlkMzdlNzA4NjI2ZGEyMDRiMTM5OSIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTMwVDIwOjQ0OjEzLjM0N1oifQ.ZLJy9uOvFV9xtq-pidRdK99drdcp2orBNfehRFfcWWk");
 	}
 }

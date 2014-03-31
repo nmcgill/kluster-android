@@ -38,6 +38,7 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 		mAdapter = new EventGridAdapter(getActivity(), R.layout.eventgridcell_layout, null, cols, views, 0);
 		
 		GridView gridView=(GridView)view.findViewById(android.R.id.list);
+		gridView.setEmptyView(view.findViewById(android.R.id.empty));
 		gridView.setAdapter(mAdapter);
 
         /* Start loader */  
@@ -58,13 +59,13 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 		}
 		
 		Bundle args = getArguments();
-		double radius = 25000;
+		Integer radius = 55000;
 		
 		RestAdapter restAdapter = new AuthKlusterRestAdapter()
 		.build();
 		
 		KlusterService service = restAdapter.create(KlusterService.class);
-		service.getEvents(args.getString("location")+","+radius, new Callback<List<Event>>() {		
+		service.getEvents(args.getString("location"), Integer.toString(radius), new Callback<List<Event>>() {		
 			@Override
 			public void success(List<Event> events, Response response) {
 				SearchStorageAdapter storage = new SearchStorageAdapter(getActivity().getContentResolver());
@@ -75,7 +76,7 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 			
 			@Override
 			public void failure(RetrofitError error) {
-				Log.e("Search", error.getResponse().getReason());
+				//Log.e("Search", error.getResponse().getReason());
 			}
 		});
 		
