@@ -1,11 +1,18 @@
 package com.cs446.kluster.views.fragments;
 
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +20,10 @@ import android.widget.GridView;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.SearchProvider;
+import com.cs446.kluster.data.SearchStorageAdapter;
+import com.cs446.kluster.models.Event;
+import com.cs446.kluster.net.AuthKlusterRestAdapter;
+import com.cs446.kluster.net.KlusterService;
 
 public class SearchGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	private EventGridAdapter mAdapter;
@@ -48,6 +59,26 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 		
 		Bundle args = getArguments();
 		double radius = 25000;
+		
+		RestAdapter restAdapter = new AuthKlusterRestAdapter()
+		.build();
+		
+		KlusterService service = restAdapter.create(KlusterService.class);
+		service.getEvents(args.getString("location")+","+radius, new Callback<List<Event>>() {		
+			@Override
+			public void success(List<Event> events, Response response) {
+				SearchStorageAdapter storage = new SearchStorageAdapter(getActivity().getContentResolver());
+				for (Event item : events) {
+					storage.insert(item);
+				}
+			}
+			
+			@Override
+			public void failure(RetrofitError error) {
+				Log.e("Search", error.getResponse().getReason());
+			}
+		});
+		
 		
 		/*HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new SearchStorageAdapter(getActivity().getContentResolver()));
 		EventRequest request = EventRequest.create(args.getString("location"), radius);

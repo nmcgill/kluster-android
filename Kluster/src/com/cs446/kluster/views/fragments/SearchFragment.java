@@ -83,7 +83,7 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 		}
 		
 		if (addr != null) {
-			return String.format(Locale.US, "%f,%f", addr.get(0).getLatitude(), addr.get(0).getLongitude());
+			return String.format(Locale.US, "%f,%f", addr.get(0).getLongitude(), addr.get(0).getLatitude());
 		}
 		else {
 			return "";

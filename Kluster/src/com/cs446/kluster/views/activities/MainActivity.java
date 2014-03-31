@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
 import com.cs446.kluster.R;
@@ -101,6 +102,7 @@ public class MainActivity extends Activity {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
 			setTitle("Search");
+			invalidateOptionsMenu();
         }
         else {
 	        Fragment firstFragment = new DiscoverFragment();
@@ -127,10 +129,31 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {	
+    			Bundle bundle = new Bundle();
+    			bundle.putString("query", query);
+
+    			Fragment fragment = new SearchFragment();
+    			fragment.setArguments(bundle);
+    			FragmentManager fragmentManager = getFragmentManager();
+    			fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
+    			setTitle("Search");
+    			invalidateOptionsMenu();
+    			return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+        
         // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
                 
         return true;
@@ -161,7 +184,6 @@ public class MainActivity extends Activity {
 	         fragmentManager.beginTransaction()
 	                        .replace(R.id.main_container, fragment)
 	                        .commit();
-	         
 			return true;
     	}
     	
