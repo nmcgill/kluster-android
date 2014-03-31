@@ -1,5 +1,6 @@
 package com.cs446.kluster.views.fragments;
 
+import retrofit.RestAdapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -16,6 +17,9 @@ import android.widget.GridView;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.PhotoProvider;
+import com.cs446.kluster.net.AuthKlusterRestAdapter;
+import com.cs446.kluster.net.KlusterService;
+import com.cs446.kluster.net.PhotosCallback;
 
 public class PhotoGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	PhotoGridAdapter mAdapter;
@@ -58,6 +62,14 @@ public class PhotoGridFragment extends Fragment implements LoaderManager.LoaderC
         
         mEventName = getArguments().getString("eventname");
         getActivity().getActionBar().setTitle(mEventName);
+        
+        
+		RestAdapter restAdapter = new AuthKlusterRestAdapter()
+		.build();	
+		KlusterService service = restAdapter.create(KlusterService.class);
+		
+		service.getPhotos(getArguments().getString("eventid"), new PhotosCallback(getActivity()));
+		
 		return view;
 	}
 	

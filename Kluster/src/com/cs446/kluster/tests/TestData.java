@@ -64,21 +64,21 @@ public class TestData {
 		photoStorage.insert(photo11);
 
 		List<String> collection1 = new ArrayList<String>();
-		collection1.add(photo1.getPhotoId());
-		collection1.add(photo2.getPhotoId());
-		collection1.add(photo3.getPhotoId());
+		collection1.add(photo1.getSmallUrl());
+		collection1.add(photo2.getSmallUrl());
+		collection1.add(photo3.getSmallUrl());
 		
 		List<String> collection2 = new ArrayList<String>();
-		collection2.add(photo4.getPhotoId());
-		collection2.add(photo5.getPhotoId());
-		collection2.add(photo6.getPhotoId());
-		collection2.add(photo7.getPhotoId());
+		collection2.add(photo4.getSmallUrl());
+		collection2.add(photo5.getSmallUrl());
+		collection2.add(photo6.getSmallUrl());
+		collection2.add(photo7.getSmallUrl());
 		
 		List<String> collection3 = new ArrayList<String>();
-		collection3.add(photo8.getPhotoId());
-		collection3.add(photo9.getPhotoId());
-		collection3.add(photo10.getPhotoId());
-		collection3.add(photo11.getPhotoId());
+		collection3.add(photo8.getSmallUrl());
+		collection3.add(photo9.getSmallUrl());
+		collection3.add(photo10.getSmallUrl());
+		collection3.add(photo11.getSmallUrl());
 		
 		List<String> tags = new ArrayList<String>();
 		tags.add("test");

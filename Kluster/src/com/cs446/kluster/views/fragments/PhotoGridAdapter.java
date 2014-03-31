@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 
-import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.R;
+import com.cs446.kluster.data.PhotoProvider.PhotoOpenHelper;
+import com.squareup.picasso.Picasso;
 
 public class PhotoGridAdapter extends SimpleCursorAdapter {
 	
@@ -36,9 +37,11 @@ public class PhotoGridAdapter extends SimpleCursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) { 
         ImageView imgBackground = (ImageView)view.getTag(R.id.photogrid_imgBackground);
         
-        String url = cursor.getString(cursor.getColumnIndex("url"));
+        String url = cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_URL));
         
-	    KlusterApplication.getInstance().getCache().loadBitmap(url, imgBackground, mActivity);
+        Picasso.with(mActivity).load(url).into(imgBackground);
+        
+	    //KlusterApplication.getInstance().getCache().loadBitmap(url, imgBackground, mActivity);
 
 	    imgBackground.invalidate();
 	}

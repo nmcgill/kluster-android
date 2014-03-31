@@ -2,11 +2,9 @@ package com.cs446.kluster.views.map;
 
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 
 import com.cs446.kluster.R;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;

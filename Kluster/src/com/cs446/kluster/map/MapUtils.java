@@ -1,11 +1,11 @@
-package com.cs446.kluster.views.map;
+package com.cs446.kluster.map;
 
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 
 public class MapUtils {
-
+	
 	public MapUtils() {
 	}
 	

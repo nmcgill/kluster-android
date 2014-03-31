@@ -1,41 +1,20 @@
 package com.cs446.kluster.data.serialize;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-
-import android.annotation.TargetApi;
-import android.util.JsonReader;
 
 import com.cs446.kluster.models.AuthUser;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
-/**
- * Created by Marlin Gingerich on 2014-03-09.
- */
-public class AuthUserSerializer implements Serializer<AuthUser> {
-
-    @TargetApi(11)
-    public AuthUser read(Reader reader) throws IOException {
-        JsonReader jr = new JsonReader(reader);
-        try {
-            return AuthUserSerializer.readEvent(jr);
-        } catch (IOException e) {
-            return null;
-        } finally {
-            jr.close();
-        }
-    }
-    
-    @TargetApi(11)
-    public AuthUser read(JsonReader jr) throws IOException {
-    	return AuthUserSerializer.readEvent(jr);
-    }
-
-    public void write(Writer writer, AuthUser user) {
-
-    }
-
-    public static AuthUser readEvent(JsonReader reader) throws IOException {
+public class AuthUserAdapter extends TypeAdapter<AuthUser> {
+	
+    public AuthUser read(JsonReader reader) throws IOException {
+      if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull();
+        return null;
+      }
 		String userId=null;
 		String userName=null;
 		String userEmail=null;
@@ -43,7 +22,7 @@ public class AuthUserSerializer implements Serializer<AuthUser> {
 		String lastName=null;
 		String token=null;
 		String tokenExpiry=null;
-        
+      
 		reader.beginObject();
 		while (reader.hasNext()) {
 			String name = reader.nextName();
@@ -82,4 +61,11 @@ public class AuthUserSerializer implements Serializer<AuthUser> {
 
 		return new AuthUser(userId, token, tokenExpiry, userName, userEmail, firstName, lastName); 
     }
-}
+    
+    public void write(JsonWriter writer, AuthUser value) throws IOException {
+      if (value == null) {
+        writer.nullValue();
+        return;
+      }
+    }
+  }

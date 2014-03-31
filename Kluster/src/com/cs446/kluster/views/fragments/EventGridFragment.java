@@ -1,11 +1,13 @@
 package com.cs446.kluster.views.fragments;
 
+import retrofit.RestAdapter;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,12 +17,11 @@ import android.widget.GridView;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.EventProvider;
-import com.cs446.kluster.data.EventStorageAdapter;
-import com.cs446.kluster.data.serialize.EventSerializer;
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.net.EventRequest;
-import com.cs446.kluster.net.http.task.HttpCollectionRequestTask;
-import com.cs446.kluster.views.map.MapUtils;
+import com.cs446.kluster.map.MapUtils;
+import com.cs446.kluster.net.AuthKlusterRestAdapter;
+import com.cs446.kluster.net.EventsCallback;
+import com.cs446.kluster.net.KlusterService;
+import com.google.android.gms.maps.model.LatLng;
 
 public class EventGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	EventGridAdapter mAdapter;
@@ -30,14 +31,13 @@ public class EventGridFragment extends Fragment implements LoaderManager.LoaderC
 		super.onCreate(savedInstanceState);
 		
     	LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-		String current = MapUtils.locationToString(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+    	Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    	String current = lastKnown.getLongitude() + "," + lastKnown.getLatitude();
+		RestAdapter restAdapter = new AuthKlusterRestAdapter()
+		.build();	
+		KlusterService service = restAdapter.create(KlusterService.class);
 		
-		EventRequest request = EventRequest.create(current, 30000);
-		HttpCollectionRequestTask<Event> task = new HttpCollectionRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
-	
-		task.executeAsync(request);
-		
+		service.getEvents(current + "," + Integer.toString(25000), new EventsCallback(getActivity()));
 	}
 	
 	@Override

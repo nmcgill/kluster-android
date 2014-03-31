@@ -13,15 +13,15 @@
 	
 	<TextView android:id="@+id/drawerheader_txtName"
 	    android:layout_width="match_parent"
-	    android:layout_height="25dp"
-	    android:textSize="20sp"
-	    android:text="John Smith"
+	    android:layout_height="50dp"
+	    android:textSize="30sp"
+	    android:text="Not Logged In"
 	    android:layout_toRightOf="@+id/drawerheader_imgDisplayPic" />
-	<TextView android:id="@+id/drawerheader_txtEvent"
+	<!-- <TextView android:id="@+id/drawerheader_txtEvent"
 	    android:layout_width="match_parent"
 	    android:layout_height="25dp"
 	    android:text="You are not at an event"
 	    android:layout_toRightOf="@+id/drawerheader_imgDisplayPic"
-	    android:layout_below="@+id/drawerheader_txtName" />
+	    android:layout_below="@+id/drawerheader_txtName" />-->
 </RelativeLayout>
 

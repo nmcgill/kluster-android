@@ -1,8 +1,6 @@
 package com.cs446.kluster.views.fragments;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import retrofit.RestAdapter;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -12,16 +10,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.data.EventProvider;
-import com.cs446.kluster.data.EventStorageAdapter;
-import com.cs446.kluster.data.serialize.EventSerializer;
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.net.EventRequest;
-import com.cs446.kluster.net.http.task.HttpCollectionRequestTask;
-import com.cs446.kluster.views.map.MapUtils;
+import com.cs446.kluster.map.MapUtils;
+import com.cs446.kluster.net.AuthKlusterRestAdapter;
+import com.cs446.kluster.net.EventsCallback;
+import com.cs446.kluster.net.KlusterService;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -66,11 +60,15 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
             @Override
             public void onCameraChange(CameraPosition position) {
                 LatLngBounds bounds = getMap().getProjection().getVisibleRegion().latLngBounds;
-                
-        		EventRequest request = EventRequest.create(bounds.northeast, bounds.southwest);
-        		HttpCollectionRequestTask<Event> task = new HttpCollectionRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
-        	
-        		task.executeAsync(request);
+                double swlong = bounds.southwest.longitude;
+                double swlat = bounds.southwest.latitude;
+                double nelong = bounds.northeast.longitude;
+                double nelat = bounds.northeast.latitude;
+        		RestAdapter restAdapter = new AuthKlusterRestAdapter()
+        		.build();
+        		KlusterService service = restAdapter.create(KlusterService.class);
+        		
+        		service.getEvents(null, null, String.format("%f,%f|%f,%f", swlong, swlat, nelong, nelat), new EventsCallback(getActivity()));
             }
         });
 	}

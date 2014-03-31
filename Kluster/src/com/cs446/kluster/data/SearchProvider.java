@@ -17,20 +17,21 @@ import android.text.TextUtils;
 import com.cs446.kluster.map.MapUtils;
 import com.cs446.kluster.models.Event;
 
-public class EventProvider extends ContentProvider {
-	public static final String PROVIDER_NAME = "com.cs446.kluster.Events";
-	public static final Uri CONTENT_URI = Uri.parse("content://"+PROVIDER_NAME+"/"+EventOpenHelper.DATABASE_TABLE_NAME);
+public class SearchProvider extends ContentProvider {
+	
+	public static final String PROVIDER_NAME = "com.cs446.kluster.Search";
+	public static final Uri CONTENT_URI = Uri.parse("content://"+PROVIDER_NAME+"/"+SearchOpenHelper.DATABASE_TABLE_NAME);
 	
 	static final int EVENTITEMS = 1;
 	static final int EVENTITEM_ID = 2;
 	
-	private EventOpenHelper mOpenHelper;
+	private SearchOpenHelper mOpenHelper;
 	private SQLiteDatabase mDb;
 	
 	private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-		mUriMatcher.addURI(PROVIDER_NAME, EventOpenHelper.DATABASE_TABLE_NAME, EVENTITEMS);
-		mUriMatcher.addURI(PROVIDER_NAME, EventOpenHelper.DATABASE_TABLE_NAME+"/#", EVENTITEM_ID);
+		mUriMatcher.addURI(PROVIDER_NAME, SearchOpenHelper.DATABASE_TABLE_NAME, EVENTITEMS);
+		mUriMatcher.addURI(PROVIDER_NAME, SearchOpenHelper.DATABASE_TABLE_NAME+"/#", EVENTITEM_ID);
 	}
 	
 	@Override
@@ -39,11 +40,11 @@ public class EventProvider extends ContentProvider {
 		
 		switch (mUriMatcher.match(uri)) {
 			case EVENTITEMS:
-				count = mDb.delete(EventOpenHelper.DATABASE_TABLE_NAME, selection, selectionArgs);
+				count = mDb.delete(SearchOpenHelper.DATABASE_TABLE_NAME, selection, selectionArgs);
 				break;
 			case EVENTITEM_ID:
 				String id = uri.getPathSegments().get(1);
-				count = mDb.delete(EventOpenHelper.DATABASE_TABLE_NAME, "_id = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
+				count = mDb.delete(SearchOpenHelper.DATABASE_TABLE_NAME, "_id = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);
@@ -58,9 +59,9 @@ public class EventProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		switch (mUriMatcher.match(uri)) {
 			case EVENTITEMS:
-				return "vnd.android.cursor.dir/vnd.kluster.Events ";
+				return "vnd.android.cursor.dir/vnd.kluster.Search ";
 			case EVENTITEM_ID:
-				return "vnd.android.cursor.item/vnd.kluster.Events ";
+				return "vnd.android.cursor.item/vnd.kluster.Search ";
 			default:
 				throw new IllegalArgumentException("Unsupported URI " + uri);
 		}
@@ -70,9 +71,15 @@ public class EventProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 
 		/* Check to see if the unique GUID is already in table */
-		Cursor c = mDb.rawQuery("SELECT * FROM "+EventOpenHelper.DATABASE_TABLE_NAME+" WHERE eventid = '" + values.getAsString("eventid") + "'", null);
+		Cursor c = mDb.rawQuery("SELECT * FROM " + SearchOpenHelper.DATABASE_TABLE_NAME + " WHERE eventid = '" + values.getAsString("eventid") + "'", null);
 		try {
 			if(c.moveToFirst()) {
+				long rowID = mDb.update(SearchOpenHelper.DATABASE_TABLE_NAME, values, "eventid = ?", new String[] { values.getAsString("eventid") });
+				if (rowID > 0) {
+					Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
+					getContext().getContentResolver().notifyChange(_uri, null);
+					return _uri;
+				}
 				return uri;
 			}
 		}
@@ -80,7 +87,7 @@ public class EventProvider extends ContentProvider {
 			c.close();
 		}
 		
-		long rowID = mDb.insert(EventOpenHelper.DATABASE_TABLE_NAME, "", values);
+		long rowID = mDb.insert(SearchOpenHelper.DATABASE_TABLE_NAME, "", values);
 
 		if (rowID > 0) {
 			Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
@@ -93,7 +100,7 @@ public class EventProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		mOpenHelper = new EventOpenHelper(getContext());
+		mOpenHelper = new SearchOpenHelper(getContext());
 		mDb = mOpenHelper.getWritableDatabase();
 		
 		return ((mDb == null) ? false : true);
@@ -103,7 +110,7 @@ public class EventProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder qBuilder = new SQLiteQueryBuilder();
 
-        qBuilder.setTables(EventOpenHelper.DATABASE_TABLE_NAME);
+        qBuilder.setTables(SearchOpenHelper.DATABASE_TABLE_NAME);
 
         if((mUriMatcher.match(uri)) == EVENTITEM_ID) {
             qBuilder.appendWhere("_id=" + uri.getPathSegments().get(1));
@@ -122,10 +129,10 @@ public class EventProvider extends ContentProvider {
 		
 		switch (mUriMatcher.match(uri)) {
 			case EVENTITEMS:
-				count = mDb.update(EventOpenHelper.DATABASE_TABLE_NAME, values, selection, selectionArgs);
+				count = mDb.update(SearchOpenHelper.DATABASE_TABLE_NAME, values, selection, selectionArgs);
 				break;
 			case EVENTITEM_ID:
-				count = mDb.update(EventOpenHelper.DATABASE_TABLE_NAME, values, selection, selectionArgs);
+				count = mDb.update(SearchOpenHelper.DATABASE_TABLE_NAME, values, selection, selectionArgs);
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI " + uri);
@@ -139,18 +146,18 @@ public class EventProvider extends ContentProvider {
     public static ContentValues getContentValues(Event item) {
         ContentValues values = new ContentValues();
 
-		values.put(EventOpenHelper.COLUMN_EVENT_ID, item.getEventId());
-		values.put(EventOpenHelper.COLUMN_EVENT_NAME, item.getName());
-		values.put(EventOpenHelper.COLUMN_LOCATION, MapUtils.latLngToString(item.getLocation()));
-		values.put(EventOpenHelper.COLUMN_STARTTIME, Event.getDateFormat().format(item.getStartDate()));
-		values.put(EventOpenHelper.COLUMN_ENDTIME, Event.getDateFormat().format(item.getEndDate()));
-		values.put(EventOpenHelper.COLUMN_TAGS, TextUtils.join("", item.getTags()));
-		values.put(EventOpenHelper.COLUMN_PHOTOS, TextUtils.join(",", item.getPhotos()));
+		values.put(SearchOpenHelper.COLUMN_EVENT_ID, item.getEventId());
+		values.put(SearchOpenHelper.COLUMN_EVENT_NAME, item.getName());
+		values.put(SearchOpenHelper.COLUMN_LOCATION, MapUtils.latLngToString(item.getLocation()));
+		values.put(SearchOpenHelper.COLUMN_STARTTIME, Event.getDateFormat().format(item.getStartDate()));
+		values.put(SearchOpenHelper.COLUMN_ENDTIME, Event.getDateFormat().format(item.getEndDate()));
+		values.put(SearchOpenHelper.COLUMN_TAGS, TextUtils.join("", item.getTags()));
+		values.put(SearchOpenHelper.COLUMN_PHOTOS, TextUtils.join(",", item.getPhotos()));
 		
         return values;
     }
 	
-	public static final class EventOpenHelper extends SQLiteOpenHelper {
+	protected static final class SearchOpenHelper extends SQLiteOpenHelper {
         public static final String COLUMN_ID = BaseColumns._ID;
         public static final String COLUMN_EVENT_ID = "eventid";
         public static final String COLUMN_EVENT_NAME = "eventname";
@@ -161,7 +168,7 @@ public class EventProvider extends ContentProvider {
         public static final String COLUMN_PHOTOS = "photos";
         
 		private static final int DATABASE_VERSION = 1;
-		private static final String DATABASE_TABLE_NAME = "eventitems";
+		private static final String DATABASE_TABLE_NAME = "searchitems";
 		private static final String DATABASE_TABLE_CREATE =
 				"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
 						COLUMN_ID + " integer primary key autoincrement, " +
@@ -173,7 +180,7 @@ public class EventProvider extends ContentProvider {
 						COLUMN_TAGS + " text not null, " +
 						COLUMN_PHOTOS + " text not null);";
 		
-		public EventOpenHelper(Context context) {
+		public SearchOpenHelper(Context context) {
 			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);
 		}
 

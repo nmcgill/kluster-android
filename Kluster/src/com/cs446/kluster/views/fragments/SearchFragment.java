@@ -71,7 +71,7 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
         
 		return view;
 	}
-	
+		
 	public String getLocationString(String name) {
 
 		Geocoder geocoder = new Geocoder(getActivity());

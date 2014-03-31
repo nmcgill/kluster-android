@@ -123,6 +123,10 @@
             android:readPermission="com.cs446.kluster.READ_PERMISSION"
             android:writePermission="com.cs446.kluster.WRITE_PERMISSION"
             android:authorities="com.cs446.kluster.Events"></provider>  
+            <provider android:name="com.cs446.kluster.data.SearchProvider"
+            android:readPermission="com.cs446.kluster.READ_PERMISSION"
+            android:writePermission="com.cs446.kluster.WRITE_PERMISSION"
+            android:authorities="com.cs446.kluster.Search"></provider>  
             
     </application>
 

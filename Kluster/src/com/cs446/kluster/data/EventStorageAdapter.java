@@ -16,8 +16,7 @@ public class EventStorageAdapter extends AbstractContentStorageAdapter<Event> {
     public Uri getContentUri() {
         return EventProvider.CONTENT_URI;
     }
-
-    @Override
+    
     public ContentValues getContentValues(Event item) {
         return EventProvider.getContentValues(item);
     }

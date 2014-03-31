@@ -1,8 +1,5 @@
 package com.cs446.kluster.views.fragments;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -10,11 +7,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.data.PhotoProvider;
-import com.cs446.kluster.views.map.MapUtils;
+import com.cs446.kluster.map.MapUtils;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

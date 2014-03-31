@@ -12,12 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.data.EventProvider;
-import com.cs446.kluster.data.EventStorageAdapter;
-import com.cs446.kluster.data.serialize.EventSerializer;
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.net.EventRequest;
-import com.cs446.kluster.net.http.task.HttpContentRequestTask;
+import com.cs446.kluster.data.SearchProvider;
 
 public class SearchGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	private EventGridAdapter mAdapter;
@@ -52,21 +47,18 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 		}
 		
 		Bundle args = getArguments();
-		double radius = 30000;
+		double radius = 25000;
 		
-		HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
+		/*HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new SearchStorageAdapter(getActivity().getContentResolver()));
 		EventRequest request = EventRequest.create(args.getString("location"), radius);
 		
-		task.executeAsync(request);
+		task.executeAsync(request);*/
 	}
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
-		Bundle args = getArguments();
 		
-		String[] selection = new String[] {args.getString("location")};
-		
-		return new CursorLoader(getActivity(), EventProvider.CONTENT_URI, null, "location = ?", selection, null);
+		return new CursorLoader(getActivity(), SearchProvider.CONTENT_URI, null, null, null, null);
 	}
 		
 	@Override

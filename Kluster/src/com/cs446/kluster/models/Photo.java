@@ -2,8 +2,6 @@ package com.cs446.kluster.models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -11,7 +9,7 @@ import java.util.Locale;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.cs446.kluster.views.map.MapUtils;
+import com.cs446.kluster.map.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Photo implements Parcelable  {
@@ -109,8 +107,7 @@ public class Photo implements Parcelable  {
 	}
 	
 	public Photo(Parcel in) {
-        String[] strArray = {};
-        
+
 		mPhotoId = in.readString();
 		mUserId = in.readString();
 		mEventId = in.readString();
@@ -120,8 +117,7 @@ public class Photo implements Parcelable  {
 		} catch (ParseException e) {
 		}
 		mUrl = in.createStringArray();
-		strArray = in.createStringArray();
-		mTags = new ArrayList<String>(Arrays.asList(strArray));	
+		mTags = in.createStringArrayList();
 	}
 	
 
@@ -138,7 +134,7 @@ public class Photo implements Parcelable  {
 		parcel.writeString(MapUtils.latLngToString(mLocation));
 		parcel.writeString(getDateFormat().format(mDate));
 		parcel.writeStringArray(mUrl);
-		parcel.writeArray(mTags.toArray());
+		parcel.writeStringList(mTags);
 	}
 	
 	public static final Parcelable.Creator<Photo> CREATOR = 

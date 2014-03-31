@@ -1,11 +1,16 @@
 package com.cs446.kluster.views.activities;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -13,12 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.data.serialize.AuthUserSerializer;
 import com.cs446.kluster.models.AuthUser;
-import com.cs446.kluster.net.http.AuthRequest;
-import com.cs446.kluster.net.http.HttpRequestListener;
-import com.cs446.kluster.net.http.Request;
-import com.cs446.kluster.net.http.task.HttpRequestTaskCompat;
+import com.cs446.kluster.net.KlusterRestAdapter;
+import com.cs446.kluster.net.KlusterService;
 import com.cs446.kluster.views.fragments.SignupFragment;
 
 //TODO: Store the token in shared preferences. Populate UI only if no token found
@@ -39,41 +41,34 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
+				String credentials = email.getText().toString() + ":" + password.getText().toString();
+				String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+				RestAdapter adapter = new KlusterRestAdapter()
+				.build();
+				KlusterService service = adapter.create(KlusterService.class);
 				
-				Request authRequest = AuthRequest.create(email.getText().toString(), password.getText().toString());
-				HttpRequestTaskCompat<AuthUser> task = new HttpRequestTaskCompat<AuthUser>(new HttpRequestListener<AuthUser>() {
+				service.getAuth("Basic " + base64EncodedCredentials, new Callback<AuthUser>() {
 					@Override
-					public void onStart() {
+					public void success(AuthUser user, Response response) {
+						SharedPreferences pref = getSharedPreferences("User", Context.MODE_PRIVATE);
+						SharedPreferences.Editor editor = pref.edit();
+						
+						editor.putString("id", user.getUserID());
+						editor.putString("name", user.getFirstName() + " " + user.getLastName());
+						editor.commit();
+												
+						Toast.makeText(getApplicationContext(),
+								"Hello " + user.getFirstName(), Toast.LENGTH_LONG)
+								.show();
 					}
-
+					
 					@Override
-					public void onComplete() {						
-					}
-
-					@Override
-					public void onError(Exception e) {
+					public void failure(RetrofitError error) {
 						Toast.makeText(getApplicationContext(),
 								"Could not login...", Toast.LENGTH_LONG)
 								.show();
 					}
-
-					@Override
-					public void onSuccess(AuthUser result) {
-						
-						SharedPreferences pref = getSharedPreferences("User", Context.MODE_PRIVATE);
-						SharedPreferences.Editor editor = pref.edit();
-						
-						editor.putString("id", result.getUserID());
-						editor.putString("name", result.getFirstName() + " " + result.getLastName());
-						editor.commit();
-												
-						Toast.makeText(getApplicationContext(),
-								"Hello " + result.getFirstName(), Toast.LENGTH_LONG)
-								.show();
-					}
-				}, new AuthUserSerializer());
-				
-				task.executeAsync(authRequest);	
+				});
 				
 			    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 			    startActivity(intent);

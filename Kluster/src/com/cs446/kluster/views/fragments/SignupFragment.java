@@ -1,5 +1,9 @@
 package com.cs446.kluster.views.fragments;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +15,8 @@ import android.widget.Toast;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.models.User;
-import com.cs446.kluster.net.UserRequest;
-import com.cs446.kluster.net.http.HttpRequestListener;
-import com.cs446.kluster.net.http.task.HttpRequestTaskCompat;
+import com.cs446.kluster.net.KlusterRestAdapter;
+import com.cs446.kluster.net.KlusterService;
 
 public class SignupFragment extends Fragment {
 
@@ -69,38 +72,25 @@ public class SignupFragment extends Fragment {
 				
 				user.setPassword(password.getText().toString());
 				
-				HttpRequestTaskCompat<User> task = new HttpRequestTaskCompat<User>(new HttpRequestListener<User>() {
-
+				RestAdapter restAdapter = new KlusterRestAdapter()
+				.build();
+				
+				KlusterService service = restAdapter.create(KlusterService.class);
+				service.createUser(user, new Callback<User>() {
 					@Override
-					public void onStart() {
-						Toast.makeText(getActivity().getBaseContext(),
-								"Sending user request", Toast.LENGTH_SHORT)
-								.show();
-					}
-
-					@Override
-					public void onComplete() {
-					}
-
-					@Override
-					public void onError(Exception e) {
-						Toast.makeText(getActivity().getBaseContext(),
-								"Could not create user...", Toast.LENGTH_LONG)
-								.show();
-					}
-
-					@Override
-					public void onSuccess(User result) {
+					public void success(User user, Response response) {
 						Toast.makeText(getActivity().getBaseContext(),
 								"Registration Complete...", Toast.LENGTH_LONG)
 								.show();
 						getActivity().onBackPressed();
+					}		
+					@Override
+					public void failure(RetrofitError error) {
+						Toast.makeText(getActivity().getBaseContext(),
+								"Could not create user...", Toast.LENGTH_LONG)
+								.show();
 					}
 				});
-				
-				UserRequest request = UserRequest.create(user);
-				
-				task.executeAsync(request);
 			}
 		});
 

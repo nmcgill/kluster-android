@@ -1,9 +1,11 @@
 package com.cs446.kluster.views.activities;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -13,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -86,13 +90,30 @@ public class PhotoFactory extends Activity implements GooglePlayServicesClient.C
                 //Toast.makeText(this, "Image saved to"+fileUri.toString(), Toast.LENGTH_LONG).show();
                 Location lastloc = mLocationClient.getLastLocation();
                 
+                Geocoder geoCoder = new Geocoder(this);
+                List<Address> addr = null;
+                List<String> tags = new ArrayList<String>();
+                
+                try {
+					addr = geoCoder.getFromLocation(lastloc.getLatitude(), lastloc.getLongitude(), 1);
+				} catch (IOException e) {
+					Log.e("Photofactory", "Could not geocode: " + e.toString());
+				}
+                
+                if( addr != null && addr.size() > 0) {
+                	tags.add(addr.get(0).getAddressLine(0));
+                	tags.add(addr.get(0).getAddressLine(1));
+                	tags.add(addr.get(0).getAddressLine(2));
+                	tags.add(addr.get(0).getLocality());
+                }
+                
                 Photo photo = new Photo("531238e5f330ede5deafbc3b",
                 						userid,
                 						"531238e5f330ede5deafbc3a",
                 						new LatLng(lastloc.getLatitude(),lastloc.getLongitude()),
                 						timeStamp,
                 						new String[] {fileUri.getPath(), fileUri.getPath(), fileUri.getPath()},
-                						new ArrayList<String>(),
+                						tags,
                 						new String[] {"0", "0"});
             	
                 //Start upload service

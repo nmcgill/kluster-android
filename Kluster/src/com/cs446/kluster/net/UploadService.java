@@ -1,40 +1,24 @@
 package com.cs446.kluster.net;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedFile;
+import retrofit.mime.TypedString;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.cs446.kluster.ConfigManager;
-import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.data.PhotoStorageAdapter;
-import com.cs446.kluster.data.serialize.PhotoSerializer;
 import com.cs446.kluster.models.Photo;
 
-@SuppressWarnings("deprecation")
-public class UploadService extends IntentService implements ResponseHandler<Object> {
-    final private static String ENDPOINT_PHOTOS = "/photos";
+public class UploadService extends IntentService {
     
 	/**
 	 * A constructor is required, and must call the super IntentService(String)
@@ -51,75 +35,41 @@ public class UploadService extends IntentService implements ResponseHandler<Obje
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		UploadFile((Photo)intent.getParcelableExtra("com.cs446.kluster.Photo"), this);
+		UploadFile((Photo)intent.getParcelableExtra("com.cs446.kluster.Photo"));
 	}
-
-	private boolean UploadFile(Photo photo, ResponseHandler<Object> handler) {
-		ConfigManager config = KlusterApplication.getInstance().getConfigManager();
-	    
+	
+	private boolean UploadFile(Photo photo) {
+		RestAdapter restAdapter = new AuthKlusterRestAdapter()
+		.build();		
+		KlusterService service = restAdapter.create(KlusterService.class);
   		JSONArray longlat = new JSONArray();
-
-		String image = photo.getUrl();
-		String eventid = photo.getEventId();
-		String tagOne = "foo";
-		String tagTwo = "bar";
 		String time = Photo.getDateFormat().format(photo.getDate());
-			
-  	    try {
-			longlat.put(photo.getLocation().longitude);
+		
+		try {
 			longlat.put(photo.getLocation().latitude);
-			
- 		    HttpParams params = new BasicHttpParams();	    
- 		    params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
- 		    DefaultHttpClient mHttpClient = new DefaultHttpClient(params);
-
- 	        HttpPost httppost = new HttpPost(config.getProperty(ConfigManager.PROP_URL) + ENDPOINT_PHOTOS);
- 	        
- 	        httppost.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzRjNTMzNDc1NjZhZGU2N2RlNDE2OCIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTI4VDA1OjI3OjEyLjM5NloifQ.IoXnCbZhQJJq0TuSFXXN1-RPSxFl_lG_SqhunrPjgQQ");
-		    
- 			MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE); 
- 	        
- 	        multipartEntity.addPart("image", new FileBody(new File(image)));
- 	        //multipartEntity.addPart("_event", new StringBody(eventid));
- 	        multipartEntity.addPart("tags[0]", new StringBody(tagOne));
- 	        multipartEntity.addPart("tags[1]", new StringBody(tagTwo));
- 	        multipartEntity.addPart("loc", new StringBody(longlat.toString()));
- 	        multipartEntity.addPart("time", new StringBody(time));
- 	        
- 	        //debug 	        
- 	        Log.d("post", image);
- 	        Log.d("post", eventid);
- 	        Log.d("post", tagOne);
- 	        Log.d("post", tagTwo);
- 	        Log.d("post", longlat.toString());
- 	        Log.d("post", Photo.getDateFormat().format(photo.getDate()));
- 	        
- 	        httppost.setEntity(multipartEntity); 	        
- 	        mHttpClient.execute(httppost, handler);
- 		}
- 	    catch (JSONException e) {
- 	        // TODO Auto-generated catch block
- 	    }
-  	    catch (IOException e) {
- 	        // TODO Auto-generated catch block
- 	    }
-  	    finally {
-  	    }
-  	    
- 		return true;
-  	}
- 	
-	@Override
-	public Object handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-
-        //String responseString = EntityUtils.toString(entity);
-        //Log.d("UPLOAD", responseString);
-        
-        PhotoSerializer serializer = new PhotoSerializer(); 
-        PhotoStorageAdapter storage = new PhotoStorageAdapter(getContentResolver());
-        Photo item = serializer.read(new InputStreamReader(response.getEntity().getContent()));       
-        storage.insert(item);
-
-        return null;
+			longlat.put(photo.getLocation().longitude);
+		} catch (JSONException e) {
+		}	
+		
+		service.createPhoto(new TypedFile("application/octet-stream",
+				new File(photo.getUrl())),
+				new TypedString(longlat.toString()),
+				new TypedString(time),
+				new TypedString(photo.getTags().get(2)),
+				new TypedString(photo.getTags().get(1)),
+				new TypedString(photo.getTags().get(0)),
+				new Callback<Photo>() {	
+					@Override
+					public void success(Photo photo, Response response) {
+				        PhotoStorageAdapter storage = new PhotoStorageAdapter(getContentResolver());    
+				        storage.insert(photo);
+					}			
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("UPLOAD", error.getResponse().getReason());
+					}
+				});
+		
+		return true;
 	}
 }

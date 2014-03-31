@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.models.Photo;
-
 import android.annotation.TargetApi;
 import android.util.JsonReader;
 

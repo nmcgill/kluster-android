@@ -1,7 +1,7 @@
 package com.cs446.kluster.data;
 
+import com.cs446.kluster.map.MapUtils;
 import com.cs446.kluster.models.Photo;
-import com.cs446.kluster.views.map.MapUtils;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 public class PhotoProvider extends ContentProvider {
@@ -138,36 +139,54 @@ public class PhotoProvider extends ContentProvider {
     public static ContentValues getContentValues(Photo item) {
         ContentValues values = new ContentValues();
 
-		values.put("photoid", item.getPhotoId());
-		values.put("userid", item.getUserId());
-		values.put("eventid", item.getEventId());
-		values.put("location", MapUtils.latLngToString(item.getLocation()));
-		values.put("date", Photo.getDateFormat().format(item.getDate()));
-		values.put("url", item.getUrl());
-		values.put("mediumurl", item.getMediumUrl());
-		values.put("thumburl", item.getThumbUrl());
-		values.put("tags", TextUtils.join(",", item.getTags()));
-		values.put("rating", TextUtils.join(",", item.getRatings()));
-
+		values.put(PhotoOpenHelper.COLUMN_PHOTO_ID, item.getPhotoId());
+		values.put(PhotoOpenHelper.COLUMN_USER_ID, item.getUserId());
+		values.put(PhotoOpenHelper.COLUMN_EVENT_ID, item.getEventId());
+		values.put(PhotoOpenHelper.COLUMN_LOCATION, MapUtils.latLngToString(item.getLocation()));
+		values.put(PhotoOpenHelper.COLUMN_DATE, Photo.getDateFormat().format(item.getDate()));
+		values.put(PhotoOpenHelper.COLUMN_URL, item.getUrl());
+		values.put(PhotoOpenHelper.COLUMN_URL_SMALL, item.getSmallUrl());
+		values.put(PhotoOpenHelper.COLUMN_URL_MEDIUM, item.getMediumUrl());
+		values.put(PhotoOpenHelper.COLUMN_URL_THUMB, item.getThumbUrl());
+		values.put(PhotoOpenHelper.COLUMN_TAGS, TextUtils.join(",", item.getTags()));
+		values.put(PhotoOpenHelper.COLUMN_RATING_UP, item.getRatings()[0]);
+		values.put(PhotoOpenHelper.COLUMN_RATING_DOWN, item.getRatings()[1]);
+		
         return values;
     }
 
-	protected static final class PhotoOpenHelper extends SQLiteOpenHelper {
+	public static final class PhotoOpenHelper extends SQLiteOpenHelper {
+        public static final String COLUMN_ID = BaseColumns._ID;
+        public static final String COLUMN_PHOTO_ID = "photoid";
+        public static final String COLUMN_USER_ID = "userid";
+        public static final String COLUMN_EVENT_ID = "eventid";
+        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_URL = "url";
+        public static final String COLUMN_URL_SMALL = "smallurl";
+        public static final String COLUMN_URL_MEDIUM = "mediumurl";
+        public static final String COLUMN_URL_THUMB = "thumburl";
+        public static final String COLUMN_TAGS = "tags";
+        public static final String COLUMN_RATING_UP = "ratingup";
+        public static final String COLUMN_RATING_DOWN = "ratingdown";
+        
 		private static final int DATABASE_VERSION = 1;
 		private static final String DATABASE_TABLE_NAME = "photoitems";
 		private static final String DATABASE_TABLE_CREATE =
 				"CREATE TABLE " + DATABASE_TABLE_NAME + " (" +
-						"_id integer primary key autoincrement, " +
-						"photoid text not null, " +
-						"userid text not null, " +
-						"eventid text not null, " +
-						"location text not null, " +
-						"date text not null, " + 
-						"url text not null, " +
-						"mediumurl text not null, " +
-						"thumburl text not null, " +
-						"tags text not null, " +
-						"rating text not null);";
+						COLUMN_ID + " integer primary key autoincrement, " +
+						COLUMN_PHOTO_ID + " text not null, " +
+						COLUMN_USER_ID + " text not null, " +
+						COLUMN_EVENT_ID + " text not null, " +
+						COLUMN_LOCATION + " text not null, " +
+						COLUMN_DATE + " text not null, " + 
+						COLUMN_URL + " text not null, " +
+						COLUMN_URL_SMALL + " text not null, " +
+						COLUMN_URL_MEDIUM + " text not null, " +
+						COLUMN_URL_THUMB + " text not null, " +
+						COLUMN_TAGS + " text not null, " +
+						COLUMN_RATING_UP + " text not null, " +
+						COLUMN_RATING_DOWN + " text not null);";
 		
 		public PhotoOpenHelper(Context context) {
 			super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);

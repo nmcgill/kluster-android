@@ -104,7 +104,7 @@ public class KlusterCache {
 	    return mMemoryCache.get(key);
 	}
 	
-	public void loadBitmap(String url, ImageView imageView, Context c) {
+	private void loadBitmap(String url, ImageView imageView, Context c) {
 		
 		if (url.startsWith("http")) {
 			loadBitmapfromUrl(url, imageView, c);

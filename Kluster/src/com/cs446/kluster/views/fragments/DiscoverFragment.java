@@ -16,15 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cs446.kluster.R;
-import com.cs446.kluster.data.EventStorageAdapter;
-import com.cs446.kluster.data.serialize.EventSerializer;
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.net.EventRequest;
-import com.cs446.kluster.net.http.HttpRequestListener;
-import com.cs446.kluster.net.http.task.HttpContentRequestTask;
-import com.cs446.kluster.views.map.MapUtils;
 
-public class DiscoverFragment extends Fragment implements ActionBar.TabListener, HttpRequestListener<Event>, android.location.LocationListener {
+public class DiscoverFragment extends Fragment implements ActionBar.TabListener, android.location.LocationListener {
     private ViewPager mPager;	
     private LocationManager mLocationManager;
     
@@ -84,6 +77,7 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+
     	mPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -92,14 +86,8 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {      		
-		if (getActivity() != null) {
-			EventRequest request = EventRequest.create(MapUtils.locationToString(location), 30000);
-			HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new EventStorageAdapter(getActivity().getContentResolver()));
-		
-			task.executeAsync(request);
-			mLocationManager.removeUpdates(this);
-		}
+	public void onLocationChanged(Location location) {  
+		mLocationManager.removeUpdates(this);
 	}
 
 	@Override
@@ -112,17 +100,5 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-	}
-
-	@Override
-	public void onComplete() {
-	}
-
-	@Override
-	public void onError(Exception e) {
-	}
-
-	@Override
-	public void onSuccess(Event result) {
 	}
 }

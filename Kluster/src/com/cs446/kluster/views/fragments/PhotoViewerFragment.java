@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.cs446.kluster.KlusterApplication;
 import com.cs446.kluster.R;
+import com.squareup.picasso.Picasso;
 
 public class PhotoViewerFragment extends Fragment {
 
@@ -26,7 +26,9 @@ public class PhotoViewerFragment extends Fragment {
 		String url = getArguments().getString("url");
 		
 		ImageView imgMain =(ImageView)getView().findViewById(R.id.photoview_imgMain);
-		
-		KlusterApplication.getInstance().getCache().loadBitmap(url, imgMain, getActivity());		
+        
+		Picasso.with(getActivity()).load(url).into(imgMain);
+        
+		//KlusterApplication.getInstance().getCache().loadBitmap(url, imgMain, getActivity());		
 	}
 }
