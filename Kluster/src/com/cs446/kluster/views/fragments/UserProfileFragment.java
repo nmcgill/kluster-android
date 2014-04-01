@@ -78,48 +78,6 @@ public class UserProfileFragment extends Fragment implements LoaderManager.Loade
 		if (getActivity().getFragmentManager().getBackStackEntryCount() > 0) {
 			getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-		
-//		RestAdapter restAdapter = new AuthKlusterRestAdapter()
-//		.build();	
-//		KlusterService service = restAdapter.create(KlusterService.class);	
-//		Log.w("UserProfileFragment", "UserId: "+ getArguments().getString("userid"));
-//		service.getUser(getArguments().getString("userid"), new Callback<Profile>() {
-//			
-//			@Override
-//			public void success(Profile profile, Response response) {
-//				// TODO Auto-generated method stub
-//				Log.w("UserProfileFragment", "Profile: "+ profile.getmUserName());
-//				mProfile=profile;
-//			}
-//			
-//			@Override
-//			public void failure(RetrofitError arg0) {
-//				// TODO Auto-generated method stub
-//				Log.w("UserProfileFragment", "Error Code: " + Integer.toString(arg0.getResponse().getStatus()));
-//				Log.w("UserProfileFragment", "Url: " + arg0.getUrl());
-//				
-////				Toast.makeText(getApplicationContext(),
-////						"Hello " + user.getFirstName(), Toast.LENGTH_LONG)
-////						.show();
-////				return;
-//				
-//			}
-//		});
-		
-//		RestAdapter restAdapter = new AuthKlusterRestAdapter().build();	
-//		KlusterService service = restAdapter.create(KlusterService.class);	
-//		Log.w("UserProfileFragment", "UserId: "+ getArguments().getString("userid"));
-//		service.getPhotosByUserIds(getArguments().getString("userid"), new PhotosCallback(getActivity()));
-		
-//		StringBuilder csvBuilder = new StringBuilder();
-//		for(String photoId: mProfile.getmPhotoIds()){
-//			csvBuilder.append(photoId).append(',');
-//		}
-//		csvBuilder.deleteCharAt(csvBuilder.length()); //Delete last comma
-//		service.getPhotosByIds(csvBuilder.toString(), new PhotosCallback(getActivity()));
-		
-		
-//		getActivity().getActionBar().setTitle(getArguments().getString("username"));
 
 	}
 
