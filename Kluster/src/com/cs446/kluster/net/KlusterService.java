@@ -30,11 +30,20 @@ public interface KlusterService {
 	@POST("/users")
 	void createUser(@Body User user, Callback<User> cb);
 	
+	@GET("/users/{userid}")
+	void getUser(@Path("userid") String userid, Callback<AuthUser> cb);
+	
 	@GET("/photos/{photo}")
 	void getPhoto(@Path("photo") String photoid, Callback<Photo> cb);
 	
 	@GET("/photos")
 	void getPhotos(@Query("eventIds") String eventids, Callback<List<Photo>> cb);
+	
+	@GET("/photos")
+	void getPhotosByIds(@Query("ids") String ids, Callback<List<Photo>> cb);
+	
+	@GET("/photos")
+	void getPhotosByUserIds(@Query("userIds") String userids, Callback<List<Photo>> cb);
 	
 	@Multipart
 	@POST("/photos")

@@ -5,6 +5,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,18 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.PhotoProvider;
 import com.cs446.kluster.data.PhotoProvider.PhotoOpenHelper;
+import com.cs446.kluster.models.AuthUser;
 import com.cs446.kluster.net.AuthKlusterRestAdapter;
 import com.cs446.kluster.net.KlusterService;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 public class PhotoViewerFragment extends Fragment {
+	AuthUser user;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,16 +48,54 @@ public class PhotoViewerFragment extends Fragment {
 		final Integer up = Integer.parseInt(getArguments().getString("up"));
 		final Integer down = Integer.parseInt(getArguments().getString("down"));
 		final String id = getArguments().getString("photoid");
-		String userid = getArguments().getString("userid");
+		final String userid = getArguments().getString("userid");
 		
 		ImageView imgMain =(ImageView)getView().findViewById(R.id.photoview_imgMain);
 		ImageView imgUp = (ImageView)getView().findViewById(R.id.photoview_imgUp);
 		final TextView txtUp = (TextView)getView().findViewById(R.id.photoview_txtUp);
 		ImageView imgDown = (ImageView)getView().findViewById(R.id.photoview_imgDown);
 		final TextView txtDown = (TextView)getView().findViewById(R.id.photoview_txtDown);
+		final TextView txtUserName=(TextView)getView().findViewById(R.id.photoview_txtUser);
 		
 		txtUp.setText(Integer.toString(up));
 		txtDown.setText(Integer.toString(down));
+		
+		RestAdapter adapter = new AuthKlusterRestAdapter()
+		.build();
+		KlusterService service = adapter.create(KlusterService.class);
+		service.getUser(userid, new Callback<AuthUser>() {
+
+			@Override
+			public void failure(RetrofitError arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void success(final AuthUser arg0, Response arg1) {
+				// TODO Auto-generated method stub
+				txtUserName.setText(arg0.getUserName());
+				
+				txtUserName.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Bundle bundle=new Bundle();
+						bundle.putString("userid", userid);
+						bundle.putString("username", arg0.getUserName());
+						
+						Fragment fragment = new UserProfileFragment();
+						fragment.setArguments(bundle);
+						FragmentManager fragmentManager = getFragmentManager();
+						fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit(); 
+						
+					}
+				});
+			}
+			
+			
+		});
 		
 		imgUp.setOnClickListener(new OnClickListener() {		
 			@Override
