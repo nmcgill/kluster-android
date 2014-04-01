@@ -1,39 +1,31 @@
 package com.cs446.kluster.views.fragments;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import retrofit.RestAdapter;
+import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.location.LocationManager;
+import android.net.http.SslError;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
+import com.cs446.kluster.R;
 import com.cs446.kluster.data.EventProvider;
 import com.cs446.kluster.data.EventProvider.EventOpenHelper;
-import com.cs446.kluster.map.MapUtils;
-import com.cs446.kluster.models.Event;
-import com.cs446.kluster.net.AuthKlusterRestAdapter;
-import com.cs446.kluster.net.EventsCallback;
-import com.cs446.kluster.net.KlusterService;
-import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class EventMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EventMapFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
 
@@ -42,41 +34,22 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
     	super.onActivityCreated(savedInstanceState);
 
     	LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-		getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.locationToLatLng(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)), 13));
-    }
+    	}
 	
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.mapwebview_layout, container, false);
 		
 		getLoaderManager().initLoader(URL_LOADER, null, this);
 		
-		/*getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-			
-			@Override
-			public boolean onMarkerClick(Marker marker) {
-				getMap().setInfoWindowAdapter(new PhotoInfoWindowAdapter(getActivity()));
-				marker.showInfoWindow();
-				return true;
-			}
-		});*/
-		
-		getMap().setOnCameraChangeListener(new OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition position) {
-                LatLngBounds bounds = getMap().getProjection().getVisibleRegion().latLngBounds;
-                double swlong = bounds.southwest.longitude;
-                double swlat = bounds.southwest.latitude;
-                double nelong = bounds.northeast.longitude;
-                double nelat = bounds.northeast.latitude;
-        		RestAdapter restAdapter = new AuthKlusterRestAdapter()
-        		.build();
-        		KlusterService service = restAdapter.create(KlusterService.class);
-        		
-        		service.getEvents(null, null, String.format("%f,%f|%f,%f", swlong, swlat, nelong, nelat), new EventsCallback(getActivity()));
-            }
-        });
+	    WebView webView = (WebView) view.findViewById(R.id.map_webview);
+	    webView.getSettings().setJavaScriptEnabled(true);
+	    
+	    webView.setWebViewClient(new MyWebViewClient());
+	    webView.getSettings().supportZoom();
+	    webView.loadUrl("https://www.google.com/maps/place/43%C2%B028'18.0%22N+80%C2%B032'33.6%22W/@43.471665,-80.542671,15z/data=!3m1!4b1!4m2!3m1!1s0x0:0x0");
+	    
+	    return view;
 	}
 
 	@Override
@@ -117,18 +90,35 @@ public class EventMapFragment extends MapFragment implements LoaderManager.Loade
 	        eventDate = cursor.getString(cursor.getColumnIndex(EventOpenHelper.COLUMN_STARTTIME));
 	        eventTags = cursor.getString(cursor.getColumnIndex(EventOpenHelper.COLUMN_TAGS));
 	        
-			try {
+			/*try {
 				getMap().addMarker(new MarkerOptions()
 				.position(MapUtils.stringToLatLng(loc))
 				.snippet(df.format(Event.getDateFormat().parse(eventDate)))
 				.title(eventName));
 			} catch (ParseException e) {
-			}
+			}*/
 
 		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+	}
+	
+	private class MyWebViewClient extends WebViewClient {
+	    @Override
+	    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+	        view.loadUrl(url);
+	        return true;
+	    }
+	    
+	    @Override
+	    public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
+
+
+	    	 handler.proceed() ;
+
+
+	    	 }
 	}
 }

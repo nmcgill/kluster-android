@@ -31,13 +31,13 @@ public class EventGridFragment extends Fragment implements LoaderManager.LoaderC
 		super.onCreate(savedInstanceState);
 		
     	LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-    	Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-    	String current = lastKnown.getLongitude() + "," + lastKnown.getLatitude();
+    	//Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    	//String current = lastKnown.getLongitude() + "," + lastKnown.getLatitude();
 		RestAdapter restAdapter = new AuthKlusterRestAdapter()
 		.build();	
 		KlusterService service = restAdapter.create(KlusterService.class);
 		
-		service.getEvents(current, Integer.toString(25000), new EventsCallback(getActivity()));
+		service.getEvents(new EventsCallback(getActivity()));
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.cs446.kluster.views.fragments;
 
+import retrofit.RestAdapter;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
@@ -16,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cs446.kluster.R;
+import com.cs446.kluster.net.AuthKlusterRestAdapter;
+import com.cs446.kluster.net.EventsCallback;
+import com.cs446.kluster.net.KlusterService;
 
 public class DiscoverFragment extends Fragment implements ActionBar.TabListener, android.location.LocationListener {
     private ViewPager mPager;	
@@ -86,7 +90,16 @@ public class DiscoverFragment extends Fragment implements ActionBar.TabListener,
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {  
+	public void onLocationChanged(Location location) { 
+		
+		String current = location.getLongitude() + "," + location.getLatitude();
+		
+				RestAdapter restAdapter = new AuthKlusterRestAdapter()
+				.build();	
+				KlusterService service = restAdapter.create(KlusterService.class);
+				
+				service.getEvents(current, Integer.toString(25000), new EventsCallback(getActivity()));
+		
 		mLocationManager.removeUpdates(this);
 	}
 
