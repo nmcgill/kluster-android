@@ -3,6 +3,7 @@ package com.cs446.kluster.views.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,7 +27,6 @@ import com.cs446.kluster.R;
 import com.cs446.kluster.data.SearchProvider;
 import com.cs446.kluster.tests.TestData;
 import com.cs446.kluster.views.fragments.DiscoverFragment;
-import com.cs446.kluster.views.fragments.EventDialogFragment;
 import com.cs446.kluster.views.fragments.SearchFragment;
 
 public class MainActivity extends Activity {    
@@ -34,8 +34,7 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private String[] mMenuTitles;
-    private CharSequence mTitle;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +48,11 @@ public class MainActivity extends Activity {
         TextView txtUserName = (TextView) header.findViewById(R.id.drawerheader_txtName);
         txtUserName.setText(name);
         
-        mTitle = "Discover";
+        setTitle("Discover");
         
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.addHeaderView(header);
+        //mDrawerList.addHeaderView(header);
         
         mMenuTitles = getResources().getStringArray(R.array.menu_list);
 
@@ -70,14 +69,14 @@ public class MainActivity extends Activity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
+                getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mTitle);
+                getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -114,7 +113,7 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         // Get the SearchView and set the searchable configuration
-        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         
         searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -128,8 +127,6 @@ public class MainActivity extends Activity {
     			fragment.setArguments(bundle);
     			FragmentManager fragmentManager = getFragmentManager();
     			fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
-    			setTitle("Search");
-    			invalidateOptionsMenu();
     			return true;
             }
             @Override
@@ -139,7 +136,7 @@ public class MainActivity extends Activity {
         });
         
         // Assumes current activity is the searchable activity
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
                 
         return true;
@@ -170,7 +167,8 @@ public class MainActivity extends Activity {
         	 provider.resetDatabase();
         	 client.release();
         	
-    		 mTitle = "Search";
+    		 setTitle("Search");
+    		 
     		 invalidateOptionsMenu();
 	       	 Fragment fragment = new SearchFragment();
 	         FragmentManager fragmentManager = getFragmentManager();
@@ -195,14 +193,14 @@ public class MainActivity extends Activity {
         Fragment fragment = null;
         
         switch (position) {
-        case 1:
+        /*case 1:
         {
         	new EventDialogFragment().show(getFragmentManager(), "eventDialog");
         	return;
-        }
-        case 2:
+        }*/
+        case 0:
         	fragment = new SearchFragment(); break;
-        case 3:
+        case 1:
         	fragment = new DiscoverFragment(); break;
         default:
         	return;
@@ -216,13 +214,13 @@ public class MainActivity extends Activity {
 
         // Highlight the seleted item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(mMenuTitles[position-1]);
+        setTitle(mMenuTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-    @Override
+    /*@Override
     public void setTitle(CharSequence title) {
     	mTitle = title;
     	super.setTitle(title);
-    }
+    }*/
 }

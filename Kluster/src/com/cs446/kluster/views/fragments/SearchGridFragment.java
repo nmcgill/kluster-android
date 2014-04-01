@@ -1,6 +1,10 @@
 package com.cs446.kluster.views.fragments;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -12,7 +16,7 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +28,12 @@ import com.cs446.kluster.data.SearchStorageAdapter;
 import com.cs446.kluster.models.Event;
 import com.cs446.kluster.net.AuthKlusterRestAdapter;
 import com.cs446.kluster.net.KlusterService;
+import com.cs446.kluster.views.fragments.FilterDialogFragment.FilterListener;
 
-public class SearchGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SearchGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, FilterListener {
 	private EventGridAdapter mAdapter;
-
+	private Map<String, String> mFilters;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.searchgrid_layout, container, false);
@@ -73,24 +79,31 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 					storage.insert(item);
 				}
 			}
-			
 			@Override
 			public void failure(RetrofitError error) {
 				//Log.e("Search", error.getResponse().getReason());
 			}
 		});
-		
-		
-		/*HttpContentRequestTask<Event> task = new HttpContentRequestTask<Event>(new EventSerializer(), new SearchStorageAdapter(getActivity().getContentResolver()));
-		EventRequest request = EventRequest.create(args.getString("location"), radius);
-		
-		task.executeAsync(request);*/
 	}
 	
 	@Override
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
+		if (mFilters == null) {
+			mFilters = new HashMap<String, String>();	
+		}
 		
-		return new CursorLoader(getActivity(), SearchProvider.CONTENT_URI, null, null, null, null);
+		Set<String> keySet = mFilters.keySet();
+		keySet.remove("location");
+		List<String> selectionArgs = new ArrayList<String>();
+		String selection = TextUtils.join(" = ? and ", keySet);
+		
+		for (String str : keySet) {
+			selectionArgs.add(mFilters.get(str));
+		}
+		
+		String[] argsArray = selectionArgs.toArray(new String[selectionArgs.size()]);
+		
+		return new CursorLoader(getActivity(), SearchProvider.CONTENT_URI, null, selection, argsArray, null);
 	}
 		
 	@Override
@@ -101,5 +114,19 @@ public class SearchGridFragment extends Fragment implements LoaderManager.Loader
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		mAdapter.changeCursor(null);
+	}
+
+	@Override
+	public void userSetFilter(String filter, String value) {
+		if (mFilters == null) {
+			mFilters = new HashMap<String, String>();	
+		}
+		
+		mFilters.put(filter, value);
+	}
+
+	@Override
+	public void userReturned() {
+		
 	}
 }

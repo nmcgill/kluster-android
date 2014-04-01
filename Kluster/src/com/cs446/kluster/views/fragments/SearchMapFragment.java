@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.cs446.kluster.data.SearchProvider;
 import com.cs446.kluster.map.MapUtils;
+import com.cs446.kluster.views.fragments.FilterDialogFragment.FilterListener;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,7 +19,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class SearchMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SearchMapFragment extends MapFragment implements LoaderManager.LoaderCallbacks<Cursor>, FilterListener {
     // Identifies a particular Loader being used in this component
     private static final int URL_LOADER = 0;
 
@@ -88,5 +89,15 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+	}
+
+	@Override
+	public void userSetFilter(String filter, String value) {
+		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public void userReturned() {
+		// TODO Auto-generated method stub
 	}
 }

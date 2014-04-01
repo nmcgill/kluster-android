@@ -25,6 +25,7 @@ import com.cs446.kluster.views.fragments.FilterDialogFragment.FilterListener;
 
 public class SearchFragment extends Fragment implements ActionBar.TabListener {
     private ViewPager mPager;	
+    private DemoCollectionPagerAdapter mAdapter;
     private Bundle mFilters;
     
     @Override
@@ -45,7 +46,8 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 		View view = inflater.inflate(R.layout.search_layout, container, false);
 
         mPager = (ViewPager) view.findViewById(R.id.viewpager_noswipe);
-        mPager.setAdapter(new DemoCollectionPagerAdapter(getChildFragmentManager()));  
+        mAdapter = new DemoCollectionPagerAdapter(getChildFragmentManager());
+        mPager.setAdapter(mAdapter);  
         
         Button btnFilter = (Button) view.findViewById(R.id.search_btnfilter);
         
@@ -54,16 +56,7 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 			public void onClick(View v) {
 				FilterDialogFragment fragment = new FilterDialogFragment();
 
-				fragment.setFilterListener(new FilterListener() {
-					@Override
-					public void userSetFilter(String filter, String value) {
-						mFilters.putString(filter, value);
-					}
-
-					@Override
-					public void userReturned() {
-					}
-				});
+				fragment.setFilterListener((FilterListener)mAdapter.getItem(mPager.getCurrentItem()));
 				
 				fragment.show(getFragmentManager(), "filterDialog");	
 			}
@@ -121,7 +114,9 @@ public class SearchFragment extends Fragment implements ActionBar.TabListener {
 	         	return fragment;
 	         }
 	         else {
-	         	return new SearchMapFragment();	     		
+	            	Fragment fragment = new SearchMapFragment();
+	            	fragment.setArguments(mFilters);
+		         	return fragment;    		
 	         }
 	     }
 	
