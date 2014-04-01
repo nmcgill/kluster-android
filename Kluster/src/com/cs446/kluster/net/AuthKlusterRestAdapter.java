@@ -1,6 +1,7 @@
 package com.cs446.kluster.net;
 
 
+
 public class AuthKlusterRestAdapter extends KlusterRestAdapter {
 	
 	public AuthKlusterRestAdapter() {

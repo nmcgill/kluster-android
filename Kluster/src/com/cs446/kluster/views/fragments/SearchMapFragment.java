@@ -1,5 +1,9 @@
 package com.cs446.kluster.views.fragments;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -9,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cs446.kluster.data.SearchProvider;
+import com.cs446.kluster.data.EventProvider.EventOpenHelper;
 import com.cs446.kluster.map.MapUtils;
+import com.cs446.kluster.models.Event;
 import com.cs446.kluster.views.fragments.FilterDialogFragment.FilterListener;
 import com.cs446.kluster.views.map.PhotoInfoWindowAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,7 +43,7 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 		
 		getLoaderManager().initLoader(URL_LOADER, null, this);
 		
-		getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+		/*getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 			
 			@Override
 			public boolean onMarkerClick(Marker marker) {
@@ -45,7 +51,7 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 				marker.showInfoWindow();
 				return true;
 			}
-		});
+		});*/
 	}
 
 	@Override
@@ -74,15 +80,25 @@ public class SearchMapFragment extends MapFragment implements LoaderManager.Load
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		int locIndex;
+		String loc;
+		String eventName;
+		String eventDate;
+		String eventTags;
+		SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.US);
 
 		while (cursor != null && cursor.moveToNext()) {
-			locIndex = cursor.getColumnIndex("location");
-
-			getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(MapUtils.stringToLatLng(cursor.getString(locIndex)), 13));
+			loc = cursor.getString(cursor.getColumnIndex(EventOpenHelper.COLUMN_LOCATION));		
+	        eventName = cursor.getString(cursor.getColumnIndex(EventOpenHelper.COLUMN_EVENT_NAME));
+	        eventDate = cursor.getString(cursor.getColumnIndex(EventOpenHelper.COLUMN_STARTTIME));
+	        eventTags = cursor.getString(cursor.getColumnIndex(EventOpenHelper.COLUMN_TAGS));
 	        
-			getMap().addMarker(new MarkerOptions()
-			.position(MapUtils.stringToLatLng(cursor.getString(locIndex))));
+			try {
+				getMap().addMarker(new MarkerOptions()
+				.position(MapUtils.stringToLatLng(loc))
+				.snippet(df.format(Event.getDateFormat().parse(eventDate)))
+				.title(eventName));
+			} catch (ParseException e) {
+			}
 
 		}
 	}

@@ -37,6 +37,13 @@ public class LoginActivity extends Activity {
         final EditText email=(EditText)findViewById(R.id.loginUserNameInput);
         final EditText password=(EditText)findViewById(R.id.loginPasswordInput);
         
+        SharedPreferences pref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        
+        if (pref.contains("token")) {
+		    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		    startActivity(intent);
+        }
+        
         
         loginButton.setOnClickListener(new View.OnClickListener() {			
 			@Override
@@ -55,6 +62,8 @@ public class LoginActivity extends Activity {
 						
 						editor.putString("id", user.getUserID());
 						editor.putString("name", user.getFirstName() + " " + user.getLastName());
+						editor.putString("token", user.getToken());
+						editor.putString("tokenExpiry", user.getTokenExpiry());
 						editor.commit();
 												
 						Toast.makeText(getApplicationContext(),

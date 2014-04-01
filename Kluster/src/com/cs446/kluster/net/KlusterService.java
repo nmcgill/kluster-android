@@ -3,12 +3,13 @@ package com.cs446.kluster.net;
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -19,6 +20,7 @@ import com.cs446.kluster.models.AuthUser;
 import com.cs446.kluster.models.Event;
 import com.cs446.kluster.models.Photo;
 import com.cs446.kluster.models.User;
+import com.google.gson.JsonObject;
 
 public interface KlusterService {
 	
@@ -49,4 +51,12 @@ public interface KlusterService {
 	
 	@GET("/events")
 	void getEvents(@Query("ids") String eventids, @Query("limit") String limit, @Query("bounds") String bounds, Callback<List<Event>> cb);
+
+	@Headers("Content-type: application/json")
+	@POST("/photos/{photo}/rate")
+	void ratePhotoUp(@Path("photo") String photoid, @Body JsonObject upValue, Callback<Response> cb);
+
+	@Headers("Content-type: application/json")
+	@POST("/photos/{photo}/rate")
+	void ratePhotoDown(@Path("photo") String photoid, @Body JsonObject downValue, Callback<Response> cb);
 }

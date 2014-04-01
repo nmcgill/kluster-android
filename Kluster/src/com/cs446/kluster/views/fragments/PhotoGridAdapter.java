@@ -3,8 +3,10 @@ package com.cs446.kluster.views.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
@@ -36,6 +38,23 @@ public class PhotoGridAdapter extends SimpleCursorAdapter {
 	@Override
     public void bindView(View view, Context context, Cursor cursor) { 
         ImageView imgBackground = (ImageView)view.getTag(R.id.photogrid_imgBackground);
+        
+        imgBackground.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				PhotoViewerFragment fragment = new PhotoViewerFragment();
+					
+					Bundle bundle = new Bundle();
+					bundle.putString("url", getCursor().getString(getCursor().getColumnIndex(PhotoOpenHelper.COLUMN_URL)));
+					bundle.putString("up", getCursor().getString(getCursor().getColumnIndex(PhotoOpenHelper.COLUMN_RATING_UP)));
+					bundle.putString("down", getCursor().getString(getCursor().getColumnIndex(PhotoOpenHelper.COLUMN_RATING_DOWN)));
+					bundle.putString("photoid", getCursor().getString(getCursor().getColumnIndex(PhotoOpenHelper.COLUMN_PHOTO_ID)));
+					bundle.putString("userid", getCursor().getString(getCursor().getColumnIndex(PhotoOpenHelper.COLUMN_USER_ID)));
+					
+					fragment.setArguments(bundle);
+					mActivity.getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(fragment.toString()).commit();
+			}
+		});
         
         String url = cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_URL));
         

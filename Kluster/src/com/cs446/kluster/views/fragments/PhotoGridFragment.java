@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.cs446.kluster.R;
@@ -43,19 +41,6 @@ public class PhotoGridFragment extends Fragment implements LoaderManager.LoaderC
 		
 		GridView gridView=(GridView)view.findViewById(R.id.photoGrid);
 		gridView.setAdapter(mAdapter);
-		
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				PhotoViewerFragment fragment = new PhotoViewerFragment();
-				
-				Bundle bundle = new Bundle();
-				bundle.putString("url", (String)parent.getItemAtPosition(position));
-				fragment.setArguments(bundle);
-				
-				getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(fragment.toString()).commit();
-			}
-		});
 		
         /* Start loader */  
         getLoaderManager().initLoader(0, null, this);  

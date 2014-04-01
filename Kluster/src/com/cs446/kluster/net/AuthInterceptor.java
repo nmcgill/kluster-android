@@ -1,5 +1,10 @@
 package com.cs446.kluster.net;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.cs446.kluster.KlusterApplication;
+
 import retrofit.RequestInterceptor;
 
 public class AuthInterceptor implements RequestInterceptor {
@@ -9,6 +14,10 @@ public class AuthInterceptor implements RequestInterceptor {
 
 	@Override
 	public void intercept(RequestFacade request) {
-		request.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUzMzlkMzdlNzA4NjI2ZGEyMDRiMTM5OSIsImVtYWlsIjoibm1jZ2lsbEBleGFtcGxlLmNvbSIsImV4cGlyZXMiOiIyMDE0LTA0LTMwVDIwOjQ0OjEzLjM0N1oifQ.ZLJy9uOvFV9xtq-pidRdK99drdcp2orBNfehRFfcWWk");
+		SharedPreferences pref = KlusterApplication.getInstance().getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
+		
+		String token = pref.getString("token", "");
+		
+		request.addHeader("Authorization", "Bearer " + token);
 	}
 }
