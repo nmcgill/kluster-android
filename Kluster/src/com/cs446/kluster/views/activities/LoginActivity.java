@@ -69,6 +69,10 @@ public class LoginActivity extends Activity {
 						Toast.makeText(getApplicationContext(),
 								"Hello " + user.getFirstName(), Toast.LENGTH_LONG)
 								.show();
+						
+
+					    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+					    startActivity(intent);
 					}
 					
 					@Override
@@ -79,8 +83,6 @@ public class LoginActivity extends Activity {
 					}
 				});
 				
-			    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-			    startActivity(intent);
 			}
 		});
         
