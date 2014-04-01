@@ -36,6 +36,12 @@ public interface KlusterService {
 	@GET("/photos")
 	void getPhotos(@Query("eventIds") String eventids, Callback<List<Photo>> cb);
 	
+	@GET("/photos")
+	void getPhotosByIds(@Query("ids") String ids, Callback<List<Photo>> cb);
+	
+	@GET("/photos")
+	void getPhotosByUserIds(@Query("userIds") String userids, Callback<List<Photo>> cb);
+	
 	@Multipart
 	@POST("/photos")
 	void createPhoto(@Part("image") TypedFile photo, @Part("loc") TypedString location, @Part("time") TypedString time, @Part("tags[0]") TypedString tag1, @Part("tags[1]") TypedString tag2, @Part("tags[2]") TypedString tag3, Callback<Photo> cb);
