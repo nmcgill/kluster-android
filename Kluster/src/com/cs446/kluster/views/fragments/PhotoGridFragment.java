@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.cs446.kluster.R;
 import com.cs446.kluster.data.PhotoProvider;
+import com.cs446.kluster.data.PhotoProvider.PhotoOpenHelper;
 import com.cs446.kluster.net.AuthKlusterRestAdapter;
 import com.cs446.kluster.net.KlusterService;
 import com.cs446.kluster.net.PhotosCallback;
@@ -41,6 +44,28 @@ public class PhotoGridFragment extends Fragment implements LoaderManager.LoaderC
 		
 		GridView gridView=(GridView)view.findViewById(R.id.photoGrid);
 		gridView.setAdapter(mAdapter);
+		
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				PhotoViewerFragment fragment = new PhotoViewerFragment();
+				Cursor cursor=mAdapter.getCursor();
+				cursor.moveToPosition(position);
+				Bundle bundle = new Bundle();
+				bundle.putString("url", cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_URL)));
+				bundle.putString("up", cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_RATING_UP)));
+				bundle.putString("down", cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_RATING_DOWN)));
+				bundle.putString("photoid", cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_PHOTO_ID)));
+				bundle.putString("userid", cursor.getString(cursor.getColumnIndex(PhotoOpenHelper.COLUMN_USER_ID)));
+				
+				fragment.setArguments(bundle);
+				getFragmentManager().beginTransaction().replace(R.id.main_container, fragment).addToBackStack(fragment.toString()).commit();
+			}
+			
+		});
 		
         /* Start loader */  
         getLoaderManager().initLoader(0, null, this);  
